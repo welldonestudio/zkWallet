@@ -24,7 +24,8 @@ import {
 
 export const SignUpCallbackPage = () => {
   const authState = useSelector(selectAuthState);
-  const walletState: { index: number; wallets: Wallet[]} = useSelector(selectWalletState);
+  const walletState: { index: number; wallets: Wallet[] } =
+    useSelector(selectWalletState);
   const dispatch = useDispatch();
   const router = useRouter();
   const { jwt, wallet, utils } = useContextApi();
@@ -90,6 +91,7 @@ export const SignUpCallbackPage = () => {
           dispatch(resetWallet());
           dispatch(
             addWallet({
+              network: authState.network,
               path: PATH,
               address,
               proof,
