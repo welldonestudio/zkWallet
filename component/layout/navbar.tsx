@@ -19,6 +19,7 @@ import { selectAuthState } from '@/store/slice/authSlice';
 
 import packageInfo from '../../package.json';
 import { useContextApi } from '../api';
+import { WalletSelecter } from '../utils/walletSelecter';
 
 export default function NavBar() {
   const theme = useTheme();
@@ -62,6 +63,7 @@ export default function NavBar() {
               </Box>
             </Box>
           </Stack>
+          <WalletSelecter />
         </Toolbar>
       </Container>
     </AppBar>
