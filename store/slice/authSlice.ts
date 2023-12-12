@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { AppState } from '../store';
 import { CRYPTO, PROVIDER } from './config';
 
-export interface JwtState {
-  jwtState:
+export interface AuthState {
+  authState:
     | {
         provider: PROVIDER;
         jwt: string;
@@ -21,20 +21,20 @@ export interface JwtState {
     | undefined;
 }
 
-const initialState: JwtState = {
-  jwtState: undefined,
+const initialState: AuthState = {
+  authState: undefined,
 };
 
-export const jwtSlice = createSlice({
-  name: 'jwt',
+export const authSlice = createSlice({
+  name: 'auth',
   initialState,
   reducers: {
-    setJwtState(state, action) {
-      state.jwtState = action.payload;
+    setAuthState(state, action) {
+      state.authState = action.payload;
     },
   },
 });
 
-export const { setJwtState } = jwtSlice.actions;
-export const selectJwtState = (state: AppState) => state.jwt.jwtState;
-export default jwtSlice.reducer;
+export const { setAuthState } = authSlice.actions;
+export const selectAuthState = (state: AppState) => state.auth.authState;
+export default authSlice.reducer;

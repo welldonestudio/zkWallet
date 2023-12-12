@@ -3,13 +3,13 @@ import { createWrapper } from 'next-redux-wrapper';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import { jwtSlice } from '../slice/jwtSlice';
+import { authSlice } from '../slice/authSlice';
 import { zkWalletSlice } from '../slice/zkWalletSlice';
 
 import type { Action, ThunkAction } from '@reduxjs/toolkit';
 
 const rootReducer = combineReducers({
-  [jwtSlice.name]: jwtSlice.reducer,
+  [authSlice.name]: authSlice.reducer,
   [zkWalletSlice.name]: zkWalletSlice.reducer,
 });
 
@@ -27,7 +27,7 @@ export const makeStore = () => {
   } else {
     const persistConfig = {
       key: 'nextjs',
-      whitelist: ['jwt', 'wallet'],
+      whitelist: ['auth', 'wallet'],
       storage,
     };
 
