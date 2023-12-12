@@ -5,11 +5,13 @@ import { TransactionBlock } from '@mysten/sui.js/transactions';
 import { genAddressSeed, getZkLoginSignature } from '@mysten/zklogin';
 import { utils } from '../utils';
 import { decodeJwt } from 'jose';
+import { NETWORK } from '@/store/slice/config';
 
 export interface RequestSignAndSend {
   jwt: string;
   privateKey: string;
   publicKey: string;
+  network: NETWORK;
   maxEpoch: string;
   randomness: string;
   wallet: Wallet;
@@ -22,7 +24,7 @@ export const signAndSendTransaction = async (
   try {
     let url = '';
 
-    switch (request.wallet.network) {
+    switch (request.network) {
       case 'sui:mainnet':
         url = 'https://fullnode.mainnet.sui.io';
         break;
@@ -90,6 +92,6 @@ export const signAndSendTransaction = async (
     });
     return txreceipt.digest;
   } catch (error) {
-    throw new Error(`not support provider (${request.wallet.network})`);
+    throw new Error(`not support provider (${request.network})`);
   }
 };
