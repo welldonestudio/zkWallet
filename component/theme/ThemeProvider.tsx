@@ -47,8 +47,8 @@ export default function ThemeProvider({ children }: Props) {
     <MUIThemeProvider theme={theme}>
       <CssBaseline />
       <Head>
-        <title>DSRV Custody Service</title>
-        <meta name="description" content="DSRV Custody Service" />
+        <title>WELLDONE zkWallet</title>
+        <meta name="description" content="WELLDONE zkWallet" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         {/* eslint-disable-next-line @next/next/no-page-custom-font, @next/next/no-css-tags*/}
         <link href="/fonts/index.css" rel="stylesheet" />
