@@ -1,0 +1,29 @@
+@font-face {
+  font-family: 'SUIT Variable';
+  font-weight: 100 900;
+  src: url('SUIT-Variable.woff2') format('woff');
+}
+
+@font-face {
+  font-family: 'RobotoMono Light';
+  font-weight: 100;
+  src: url('RobotoMono-Light.ttf');
+}
+
+@font-face {
+  font-family: 'RobotoMono Regular';
+  font-weight: 100;
+  src: url('RobotoMono-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'itc-avant-garde-gothic-pro';
+  src:
+    url('ITC Avant Garde Gothic Pro Bold.woff2') format('woff2'),
+    url('ITC Avant Garde Gothic Pro Bold.woff') format('woff'),
+    url('ITC Avant Garde Gothic Pro Bold.otf') format('opentype');
+  font-display: auto;
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
+}
