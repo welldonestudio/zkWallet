@@ -55,29 +55,36 @@ export const SignUpCallbackPage = () => {
     try {
       const createWallet = async () => {
         if (walletState.length === 0) {
-          const PATH = 'zkWallet/0'; // temp
-          const address = await wallet.getAddress({
-            network: authState.network,
-            jwt: authState.jwt,
-            path: PATH,
-          });
-          const proof = await jwt.sui.getZkProof({
-            network: authState.network,
-            jwt: authState.jwt,
-            publicKey: authState.key.publicKey,
-            maxEpoch: authState.maxEpoch,
-            randomness: authState.randomness,
-            path: PATH,
-          });
-          dispatch(
-            selectWalletState([
-              {
-                path: PATH,
-                address,
-                proof,
-              },
-            ]),
-          );
+          try {
+            console.log(1);
+            const PATH = 'zkWallet/0'; // temp
+            const address = await wallet.getAddress({
+              network: authState.network,
+              jwt: authState.jwt,
+              path: PATH,
+            });
+            console.log(2, address);
+            const proof = await jwt.sui.getZkProof({
+              network: authState.network,
+              jwt: authState.jwt,
+              publicKey: authState.key.publicKey,
+              maxEpoch: authState.maxEpoch,
+              randomness: authState.randomness,
+              path: PATH,
+            });
+            console.log(3, proof);
+            dispatch(
+              selectWalletState([
+                {
+                  path: PATH,
+                  address,
+                  proof,
+                },
+              ]),
+            );
+          } catch (error) {
+            console.log(error);
+          }
         }
         router.push('/');
       };
