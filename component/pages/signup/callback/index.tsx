@@ -13,21 +13,10 @@ export const SignUpCallbackPage = () => {
   const authState = useSelector(selectAuthState);
   const dispatch = useDispatch();
   const router = useRouter();
-  const { jwt: api, utils } = useContextApi();
+  const { jwt, utils } = useContextApi();
 
-  const [jwt, setJwt] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-
-  const handleOK = () => {
-    dispatch(
-      setAuthState({
-        ...authState,
-        jwt,
-      }),
-    );
-    router.push('/');
-  };
 
   const handleRetry = async () => {
     const { publicKey, privateKey } = utils.keyPair.ed25519();
@@ -35,7 +24,7 @@ export const SignUpCallbackPage = () => {
       case 'google':
         {
           setLoading(true);
-          const { url, randomness, maxEpoch } = await api.sui.getLoginURL({
+          const { url, randomness, maxEpoch } = await jwt.sui.getLoginURL({
             provider: authState.provider,
             redirectUrl: REDIRECT_AUTH_URL,
             network: DEFAULT_NETWORK,
@@ -64,7 +53,13 @@ export const SignUpCallbackPage = () => {
     try {
       const { id_token } = queryString.parse(location.hash);
       decodeJwt(id_token as string);
-      setJwt(id_token as string);
+      dispatch(
+        setAuthState({
+          ...authState,
+          jwt: id_token,
+        }),
+      );
+      router.push('/');
     } catch (err) {
       console.log(err);
       setError(true);
@@ -83,25 +78,24 @@ export const SignUpCallbackPage = () => {
         }}
       >
         <Box width="400px" marginTop={-20}>
-          <Card sx={{ minWidth: 275 }}>
-            <CardHeader title={`Sign Up (${authState.provider})`} />
-            <CardActions>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  width: '100%',
-                }}
-              >
-                {!!jwt && <Button onClick={handleOK}>OK</Button>}
-                {error && (
+          {error && (
+            <Card sx={{ minWidth: 275 }}>
+              <CardHeader title={`Sign Up (${authState.provider})`} />
+              <CardActions>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    width: '100%',
+                  }}
+                >
                   <Button onClick={handleRetry} disabled={loading}>
                     Retry
                   </Button>
-                )}
-              </Box>
-            </CardActions>
-          </Card>
+                </Box>
+              </CardActions>
+            </Card>
+          )}
         </Box>
       </Box>
     </Layout>
