@@ -40,9 +40,7 @@ export const getZkProof = async (
             .hex2buffer(request.publicKey)
             .toString('base64'),
           maxEpoch: request.maxEpoch,
-          jwtRandomness: utils
-            .hex2buffer(request.randomness)
-            .toString('base64'),
+          jwtRandomness: request.randomness,
           salt: utils
             .hex2buffer(utils.str2Hash(request.path))
             .toString('base64'),
