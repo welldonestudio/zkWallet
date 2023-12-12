@@ -4,6 +4,7 @@ import {
   Card,
   CardActions,
   CardHeader,
+  Fade,
   Tooltip,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -112,7 +113,7 @@ export const SignUpCallbackPage = () => {
       createWallet(id_token as string);
     } catch (err) {
       console.log(err);
-      setError(true);
+      setTimeout(() => setError(true), 300);
     }
   }, [location]);
 
@@ -127,37 +128,39 @@ export const SignUpCallbackPage = () => {
           height: '100vh',
         }}
       >
-        <Box width="400px" marginTop={-20}>
-          {error && (
-            <Card sx={{ minWidth: 275 }}>
-              <CardHeader title={`Sign Up (${authState.provider})`} />
-              <CardActions>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    width: '100%',
-                  }}
-                >
-                  <Tooltip title="Clear Wallet">
-                    <span>
-                      <Button onClick={handleClear} disabled={loading}>
-                        Clear
-                      </Button>
-                    </span>
-                  </Tooltip>
-                  <Tooltip title="Restore Wallet">
-                    <span>
-                      <Button onClick={handleRestore} disabled={loading}>
-                        Restore
-                      </Button>
-                    </span>
-                  </Tooltip>
-                </Box>
-              </CardActions>
-            </Card>
-          )}
-        </Box>
+        <Fade in={error}>
+          <Box width="400px" marginTop={-20}>
+            {error && (
+              <Card sx={{ minWidth: 275 }}>
+                <CardHeader title={`Sign Up (${authState.provider})`} />
+                <CardActions>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      width: '100%',
+                    }}
+                  >
+                    <Tooltip title="Clear Wallet">
+                      <span>
+                        <Button onClick={handleClear} disabled={loading}>
+                          Clear
+                        </Button>
+                      </span>
+                    </Tooltip>
+                    <Tooltip title="Restore Wallet">
+                      <span>
+                        <Button onClick={handleRestore} disabled={loading}>
+                          Restore
+                        </Button>
+                      </span>
+                    </Tooltip>
+                  </Box>
+                </CardActions>
+              </Card>
+            )}
+          </Box>
+        </Fade>
       </Box>
     </Layout>
   );

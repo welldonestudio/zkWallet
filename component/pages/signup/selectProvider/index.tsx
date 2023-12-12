@@ -1,9 +1,16 @@
-import { Box, Button, Card, CardContent, CardHeader } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Fade,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '@/component/layout';
 import { useContextApi } from '@/component/api';
 import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DEFAULT_NETWORK, REDIRECT_AUTH_URL } from '@/store/slice/config';
 
 export const SelectProviderPage = () => {
@@ -11,6 +18,7 @@ export const SelectProviderPage = () => {
   const dispatch = useDispatch();
   const { jwt, utils } = useContextApi();
 
+  const [show, setShow] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleClick = async (provider: string) => {
@@ -45,6 +53,10 @@ export const SelectProviderPage = () => {
     }
   };
 
+  useEffect(() => {
+    setTimeout(() => setShow(true), 300);
+  });
+
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
       <Box
@@ -57,37 +69,43 @@ export const SelectProviderPage = () => {
         }}
       >
         <Box width="400px" marginTop={-20}>
-          <Card sx={{ minWidth: 275 }}>
-            <CardHeader title="Sign Up" />
-            <CardContent>
-              <Button
-                fullWidth
-                onClick={() => handleClick('google')}
-                disabled={loading}
-              >
-                Google
-              </Button>
-              <Button
-                fullWidth
-                onClick={() => handleClick('facebook')}
-                disabled
-              >
-                Facebook
-              </Button>
-              <Button fullWidth onClick={() => handleClick('twitch')} disabled>
-                Twitch
-              </Button>
-              <Button fullWidth onClick={() => handleClick('slack')} disabled>
-                Slack
-              </Button>
-              <Button fullWidth onClick={() => handleClick('kakao')} disabled>
-                Kakao
-              </Button>
-              <Button fullWidth onClick={() => handleClick('apple')} disabled>
-                Apple
-              </Button>
-            </CardContent>
-          </Card>
+          <Fade in={show}>
+            <Card sx={{ minWidth: 275 }}>
+              <CardHeader title="Sign Up" />
+              <CardContent>
+                <Button
+                  fullWidth
+                  onClick={() => handleClick('google')}
+                  disabled={loading}
+                >
+                  Google
+                </Button>
+                <Button
+                  fullWidth
+                  onClick={() => handleClick('facebook')}
+                  disabled
+                >
+                  Facebook
+                </Button>
+                <Button
+                  fullWidth
+                  onClick={() => handleClick('twitch')}
+                  disabled
+                >
+                  Twitch
+                </Button>
+                <Button fullWidth onClick={() => handleClick('slack')} disabled>
+                  Slack
+                </Button>
+                <Button fullWidth onClick={() => handleClick('kakao')} disabled>
+                  Kakao
+                </Button>
+                <Button fullWidth onClick={() => handleClick('apple')} disabled>
+                  Apple
+                </Button>
+              </CardContent>
+            </Card>
+          </Fade>
         </Box>
       </Box>
     </Layout>
