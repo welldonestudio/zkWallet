@@ -7,7 +7,8 @@ export const getAddress = async (
 ): Promise<string> => {
   switch (request.network) {
     case 'sui:mainnet':
-    case 'sui:mainnet':
+    case 'sui:devnet':
+    case 'sui:testnet':
       return jwtToAddress(request.jwt, BigInt(utils.str2Hash(request.path)));
     default:
       break;
