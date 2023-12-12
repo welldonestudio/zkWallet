@@ -52,7 +52,7 @@ export default function Layout({
                   flexGrow: 1,
                 }}
               >
-                {initialized && authState && (
+                {initialized && authState && authState.jwt && (
                   <Breadcrumbs>
                     {breadcrumbs.length ? (
                       <Link href="/" style={{ textDecoration: 'none' }}>
