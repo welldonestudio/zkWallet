@@ -8,12 +8,14 @@ import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
 import { useEffect, useState } from 'react';
 import { useContextApi } from '@/component/api';
 import { DEFAULT_NETWORK, REDIRECT_AUTH_URL } from '@/store/slice/config';
+import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
 export const SignUpCallbackPage = () => {
   const authState = useSelector(selectAuthState);
+  const walletState = useSelector(selectWalletState);
   const dispatch = useDispatch();
   const router = useRouter();
-  const { jwt, utils } = useContextApi();
+  const { jwt, wallet, utils } = useContextApi();
 
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -51,6 +53,35 @@ export const SignUpCallbackPage = () => {
 
   useEffect(() => {
     try {
+      const createWallet = async () => {
+        if (walletState.length === 0) {
+          const PATH = 'zkWallet/0'; // temp
+          const address = await wallet.getAddress({
+            network: authState.network,
+            jwt: authState.jwt,
+            path: PATH,
+          });
+          const proof = await jwt.sui.getZkProof({
+            network: authState.network,
+            jwt: authState.jwt,
+            publicKey: authState.key.publicKey,
+            maxEpoch: authState.maxEpoch,
+            randomness: authState.randomness,
+            path: PATH,
+          });
+          dispatch(
+            selectWalletState([
+              {
+                path: PATH,
+                address,
+                proof,
+              },
+            ]),
+          );
+        }
+        router.push('/');
+      };
+
       const { id_token } = queryString.parse(location.hash);
       decodeJwt(id_token as string);
       dispatch(
@@ -59,7 +90,7 @@ export const SignUpCallbackPage = () => {
           jwt: id_token,
         }),
       );
-      router.push('/');
+      createWallet();
     } catch (err) {
       console.log(err);
       setError(true);
