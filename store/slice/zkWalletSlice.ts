@@ -30,6 +30,7 @@ export const zkWalletSlice = createSlice({
       );
     },
     resetWallet(state, action) {
+      console.log(999, action);
       state.zkWalletState = action.payload || [];
     },
   },
