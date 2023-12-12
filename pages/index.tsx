@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { selectAuthState } from '@/store/slice/authSlice';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { WalletPage } from '@/component/pages/home/wallet';
+import { WalletPage } from '@/component/pages/wallet';
 
 export default function HomePage() {
   const authState = useSelector(selectAuthState);
