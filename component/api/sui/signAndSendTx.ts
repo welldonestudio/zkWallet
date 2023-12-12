@@ -1,4 +1,3 @@
-import { CHAIN } from '@/store/slice/config';
 import { Wallet } from '@/store/slice/zkWalletSlice';
 import { SuiClient } from '@mysten/sui.js/client';
 import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
@@ -23,7 +22,7 @@ export const signAndSendTransaction = async (
   try {
     let url = '';
 
-    switch (request.wallet.chain) {
+    switch (request.wallet.network) {
       case 'sui:mainnet':
         url = 'https://fullnode.mainnet.sui.io';
         break;
@@ -38,7 +37,7 @@ export const signAndSendTransaction = async (
     }
 
     if (!url) {
-      throw new Error('not support chain');
+      throw new Error('not support network');
     }
 
     const decodedJwt = decodeJwt(request.jwt);
@@ -91,6 +90,6 @@ export const signAndSendTransaction = async (
     });
     return txreceipt.digest;
   } catch (error) {
-    throw new Error(`not support provider (${request.wallet.chain})`);
+    throw new Error(`not support provider (${request.wallet.network})`);
   }
 };

@@ -1,6 +1,9 @@
 import { createContext, useContext } from 'react';
-import { RequestGetLoginUrl, getLoginURL } from './sui/getLoginURL';
-import { Wallet } from '@/store/slice/zkWalletSlice';
+import {
+  RequestGetLoginUrl,
+  ResponseGetLoginUrl,
+  getLoginURL,
+} from './sui/getLoginURL';
 import { RequestGetZkProof, getZkProof } from './sui/getZkProof';
 import { RequestGetAddress } from './types';
 import { getAddress } from './getAddress';
@@ -11,7 +14,7 @@ export const ApiContext = createContext({
     sui: {
       getLoginURL: async (
         request: RequestGetLoginUrl,
-      ): Promise<{ url: string; randomness: string }> => {
+      ): Promise<ResponseGetLoginUrl> => {
         throw new Error('jwt.sui.getLoginURL is not supported');
       },
       getZkProof: async (request: RequestGetZkProof): Promise<string> => {
@@ -23,6 +26,7 @@ export const ApiContext = createContext({
     getAddress: async (request: RequestGetAddress): Promise<string> => {
       throw new Error('wallet.getAddress is not supported');
     },
+    /*
     signAndSendTx: (request: {
       unsignedTx: string;
       jwt: string;
@@ -30,10 +34,11 @@ export const ApiContext = createContext({
     }) => {
       throw new Error('wallet.signTx is not supported');
     },
+    */
   },
   utils: {
     keyPair: {
-      Ed25519: (): { publicKey: string; privateKey: string } => {
+      ed25519: (): { publicKey: string; privateKey: string } => {
         throw new Error('utils.keyPair.Ed25519 is not supported');
       },
     },
@@ -59,7 +64,7 @@ export default function ApiProvider({
         },
         utils: {
           keyPair: {
-            Ed25519: () => {
+            ed25519: () => {
               const key = new Ed25519Keypair();
               return {
                 publicKey: `0x${Buffer.from(

@@ -1,8 +1,8 @@
-import { CHAIN } from '@/store/slice/config';
+import { NETWORK } from '@/store/slice/config';
 import { utils } from '../utils';
 
 export interface RequestGetZkProof {
-  chain: CHAIN;
+  network: NETWORK;
   jwt: string;
   publicKey: string;
   maxEpoch: string;
@@ -16,7 +16,7 @@ export const getZkProof = async (
   try {
     let url = '';
 
-    switch (request.chain) {
+    switch (request.network) {
       case 'sui:mainnet':
       case 'sui:testnet':
         url = 'https://prover.mystenlabs.com/v1';
@@ -52,7 +52,7 @@ export const getZkProof = async (
       const json = await res.json();
       return JSON.stringify(json);
     }
-    throw new Error('not support chain');
+    throw new Error('not support network');
   } catch (error) {
     throw new Error(`${error}`);
   }

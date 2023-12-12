@@ -1,4 +1,4 @@
-import { CHAIN, CLIENT_ID, CRYPTO, PROVIDER } from '@/store/slice/config';
+import { NETWORK, CLIENT_ID, CRYPTO, PROVIDER } from '@/store/slice/config';
 import { SuiClient } from '@mysten/sui.js/client';
 import { Ed25519PublicKey } from '@mysten/sui.js/keypairs/ed25519';
 import { generateNonce, generateRandomness } from '@mysten/zklogin';
@@ -6,20 +6,25 @@ import { utils } from '../utils';
 
 export interface RequestGetLoginUrl {
   provider: PROVIDER;
-  clientId: string;
   redirectUrl: string;
-  chain: CHAIN;
+  network: NETWORK;
   crypto: CRYPTO;
   publicKey: string;
 }
 
+export interface ResponseGetLoginUrl {
+  url: string;
+  randomness: string;
+  maxEpoch: number;
+}
+
 export const getLoginURL = async (
   request: RequestGetLoginUrl,
-): Promise<{ url: string; randomness: string; maxEpoch: number }> => {
+): Promise<ResponseGetLoginUrl> => {
   if (CLIENT_ID[request.provider]) {
     let url = '';
 
-    switch (request.chain) {
+    switch (request.network) {
       case 'sui:mainnet':
         url = 'https://fullnode.mainnet.sui.io';
         break;
@@ -34,7 +39,7 @@ export const getLoginURL = async (
     }
 
     if (!url) {
-      throw new Error('not support chain');
+      throw new Error('not support network');
     }
 
     const suiClient = new SuiClient({ url });
@@ -43,7 +48,7 @@ export const getLoginURL = async (
 
     const randomness = generateRandomness();
     const nonce =
-      request.crypto === 'Ed25519' &&
+      request.crypto === 'ed25519' &&
       generateNonce(
         new Ed25519PublicKey(
           utils.hex2buffer(request.publicKey).toString('base64'),

@@ -1,7 +1,7 @@
-import { CHAIN } from '@/store/slice/config';
+import { NETWORK } from '@/store/slice/config';
 
 export interface RequestGetAddress {
-  chain: CHAIN;
+  network: NETWORK;
   jwt: string;
   path: string;
 }

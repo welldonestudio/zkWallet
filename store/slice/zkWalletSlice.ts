@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import type { AppState } from '../store';
-import { CHAIN } from './config';
+import { NETWORK } from './config';
 
 export interface Wallet {
-  chain: CHAIN;
+  network: NETWORK;
   path: string;
   address: string;
   proof?: string;

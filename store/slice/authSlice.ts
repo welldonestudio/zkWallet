@@ -7,13 +7,15 @@ export interface AuthState {
   authState:
     | {
         provider: PROVIDER;
-        jwt: string;
+        chain: 'sui'; // without network
+        jwt?: string;
         maxEpoch: number;
+        randomness: string;
         key:
           | {
               crypto: CRYPTO;
               encrypt: string;
-              publicKey?: string;
+              publicKey: string;
               privateKey?: string;
             }
           | undefined;
