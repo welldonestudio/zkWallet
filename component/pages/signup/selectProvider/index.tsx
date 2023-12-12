@@ -41,7 +41,12 @@ export const SelectProviderPage = () => {
                 network: DEFAULT_NETWORK,
                 maxEpoch,
                 randomness,
-                key: { publicKey, privateKey, crypto: 'ed25519' },
+                key: {
+                  type: 'local',
+                  crypto: 'ed25519',
+                  publicKey,
+                  privateKey,
+                },
               }),
             );
             window.location.replace(url);
