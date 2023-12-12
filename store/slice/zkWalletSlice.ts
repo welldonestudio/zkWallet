@@ -29,13 +29,13 @@ export const zkWalletSlice = createSlice({
         (item) => item.path !== action.payload.path,
       );
     },
-    reset(state, action) {
+    resetWallet(state, action) {
       state.zkWalletState = action.payload || [];
     },
   },
 });
 
-export const { addWallet, removeWallet } = zkWalletSlice.actions;
+export const { addWallet, removeWallet, resetWallet } = zkWalletSlice.actions;
 export const selectWalletState = (state: AppState) =>
   state.wallet.zkWalletState;
 export default zkWalletSlice.reducer;

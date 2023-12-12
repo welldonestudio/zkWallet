@@ -8,7 +8,7 @@ import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
 import { useEffect, useState } from 'react';
 import { useContextApi } from '@/component/api';
 import { DEFAULT_NETWORK, REDIRECT_AUTH_URL } from '@/store/slice/config';
-import { selectWalletState } from '@/store/slice/zkWalletSlice';
+import { resetWallet, selectWalletState } from '@/store/slice/zkWalletSlice';
 
 export const SignUpCallbackPage = () => {
   const authState = useSelector(selectAuthState);
@@ -42,7 +42,6 @@ export const SignUpCallbackPage = () => {
               key: { publicKey, privateKey, crypto: 'ed25519' },
             }),
           );
-          console.log(url);
           window.location.replace(url);
         }
         break;
@@ -61,7 +60,6 @@ export const SignUpCallbackPage = () => {
             jwt: id_token,
             path: PATH,
           });
-          console.log(2, address);
           const proof = await jwt.sui.getZkProof({
             network: authState.network,
             jwt: id_token,
@@ -70,9 +68,8 @@ export const SignUpCallbackPage = () => {
             randomness: authState.randomness,
             path: PATH,
           });
-          console.log(3, proof);
           dispatch(
-            selectWalletState([
+            resetWallet([
               {
                 path: PATH,
                 address,
