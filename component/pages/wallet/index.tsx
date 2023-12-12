@@ -12,7 +12,7 @@ export const WalletPage = () => {
 
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
-      Wallet
+      {JSON.stringify(walletState)}
     </Layout>
   );
 };
