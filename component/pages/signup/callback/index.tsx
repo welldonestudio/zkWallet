@@ -15,7 +15,11 @@ import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
 import { useEffect, useState } from 'react';
 import { useContextApi } from '@/component/api';
 import { DEFAULT_NETWORK, REDIRECT_AUTH_URL } from '@/store/slice/config';
-import { resetWallet, selectWalletState } from '@/store/slice/zkWalletSlice';
+import {
+  addWallet,
+  resetWallet,
+  selectWalletState,
+} from '@/store/slice/zkWalletSlice';
 
 export const SignUpCallbackPage = () => {
   const authState = useSelector(selectAuthState);
@@ -30,7 +34,7 @@ export const SignUpCallbackPage = () => {
   const handleClear = () => {
     setLoading(true);
     dispatch(setAuthState(undefined));
-    dispatch(resetWallet([]));
+    dispatch(resetWallet());
     router.push('/');
   };
 
@@ -82,14 +86,13 @@ export const SignUpCallbackPage = () => {
             randomness: authState.randomness,
             path: PATH,
           });
+          dispatch(resetWallet());
           dispatch(
-            resetWallet([
-              {
-                path: PATH,
-                address,
-                proof,
-              },
-            ]),
+            addWallet({
+              path: PATH,
+              address,
+              proof,
+            }),
           );
         }
         router.push('/');

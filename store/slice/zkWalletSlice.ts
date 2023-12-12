@@ -9,11 +9,17 @@ export interface Wallet {
 }
 
 export interface zkWalletState {
-  zkWalletState: Wallet[];
+  zkWalletState: {
+    index: number;
+    wallets: Wallet[];
+  };
 }
 
 const initialState: zkWalletState = {
-  zkWalletState: [],
+  zkWalletState: {
+    index: 0,
+    wallets: [],
+  },
 };
 
 export const zkWalletSlice = createSlice({
@@ -21,16 +27,23 @@ export const zkWalletSlice = createSlice({
   initialState,
   reducers: {
     addWallet(state, action) {
-      !state.zkWalletState.find((item) => item.path === action.payload.path) &&
-        state.zkWalletState.push(action.payload);
+      if (
+        !state.zkWalletState.wallets.find(
+          (item) => item.path === action.payload.path,
+        )
+      ) {
+        state.zkWalletState.wallets.push(action.payload);
+        state.zkWalletState.index = state.zkWalletState.index + 1;
+      }
     },
     removeWallet(state, action) {
-      state.zkWalletState = state.zkWalletState.filter(
+      state.zkWalletState.wallets = state.zkWalletState.wallets.filter(
         (item) => item.path !== action.payload.path,
       );
     },
-    resetWallet(state, action) {
-      state.zkWalletState = action.payload || [];
+    resetWallet(state) {
+      state.zkWalletState.wallets = [];
+      state.zkWalletState.index = 0;
     },
   },
 });
