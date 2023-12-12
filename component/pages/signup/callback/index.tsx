@@ -56,7 +56,7 @@ export const SignUpCallbackPage = () => {
       const createWallet = async () => {
         if (walletState.length === 0) {
           try {
-            console.log(1);
+            console.log(1, authState);
             const PATH = 'zkWallet/0'; // temp
             const address = await wallet.getAddress({
               network: authState.network,
