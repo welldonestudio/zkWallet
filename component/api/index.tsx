@@ -1,0 +1,86 @@
+import { createContext, useContext } from 'react';
+import { RequestGetLoginUrl, getLoginURL } from './sui/getLoginURL';
+import { Wallet } from '@/store/slice/zkWalletSlice';
+import { RequestGetZkProof, getZkProof } from './sui/getZkProof';
+import { RequestGetAddress } from './types';
+import { getAddress } from './getAddress';
+import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
+
+export const ApiContext = createContext({
+  jwt: {
+    sui: {
+      getLoginURL: async (
+        request: RequestGetLoginUrl,
+      ): Promise<{ url: string; randomness: string }> => {
+        throw new Error('jwt.sui.getLoginURL is not supported');
+      },
+      getZkProof: async (request: RequestGetZkProof): Promise<string> => {
+        throw new Error('jwt.sui.getZkProof is not supported');
+      },
+    },
+  },
+  wallet: {
+    getAddress: async (request: RequestGetAddress): Promise<string> => {
+      throw new Error('wallet.getAddress is not supported');
+    },
+    signAndSendTx: (request: {
+      unsignedTx: string;
+      jwt: string;
+      wallet: Wallet;
+    }) => {
+      throw new Error('wallet.signTx is not supported');
+    },
+  },
+  utils: {
+    keyPair: {
+      Ed25519: (): { publicKey: string; privateKey: string } => {
+        throw new Error('utils.keyPair.Ed25519 is not supported');
+      },
+    },
+  },
+});
+
+export default function ApiProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <ApiContext.Provider
+      value={{
+        jwt: {
+          sui: {
+            getLoginURL: getLoginURL,
+            getZkProof: getZkProof,
+          },
+        },
+        wallet: {
+          getAddress: getAddress,
+        },
+        utils: {
+          keyPair: {
+            Ed25519: () => {
+              const key = new Ed25519Keypair();
+              return {
+                publicKey: `0x${Buffer.from(
+                  key.getPublicKey().toBase64(),
+                  'base64',
+                ).toString('hex')}`,
+                privateKey: `0x${Buffer.from(
+                  key.export().privateKey,
+                  'base64',
+                ).toString('hex')}`,
+              };
+            },
+          },
+        },
+      }}
+    >
+      {children}
+    </ApiContext.Provider>
+  );
+}
+
+export const useContextApi = () => {
+  return useContext(ApiContext);
+};
