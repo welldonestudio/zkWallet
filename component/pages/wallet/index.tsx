@@ -2,7 +2,6 @@ import Layout from '@/component/layout';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { WalletSelecter } from '../../utils/walletSelecter';
 
 export const WalletPage = () => {
   const walletState = useSelector(selectWalletState);
@@ -12,7 +11,7 @@ export const WalletPage = () => {
   }, []);
 
   return (
-    <Layout breadcrumbs={[]} actions={<WalletSelecter />} initialized>
+    <Layout breadcrumbs={[]} actions={<></>} initialized>
       <></>
     </Layout>
   );
