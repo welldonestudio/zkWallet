@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import HomeIcon from '@mui/icons-material/Home';
 import LoopIcon from '@mui/icons-material/Loop';
@@ -14,6 +15,8 @@ import Link from 'next/link';
 
 import Footer from './footer';
 import NavBar from './navbar';
+
+import { selectAuthState } from '@/store/slice/authSlice';
 
 interface LayoutProps {
   breadcrumbs: {
@@ -31,6 +34,8 @@ export default function Layout({
   actions,
   children,
 }: LayoutProps) {
+  const authState = useSelector(selectAuthState);
+
   return (
     <>
       <NavBar />
@@ -47,7 +52,7 @@ export default function Layout({
                   flexGrow: 1,
                 }}
               >
-                {initialized && (
+                {initialized && authState && (
                   <Breadcrumbs>
                     {breadcrumbs.length ? (
                       <Link href="/" style={{ textDecoration: 'none' }}>
@@ -88,7 +93,7 @@ export default function Layout({
               {initialized && actions}
             </Box>
             {initialized ? (
-              <Box>{children}</Box>
+              <Box minHeight={'100vh'}>{children}</Box>
             ) : (
               <Box
                 sx={{
