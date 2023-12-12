@@ -1,4 +1,11 @@
-import { Box, Button, Card, CardActions, CardHeader } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardHeader,
+  Tooltip,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { decodeJwt } from 'jose';
@@ -20,7 +27,14 @@ export const SignUpCallbackPage = () => {
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleRetry = async () => {
+  const handleClear = () => {
+    setLoading(true);
+    dispatch(setAuthState(undefined));
+    dispatch(resetWallet([]));
+    router.push('/');
+  };
+
+  const handleRestore = async () => {
     const { publicKey, privateKey } = utils.keyPair.ed25519();
     switch (authState.provider) {
       case 'google':
@@ -119,9 +133,20 @@ export const SignUpCallbackPage = () => {
                     width: '100%',
                   }}
                 >
-                  <Button onClick={handleRetry} disabled={loading}>
-                    Retry
-                  </Button>
+                  <Tooltip title="Clear Wallet">
+                    <span>
+                      <Button onClick={handleClear} disabled={loading}>
+                        Clear
+                      </Button>
+                    </span>
+                  </Tooltip>
+                  <Tooltip title="Restore Wallet">
+                    <span>
+                      <Button onClick={handleRestore} disabled={loading}>
+                        Restore
+                      </Button>
+                    </span>
+                  </Tooltip>
                 </Box>
               </CardActions>
             </Card>

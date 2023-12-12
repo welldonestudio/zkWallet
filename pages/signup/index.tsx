@@ -11,7 +11,7 @@ export default function SignUpPage() {
 
   useEffect(() => {
     authState && authState.jwt && router.push('/');
-  }, []);
+  }, [authState]);
 
   return (
     <>
