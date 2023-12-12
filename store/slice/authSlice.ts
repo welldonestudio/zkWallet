@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import type { AppState } from '../store';
-import { CRYPTO, PROVIDER } from './config';
+import { CRYPTO, NETWORK, PROVIDER } from './config';
 
 export interface AuthState {
   authState:
     | {
         provider: PROVIDER;
-        chain: 'sui'; // without network
+        network: NETWORK;
         jwt?: string;
         maxEpoch: number;
         randomness: string;
