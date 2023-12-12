@@ -53,38 +53,33 @@ export const SignUpCallbackPage = () => {
 
   useEffect(() => {
     try {
-      const createWallet = async () => {
+      const createWallet = async (id_token: string) => {
         if (walletState.length === 0) {
-          try {
-            console.log(1, authState);
-            const PATH = 'zkWallet/0'; // temp
-            const address = await wallet.getAddress({
-              network: authState.network,
-              jwt: authState.jwt,
-              path: PATH,
-            });
-            console.log(2, address);
-            const proof = await jwt.sui.getZkProof({
-              network: authState.network,
-              jwt: authState.jwt,
-              publicKey: authState.key.publicKey,
-              maxEpoch: authState.maxEpoch,
-              randomness: authState.randomness,
-              path: PATH,
-            });
-            console.log(3, proof);
-            dispatch(
-              selectWalletState([
-                {
-                  path: PATH,
-                  address,
-                  proof,
-                },
-              ]),
-            );
-          } catch (error) {
-            console.log(error);
-          }
+          const PATH = 'zkWallet/0'; // temp
+          const address = await wallet.getAddress({
+            network: authState.network,
+            jwt: id_token,
+            path: PATH,
+          });
+          console.log(2, address);
+          const proof = await jwt.sui.getZkProof({
+            network: authState.network,
+            jwt: id_token,
+            publicKey: authState.key.publicKey,
+            maxEpoch: authState.maxEpoch,
+            randomness: authState.randomness,
+            path: PATH,
+          });
+          console.log(3, proof);
+          dispatch(
+            selectWalletState([
+              {
+                path: PATH,
+                address,
+                proof,
+              },
+            ]),
+          );
         }
         router.push('/');
       };
@@ -94,10 +89,10 @@ export const SignUpCallbackPage = () => {
       dispatch(
         setAuthState({
           ...authState,
-          jwt: id_token,
+          jwt: id_token as string,
         }),
       );
-      createWallet();
+      createWallet(id_token as string);
     } catch (err) {
       console.log(err);
       setError(true);
