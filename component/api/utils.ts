@@ -7,7 +7,7 @@ export const utils = {
   str2buffer: (str: string): Buffer => {
     return Buffer.from(str, 'utf-8');
   },
-  str2Hash: (str: string): string => {
-    return `0x${Buffer.from(keccak_256(str)).toString('hex')}`;
+  str2Hash: (str: string, bytes: 8 | 16 | 32  = 32): string => {
+    return `0x${Buffer.from(keccak_256(str)).toString('hex').slice(0, bytes * 2)}`;
   },
 };
