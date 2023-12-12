@@ -24,8 +24,6 @@ export default class MyDocument extends Document {
           <meta name="theme-color" content="#131417" />
         </Head>
         <body>
-          {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-          <script src="sleep.js" />
           <Main />
           <NextScript />
         </body>
