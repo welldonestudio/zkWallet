@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react';
 import { useContextApi } from '@/component/api';
 import { DEFAULT_NETWORK, REDIRECT_AUTH_URL } from '@/store/slice/config';
 import {
+  Wallet,
   addWallet,
   resetWallet,
   selectWalletState,
@@ -23,7 +24,7 @@ import {
 
 export const SignUpCallbackPage = () => {
   const authState = useSelector(selectAuthState);
-  const walletState = useSelector(selectWalletState);
+  const walletState: { index: number; wallets: Wallet[]} = useSelector(selectWalletState);
   const dispatch = useDispatch();
   const router = useRouter();
   const { jwt, wallet, utils } = useContextApi();
@@ -71,7 +72,7 @@ export const SignUpCallbackPage = () => {
   useEffect(() => {
     try {
       const createWallet = async (id_token: string) => {
-        if (walletState.length === 0) {
+        if (walletState.wallets.length === 0) {
           const PATH = 'zkWallet/0'; // temp
           const address = await wallet.getAddress({
             network: authState.network,
