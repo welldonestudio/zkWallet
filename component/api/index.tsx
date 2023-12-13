@@ -39,7 +39,7 @@ export const ApiContext = createContext({
     ): Promise<ResponseBalnce[]> => {
       throw new Error('wallet.getBalance is not supported');
     },
-    signAndSendTx: (request: RequestSignAndSend) => {
+    signAndSendTx: (request: RequestSignAndSend): Promise<string> => {
       throw new Error('wallet.signTx is not supported');
     },
   },
