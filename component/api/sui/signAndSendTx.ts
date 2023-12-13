@@ -6,7 +6,18 @@ import { genAddressSeed, getZkLoginSignature } from '@mysten/zklogin';
 import { utils } from '../utils';
 import { decodeJwt } from 'jose';
 import { getProviderUrl } from './getProviderUrl';
-import { RequestSignAndSend } from '../types';
+import { NETWORK } from '@/store/slice/config';
+
+interface RequestSignAndSend {
+  jwt: string;
+  privateKey: string;
+  publicKey: string;
+  network: NETWORK;
+  maxEpoch: string;
+  randomness: string;
+  wallet: Wallet;
+  unsignedTx: string;
+}
 
 export const signAndSendTx = async (
   request: RequestSignAndSend,
