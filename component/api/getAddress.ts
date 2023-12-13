@@ -9,7 +9,10 @@ export const getAddress = async (
     case 'sui:mainnet':
     case 'sui:devnet':
     case 'sui:testnet':
-      return jwtToAddress(request.jwt, BigInt(utils.str2Hash(request.path)));
+      return jwtToAddress(
+        request.jwt,
+        BigInt(utils.str2Hash(request.path, 16)),
+      );
     default:
       break;
   }
