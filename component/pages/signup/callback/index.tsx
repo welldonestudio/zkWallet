@@ -110,7 +110,7 @@ export const SignUpCallbackPage = () => {
           jwt: id_token as string,
         }),
       );
-      // createWallet(id_token as string);
+      createWallet(id_token as string);
     } catch (err) {
       console.log(err);
       setTimeout(() => setError(true), 300);
