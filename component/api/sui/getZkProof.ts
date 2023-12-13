@@ -1,5 +1,7 @@
 import { NETWORK } from '@/store/slice/config';
 import { utils } from '../utils';
+import { getExtendedEphemeralPublicKey } from '@mysten/zklogin';
+import { Ed25519PublicKey } from '@mysten/sui.js/keypairs/ed25519';
 
 export interface RequestGetZkProof {
   network: NETWORK;
@@ -36,9 +38,9 @@ export const getZkProof = async (
         },
         body: JSON.stringify({
           jwt: request.jwt,
-          extendedEphemeralPublicKey: utils
-            .hex2buffer(request.publicKey)
-            .toString('base64'),
+          extendedEphemeralPublicKey: getExtendedEphemeralPublicKey(
+            new Ed25519PublicKey(utils.hex2buffer(request.publicKey)),
+          ),
           maxEpoch: request.maxEpoch,
           jwtRandomness: request.randomness,
           salt: utils
