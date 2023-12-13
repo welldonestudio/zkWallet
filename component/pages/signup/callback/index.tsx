@@ -60,7 +60,7 @@ export const SignUpCallbackPage = () => {
               network: DEFAULT_NETWORK,
               maxEpoch,
               randomness,
-              key: { publicKey, privateKey, crypto: 'ed25519' },
+              key: { publicKey, privateKey, crypto: 'ed25519' } as any, // TODO
             }),
           );
           window.location.replace(url);

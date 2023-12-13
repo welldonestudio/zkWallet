@@ -1,31 +1,20 @@
-import { Wallet } from '@/store/slice/zkWalletSlice';
-import { SuiClient } from '@mysten/sui.js/client';
-import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
-import { TransactionBlock } from '@mysten/sui.js/transactions';
+import { decodeJwt } from 'jose';
+import { RequestTransferToken } from '../types';
 import { genAddressSeed, getZkLoginSignature } from '@mysten/zklogin';
 import { utils } from '../utils';
-import { decodeJwt } from 'jose';
 import { getProviderUrl } from './getProviderUrl';
-import { NETWORK } from '@/store/slice/config';
+import { SuiClient } from '@mysten/sui.js/client';
+import { TransactionBlock } from '@mysten/sui.js/transactions';
+import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
 
-interface RequestSignAndSend {
-  jwt: string;
-  privateKey: string;
-  publicKey: string;
-  network: NETWORK;
-  maxEpoch: string;
-  randomness: string;
-  wallet: Wallet;
-  unsignedTx: string;
-}
-
-export const signAndSendTx = async (
-  request: RequestSignAndSend,
+export const transferToken = async (
+  request: RequestTransferToken,
 ): Promise<string> => {
   try {
-    const decodedJwt = decodeJwt(request.jwt);
+    const decodedJwt = request.auth.jwt && decodeJwt(request.auth.jwt);
 
     const addressSeed =
+      decodedJwt &&
       decodedJwt.sub &&
       decodedJwt.aud &&
       genAddressSeed(
@@ -36,20 +25,23 @@ export const signAndSendTx = async (
       ).toString();
 
     if (!addressSeed) {
-      throw new Error(
-        `jwt decode error (${decodedJwt.sub}, ${decodedJwt.aud})`,
-      );
+      throw new Error(`jwt decode error (${decodedJwt?.sub})`);
     }
 
-    let url = getProviderUrl(request.network);
+    let url = getProviderUrl(request.auth.network);
     const client = new SuiClient({ url });
-    const txb = TransactionBlock.from(utils.hex2buffer(request.unsignedTx));
+    const txb = new TransactionBlock();
+    
+    const [coin] = txb.splitCoins(txb.gas, [100]);
+    txb.transferObjects([coin], request.token.to);
 
     txb.setSender(request.wallet.address);
     const { bytes, signature: userSignature } = await txb.sign({
       client,
       signer: Ed25519Keypair.fromSecretKey(
-        Buffer.from(request.privateKey.replace('0x', ''), 'hex'),
+        request.auth.key?.privateKey
+          ? Buffer.from(request.auth.key.privateKey?.replace('0x', ''), 'hex') // ??
+          : Buffer.from(''),
       ),
     });
 
@@ -60,7 +52,7 @@ export const signAndSendTx = async (
           ...JSON.parse(request.wallet.proof),
           addressSeed,
         },
-        maxEpoch: request.maxEpoch,
+        maxEpoch: request.auth.maxEpoch,
         userSignature,
       });
 
@@ -74,6 +66,7 @@ export const signAndSendTx = async (
     });
     return txreceipt.digest;
   } catch (error) {
-    throw new Error(`not support provider (${request.network})`);
+    console.log(1, error);
+    throw new Error(`not support provider (${request.auth.network})`);
   }
 };

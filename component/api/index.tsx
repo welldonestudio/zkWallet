@@ -8,14 +8,13 @@ import { RequestGetZkProof, getZkProof } from './sui/getZkProof';
 import {
   RequestGetAddress,
   RequestGetBalance,
-  RequestSignAndSend,
+  RequestTransferToken,
   ResponseBalnce,
 } from './types';
 import { getAddress } from './getAddress';
 import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
 import { getBalance } from './getBalance';
-import { Wallet } from '@/store/slice/zkWalletSlice';
-import { signAndSendTx } from './signAndSendTx';
+import { transferToken } from './transferToken';
 
 export const ApiContext = createContext({
   jwt: {
@@ -39,8 +38,8 @@ export const ApiContext = createContext({
     ): Promise<ResponseBalnce[]> => {
       throw new Error('wallet.getBalance is not supported');
     },
-    signAndSendTx: (request: RequestSignAndSend): Promise<string> => {
-      throw new Error('wallet.signTx is not supported');
+    transferToken: (request: RequestTransferToken): Promise<string> => {
+      throw new Error('wallet.transferToken is not supported');
     },
   },
   utils: {
@@ -69,7 +68,7 @@ export default function ApiProvider({
         wallet: {
           getAddress: getAddress,
           getBalance: getBalance,
-          signAndSendTx: signAndSendTx,
+          transferToken: transferToken,
         },
         utils: {
           keyPair: {

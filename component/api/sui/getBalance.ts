@@ -16,6 +16,7 @@ export const getBalance = async (
     res.forEach((item) =>
       balances.push({
         name: item.coinType,
+        address: item.coinType,
         value: item.totalBalance,
         locked: item.lockedBalance,
       }),

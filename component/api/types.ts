@@ -1,3 +1,4 @@
+import { Auth } from '@/store/slice/authSlice';
 import { NETWORK } from '@/store/slice/config';
 import { Wallet } from '@/store/slice/zkWalletSlice';
 
@@ -13,17 +14,18 @@ export interface RequestGetBalance {
 
 export interface ResponseBalnce {
   name: string;
+  address: string;
   value: string;
   locked: { [key: string]: string };
 }
 
-export interface RequestSignAndSend {
-  jwt: string;
-  privateKey: string;
-  publicKey: string;
-  network: NETWORK;
-  maxEpoch: string;
-  randomness: string;
+export interface RequestTransferToken {
+  password: string;
+  auth: Auth;
   wallet: Wallet;
-  unsignedTx: string;
+  token: {
+    to: string;
+    address: string;
+    amount: string;
+  };
 }

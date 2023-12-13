@@ -46,7 +46,7 @@ export const SelectProviderPage = () => {
                   crypto: 'ed25519',
                   publicKey,
                   privateKey,
-                },
+                } as any, // TODO
               }),
             );
             window.location.replace(url);
