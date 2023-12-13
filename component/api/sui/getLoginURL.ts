@@ -44,7 +44,7 @@ export const getLoginURL = async (
 
     const suiClient = new SuiClient({ url });
     const { epoch } = await suiClient.getLatestSuiSystemState();
-    const maxEpoch = Number(epoch) + 2;
+    const maxEpoch = Number(epoch) + 10;
 
     const randomness = generateRandomness();
     const nonce =
