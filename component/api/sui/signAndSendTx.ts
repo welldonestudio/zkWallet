@@ -5,43 +5,13 @@ import { TransactionBlock } from '@mysten/sui.js/transactions';
 import { genAddressSeed, getZkLoginSignature } from '@mysten/zklogin';
 import { utils } from '../utils';
 import { decodeJwt } from 'jose';
-import { NETWORK } from '@/store/slice/config';
+import { getProviderUrl } from './getProviderUrl';
+import { RequestSignAndSend } from '../types';
 
-export interface RequestSignAndSend {
-  jwt: string;
-  privateKey: string;
-  publicKey: string;
-  network: NETWORK;
-  maxEpoch: string;
-  randomness: string;
-  wallet: Wallet;
-  unsignedTx: string;
-}
-
-export const signAndSendTransaction = async (
+export const signAndSendTx = async (
   request: RequestSignAndSend,
 ): Promise<string> => {
   try {
-    let url = '';
-
-    switch (request.network) {
-      case 'sui:mainnet':
-        url = 'https://fullnode.mainnet.sui.io';
-        break;
-      case 'sui:devnet':
-        url = 'https://fullnode.devnet.sui.io';
-        break;
-      case 'sui:testnet':
-        url = 'https://fullnode.testnet.sui.io';
-        break;
-      default:
-        break;
-    }
-
-    if (!url) {
-      throw new Error('not support network');
-    }
-
     const decodedJwt = decodeJwt(request.jwt);
 
     const addressSeed =
@@ -60,6 +30,7 @@ export const signAndSendTransaction = async (
       );
     }
 
+    let url = getProviderUrl(request.network);
     const client = new SuiClient({ url });
     const txb = TransactionBlock.from(utils.hex2buffer(request.unsignedTx));
 

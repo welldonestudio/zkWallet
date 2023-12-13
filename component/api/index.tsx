@@ -5,9 +5,17 @@ import {
   getLoginURL,
 } from './sui/getLoginURL';
 import { RequestGetZkProof, getZkProof } from './sui/getZkProof';
-import { RequestGetAddress } from './types';
+import {
+  RequestGetAddress,
+  RequestGetBalance,
+  RequestSignAndSend,
+  ResponseBalnce,
+} from './types';
 import { getAddress } from './getAddress';
 import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
+import { getBalance } from './getBalance';
+import { Wallet } from '@/store/slice/zkWalletSlice';
+import { signAndSendTx } from './signAndSendTx';
 
 export const ApiContext = createContext({
   jwt: {
@@ -26,15 +34,14 @@ export const ApiContext = createContext({
     getAddress: async (request: RequestGetAddress): Promise<string> => {
       throw new Error('wallet.getAddress is not supported');
     },
-    /*
-    signAndSendTx: (request: {
-      unsignedTx: string;
-      jwt: string;
-      wallet: Wallet;
-    }) => {
+    getBalance: async (
+      request: RequestGetBalance,
+    ): Promise<ResponseBalnce[]> => {
+      throw new Error('wallet.getBalance is not supported');
+    },
+    signAndSendTx: (request: RequestSignAndSend) => {
       throw new Error('wallet.signTx is not supported');
     },
-    */
   },
   utils: {
     keyPair: {
@@ -61,6 +68,8 @@ export default function ApiProvider({
         },
         wallet: {
           getAddress: getAddress,
+          getBalance: getBalance,
+          signAndSendTx: signAndSendTx,
         },
         utils: {
           keyPair: {
