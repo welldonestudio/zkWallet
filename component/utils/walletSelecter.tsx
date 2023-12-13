@@ -8,7 +8,7 @@ export const WalletSelecter = () => {
 
   return (
     <>
-      {wallets.length > 0 && (
+      {wallets && wallets.length > 0 && (
         <TextField
           select
           size="small"
