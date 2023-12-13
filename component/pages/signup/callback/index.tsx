@@ -29,7 +29,7 @@ export const SignUpCallbackPage = () => {
     useSelector(selectWalletState);
   const dispatch = useDispatch();
   const router = useRouter();
-  const { jwt, wallet, utils } = useContextApi();
+  const { jwt, wallet } = useContextApi();
 
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -42,25 +42,23 @@ export const SignUpCallbackPage = () => {
   };
 
   const handleRestore = async () => {
-    const { publicKey, privateKey } = utils.keyPair.ed25519();
     switch (authState.provider) {
       case 'google':
         {
           setLoading(true);
-          const { url, randomness, maxEpoch } = await jwt.sui.getLoginURL({
-            provider: authState.provider,
-            redirectUrl: REDIRECT_AUTH_URL,
-            network: DEFAULT_NETWORK,
-            crypto: 'ed25519',
-            publicKey,
-          });
+          const { url, randomness, maxEpoch, crypto, privateKey, publicKey } =
+            await jwt.sui.getLoginURL({
+              provider: authState.provider,
+              redirectUrl: REDIRECT_AUTH_URL,
+              network: DEFAULT_NETWORK,
+            });
           dispatch(
             setAuthState({
               provider: authState.provider,
               network: DEFAULT_NETWORK,
               maxEpoch,
               randomness,
-              key: { publicKey, privateKey, crypto: 'ed25519' } as any, // TODO
+              key: { publicKey, privateKey, crypto } as any, // TODO
             }),
           );
           window.location.replace(url);

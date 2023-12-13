@@ -16,25 +16,23 @@ import { DEFAULT_NETWORK, REDIRECT_AUTH_URL } from '@/store/slice/config';
 export const SelectProviderPage = () => {
   const authState = useSelector(selectAuthState);
   const dispatch = useDispatch();
-  const { jwt, utils } = useContextApi();
+  const { jwt } = useContextApi();
 
   const [show, setShow] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleClick = async (provider: string) => {
     if (!authState) {
-      const { publicKey, privateKey } = utils.keyPair.ed25519();
       switch (provider) {
         case 'google':
           {
             setLoading(true);
-            const { url, randomness, maxEpoch } = await jwt.sui.getLoginURL({
-              provider,
-              redirectUrl: REDIRECT_AUTH_URL,
-              network: DEFAULT_NETWORK,
-              crypto: 'ed25519',
-              publicKey,
-            });
+            const { url, randomness, maxEpoch, crypto, privateKey, publicKey } =
+              await jwt.sui.getLoginURL({
+                provider,
+                redirectUrl: REDIRECT_AUTH_URL,
+                network: DEFAULT_NETWORK,
+              });
             dispatch(
               setAuthState({
                 provider,
@@ -43,7 +41,7 @@ export const SelectProviderPage = () => {
                 randomness,
                 key: {
                   type: 'local',
-                  crypto: 'ed25519',
+                  crypto,
                   publicKey,
                   privateKey,
                 } as any, // TODO

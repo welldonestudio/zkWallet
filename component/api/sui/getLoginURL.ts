@@ -1,21 +1,21 @@
-import { NETWORK, CLIENT_ID, CRYPTO, PROVIDER } from '@/store/slice/config';
+import { NETWORK, CLIENT_ID, PROVIDER, CRYPTO } from '@/store/slice/config';
 import { SuiClient } from '@mysten/sui.js/client';
-import { Ed25519PublicKey } from '@mysten/sui.js/keypairs/ed25519';
+import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
 import { generateNonce, generateRandomness } from '@mysten/zklogin';
-import { utils } from '../utils';
 
 export interface RequestGetLoginUrl {
   provider: PROVIDER;
   redirectUrl: string;
   network: NETWORK;
-  crypto: CRYPTO;
-  publicKey: string;
 }
 
 export interface ResponseGetLoginUrl {
   url: string;
   randomness: string;
   maxEpoch: number;
+  crypto: CRYPTO;
+  privateKey: string;
+  publicKey: string;
 }
 
 export const getLoginURL = async (
@@ -46,16 +46,9 @@ export const getLoginURL = async (
     const { epoch } = await suiClient.getLatestSuiSystemState();
     const maxEpoch = Number(epoch) + 10;
 
+    const keyPair = new Ed25519Keypair();
     const randomness = generateRandomness();
-    const nonce =
-      request.crypto === 'ed25519' &&
-      generateNonce(
-        new Ed25519PublicKey(
-          utils.hex2buffer(request.publicKey).toString('base64'),
-        ),
-        maxEpoch,
-        randomness,
-      );
+    const nonce = generateNonce(keyPair.getPublicKey(), maxEpoch, randomness);
 
     if (!nonce) {
       throw new Error('nonce error');
@@ -71,6 +64,15 @@ export const getLoginURL = async (
           }&scope=openid&nonce=${nonce}`,
           randomness,
           maxEpoch,
+          crypto: 'ed25519',
+          publicKey: `0x${Buffer.from(
+            keyPair.getPublicKey().toBase64(),
+            'base64',
+          ).toString('hex')}`,
+          privateKey: `0x${Buffer.from(
+            keyPair.export().privateKey,
+            'base64',
+          ).toString('hex')}`,
         };
       /*
         case 'facebook':

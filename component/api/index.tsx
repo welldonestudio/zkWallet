@@ -12,7 +12,6 @@ import {
   ResponseBalnce,
 } from './types';
 import { getAddress } from './getAddress';
-import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
 import { getBalance } from './getBalance';
 import { transferToken } from './transferToken';
 
@@ -42,13 +41,6 @@ export const ApiContext = createContext({
       throw new Error('wallet.transferToken is not supported');
     },
   },
-  utils: {
-    keyPair: {
-      ed25519: (): { publicKey: string; privateKey: string } => {
-        throw new Error('utils.keyPair.Ed25519 is not supported');
-      },
-    },
-  },
 });
 
 export default function ApiProvider({
@@ -69,23 +61,6 @@ export default function ApiProvider({
           getAddress: getAddress,
           getBalance: getBalance,
           transferToken: transferToken,
-        },
-        utils: {
-          keyPair: {
-            ed25519: () => {
-              const key = new Ed25519Keypair();
-              return {
-                publicKey: `0x${Buffer.from(
-                  key.getPublicKey().toBase64(),
-                  'base64',
-                ).toString('hex')}`,
-                privateKey: `0x${Buffer.from(
-                  key.export().privateKey,
-                  'base64',
-                ).toString('hex')}`,
-              };
-            },
-          },
         },
       }}
     >

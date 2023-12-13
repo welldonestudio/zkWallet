@@ -35,8 +35,8 @@ export const WalletPage = () => {
       token: {
         to: '0x6741c41565eb5efbe0bbdec438f1fab5927d3d989967c81cc1760b6278a63d59',
         address: token.address,
-        amount: '1'
-      }
+        amount: '1',
+      },
     });
     console.log(hash);
   };

@@ -12,4 +12,7 @@ export const utils = {
       .toString('hex')
       .slice(0, bytes * 2)}`;
   },
+  base642Hex: (b64: string): string => {
+    return `0x${Buffer.from(b64, 'base64').toString('hex')}`;
+  },
 };

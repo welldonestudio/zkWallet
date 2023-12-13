@@ -11,6 +11,7 @@ export const transferToken = async (
   request: RequestTransferToken,
 ): Promise<string> => {
   try {
+    console.log(request);
     const decodedJwt = request.auth.jwt && decodeJwt(request.auth.jwt);
 
     const addressSeed =
@@ -31,11 +32,11 @@ export const transferToken = async (
     let url = getProviderUrl(request.auth.network);
     const client = new SuiClient({ url });
     const txb = new TransactionBlock();
-    
+    txb.setSender(request.wallet.address);
+
     const [coin] = txb.splitCoins(txb.gas, [100]);
     txb.transferObjects([coin], request.token.to);
 
-    txb.setSender(request.wallet.address);
     const { bytes, signature: userSignature } = await txb.sign({
       client,
       signer: Ed25519Keypair.fromSecretKey(
