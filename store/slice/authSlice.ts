@@ -3,25 +3,25 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { AppState } from '../store';
 import { CRYPTO, NETWORK, PROVIDER, TYPE } from './config';
 
-export interface AuthState {
-  authState:
+export interface Auth {
+  provider: PROVIDER;
+  network: NETWORK;
+  jwt?: string;
+  maxEpoch: number;
+  randomness: string;
+  key:
     | {
-        provider: PROVIDER;
-        network: NETWORK;
-        jwt?: string;
-        maxEpoch: number;
-        randomness: string;
-        key:
-          | {
-              type: TYPE;
-              crypto: CRYPTO;
-              encrypt: string;
-              publicKey: string;
-              privateKey?: string;
-            }
-          | undefined;
+        type: TYPE;
+        crypto: CRYPTO;
+        encrypt: string;
+        publicKey: string;
+        privateKey?: string;
       }
     | undefined;
+}
+
+interface AuthState {
+  authState: Auth | undefined;
 }
 
 const initialState: AuthState = {
@@ -32,7 +32,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setAuthState(state, action) {
+    setAuthState(state, action: { type: string; payload: Auth | undefined }) {
       state.authState = action.payload;
     },
   },
