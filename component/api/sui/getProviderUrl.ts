@@ -1,4 +1,4 @@
-import { NETWORK } from '@/store/slice/config';
+import type { NETWORK } from '@/store/slice/config';
 
 export const getProviderUrl = (network: NETWORK) => {
   switch (network) {

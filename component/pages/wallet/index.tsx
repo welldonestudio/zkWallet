@@ -1,7 +1,6 @@
-import { useContextApi } from '@/component/api';
-import { ResponseBalnce } from '@/component/api/types';
-import Layout from '@/component/layout';
-import { selectWalletState } from '@/store/slice/zkWalletSlice';
+import { useEffect, useState } from 'react';
+
+import SendIcon from '@mui/icons-material/Send';
 import {
   Card,
   CardContent,
@@ -15,10 +14,16 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import SendIcon from '@mui/icons-material/Send';
+
+import { useContextApi } from '@/component/api';
+import Layout from '@/component/layout';
 import { selectAuthState } from '@/store/slice/authSlice';
+import { selectWalletState } from '@/store/slice/zkWalletSlice';
+
+import type { ResponseBalnce } from '@/component/api/types';
+
+
 
 export const WalletPage = () => {
   const authState = useSelector(selectAuthState);
@@ -48,8 +53,8 @@ export const WalletPage = () => {
       });
       setBalances(temp);
     };
-    update();
-  }, []);
+    walletState.wallets[0] && update();
+  }, [walletState.wallets]);
 
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>

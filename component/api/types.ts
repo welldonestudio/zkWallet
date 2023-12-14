@@ -1,6 +1,6 @@
-import { Auth } from '@/store/slice/authSlice';
-import { NETWORK } from '@/store/slice/config';
-import { Wallet } from '@/store/slice/zkWalletSlice';
+import type { Auth } from '@/store/slice/authSlice';
+import type { NETWORK } from '@/store/slice/config';
+import type { Wallet } from '@/store/slice/zkWalletSlice';
 
 export interface RequestGetAddress {
   network: NETWORK;

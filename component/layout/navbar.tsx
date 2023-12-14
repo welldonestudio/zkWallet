@@ -1,33 +1,24 @@
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
-
 import {
   AppBar,
   Box,
-  Button,
   Container,
-  Divider,
   Stack,
   Toolbar,
   Typography,
   useTheme,
 } from '@mui/material';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
 import { selectAuthState } from '@/store/slice/authSlice';
 
 import packageInfo from '../../package.json';
-import { useContextApi } from '../api';
 import { WalletSelecter } from '../utils/walletSelecter';
 
 export default function NavBar() {
   const theme = useTheme();
   const authState = useSelector(selectAuthState);
-
-  const handleSignOut = async (message: string = '접속을 종료합니다') => {
-    // await auth.tokenDelete(message);
-  };
 
   return (
     <AppBar

@@ -1,6 +1,8 @@
 import { jwtToAddress } from '@mysten/zklogin';
-import { RequestGetAddress } from './types';
+
 import { utils } from './utils';
+
+import type { RequestGetAddress } from './types';
 
 export const getAddress = async (
   request: RequestGetAddress,

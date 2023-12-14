@@ -1,19 +1,23 @@
 import { createContext, useContext } from 'react';
+
+import { getAddress } from './getAddress';
+import { getBalance } from './getBalance';
 import {
-  RequestGetLoginUrl,
-  ResponseGetLoginUrl,
   getLoginURL,
 } from './sui/getLoginURL';
-import { RequestGetZkProof, getZkProof } from './sui/getZkProof';
-import {
+import { getZkProof } from './sui/getZkProof';
+import { transferToken } from './transferToken';
+
+import type {
+  RequestGetLoginUrl,
+  ResponseGetLoginUrl} from './sui/getLoginURL';
+import type { RequestGetZkProof} from './sui/getZkProof';
+import type {
   RequestGetAddress,
   RequestGetBalance,
   RequestTransferToken,
   ResponseBalnce,
 } from './types';
-import { getAddress } from './getAddress';
-import { getBalance } from './getBalance';
-import { transferToken } from './transferToken';
 
 export const ApiContext = createContext({
   jwt: {

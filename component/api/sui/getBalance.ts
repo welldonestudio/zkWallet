@@ -1,6 +1,8 @@
 import { SuiClient } from '@mysten/sui.js/client';
-import { RequestGetBalance, ResponseBalnce } from '../types';
+
 import { getProviderUrl } from './getProviderUrl';
+
+import type { RequestGetBalance, ResponseBalnce } from '../types';
 
 export const getBalance = async (
   request: RequestGetBalance,

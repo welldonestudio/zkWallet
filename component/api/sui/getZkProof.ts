@@ -1,7 +1,10 @@
-import { NETWORK } from '@/store/slice/config';
-import { utils } from '../utils';
-import { getExtendedEphemeralPublicKey } from '@mysten/zklogin';
 import { Ed25519PublicKey } from '@mysten/sui.js/keypairs/ed25519';
+import { getExtendedEphemeralPublicKey } from '@mysten/zklogin';
+
+import { utils } from '../utils';
+
+import type { NETWORK } from '@/store/slice/config';
+
 
 export interface RequestGetZkProof {
   network: NETWORK;

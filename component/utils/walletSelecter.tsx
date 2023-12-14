@@ -1,6 +1,10 @@
-import { Wallet, selectWalletState } from '@/store/slice/zkWalletSlice';
+
 import { MenuItem, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
+
+import { selectWalletState } from '@/store/slice/zkWalletSlice';
+
+import type { Wallet} from '@/store/slice/zkWalletSlice';
 
 export const WalletSelecter = () => {
   const { wallets }: { index: number; wallets: Wallet[] } =

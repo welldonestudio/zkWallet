@@ -1,5 +1,6 @@
-import { RequestGetBalance, ResponseBalnce } from './types';
 import { getBalance as suiBalance } from './sui/getBalance';
+
+import type { RequestGetBalance, ResponseBalnce } from './types';
 
 export const getBalance = async (
   request: RequestGetBalance,

@@ -1,7 +1,11 @@
-import { NETWORK, CLIENT_ID, PROVIDER, CRYPTO } from '@/store/slice/config';
+
 import { SuiClient } from '@mysten/sui.js/client';
 import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
 import { generateNonce, generateRandomness } from '@mysten/zklogin';
+
+import { CLIENT_ID } from '@/store/slice/config';
+
+import type { CRYPTO, NETWORK, PROVIDER } from '@/store/slice/config';
 
 export interface RequestGetLoginUrl {
   provider: PROVIDER;

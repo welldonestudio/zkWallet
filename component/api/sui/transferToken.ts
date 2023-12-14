@@ -1,11 +1,13 @@
-import { decodeJwt } from 'jose';
-import { RequestTransferToken } from '../types';
-import { genAddressSeed, getZkLoginSignature } from '@mysten/zklogin';
-import { utils } from '../utils';
-import { getProviderUrl } from './getProviderUrl';
 import { SuiClient } from '@mysten/sui.js/client';
-import { TransactionBlock } from '@mysten/sui.js/transactions';
 import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
+import { TransactionBlock } from '@mysten/sui.js/transactions';
+import { genAddressSeed, getZkLoginSignature } from '@mysten/zklogin';
+import { decodeJwt } from 'jose';
+
+import { getProviderUrl } from './getProviderUrl';
+import { utils } from '../utils';
+
+import type { RequestTransferToken } from '../types';
 
 export const transferToken = async (
   request: RequestTransferToken,
@@ -19,7 +21,11 @@ export const transferToken = async (
       decodedJwt.sub &&
       decodedJwt.aud &&
       genAddressSeed(
-        BigInt(`0x${utils.str2buffer(request.wallet.path).toString('hex')}`!),
+        BigInt(
+          `0x${utils
+            .hex2buffer(utils.str2Hash(request.wallet.path, 16))
+            .toString('hex')}`,
+        ),
         'sub',
         decodedJwt.sub,
         decodedJwt.aud as string,

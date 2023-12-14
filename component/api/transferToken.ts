@@ -1,5 +1,6 @@
-import { RequestTransferToken } from './types';
 import { transferToken as suiTransferToken } from './sui/transferToken';
+
+import type { RequestTransferToken } from './types';
 
 export const transferToken = async (
   request: RequestTransferToken,
