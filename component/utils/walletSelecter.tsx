@@ -34,12 +34,13 @@ export const WalletSelecter = () => {
   const handleAdd = async () => {
     try {
       setLoading(true);
-      const PATH = `${ZKPATH_PREFIX}:${authState.network}:${0}`;
+      const PATH = `${ZKPATH_PREFIX}:${authState.network}:${index}`;
       const address = await wallet.getAddress({
         network: authState.network,
         jwt: authState.jwt,
         path: PATH,
       });
+      console.log(authState)
       const proof = await jwt.sui.getZkProof({
         network: authState.network,
         jwt: authState.jwt,
