@@ -82,12 +82,14 @@ export const WalletPage = () => {
                         <TableCell>{item.name}</TableCell>
                         <TableCell align="right">{item.value}</TableCell>
                         <TableCell align="right">
-                          <IconButton
-                            size="small"
-                            onClick={() => setOpen(true)}
-                          >
-                            <SendIcon fontSize="small" />
-                          </IconButton>
+                          {item.address === '0x2::sui::SUI' && (
+                            <IconButton
+                              size="small"
+                              onClick={() => setOpen(true)}
+                            >
+                              <SendIcon fontSize="small" />
+                            </IconButton>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}
