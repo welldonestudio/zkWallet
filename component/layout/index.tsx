@@ -16,6 +16,7 @@ import { selectAuthState } from '@/store/slice/authSlice';
 
 import Footer from './footer';
 import NavBar from './navbar';
+import { DEFAULT_NETWORK } from '@/store/slice/config';
 
 interface LayoutProps {
   breadcrumbs: {
@@ -93,9 +94,9 @@ export default function Layout({
             </Box>
             {initialized ? (
               <Box minHeight={'100vh'}>
-                {authState.network !== 'sui:mainnet' && (
+                {DEFAULT_NETWORK !== 'sui:mainnet' && (
                   <Alert severity="warning">
-                    {authState.network === 'sui:devnet'
+                    {DEFAULT_NETWORK === 'sui:devnet'
                       ? 'Sui Devnet'
                       : 'Sui Testnet'}
                   </Alert>
