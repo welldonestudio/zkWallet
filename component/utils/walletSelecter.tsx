@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -8,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
 import { ZKPATH_PREFIX } from '@/store/slice/config';
 import { resetWallet, selectWalletState } from '@/store/slice/zkWalletSlice';
+
+import { useContextApi } from '../api';
 
 import type { Wallet } from '@/store/slice/zkWalletSlice';
 
@@ -23,9 +27,33 @@ export const WalletSelecter = () => {
   }: { index: number; selected: string; wallets: Wallet[] } =
     useSelector(selectWalletState);
 
-  const handleAdd = () => {
-    const PATH = `${ZKPATH_PREFIX}:${authState.network}:${index}`;
-    // TODO
+  const { jwt, wallet } = useContextApi();
+
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleAdd = async () => {
+    try {
+      setLoading(true);
+      const PATH = `${ZKPATH_PREFIX}:${authState.network}:${index}`;
+      const address = await wallet.getAddress({
+        network: authState.network,
+        jwt: authState.jwt,
+        path: PATH,
+      });
+      const proof = await jwt.sui.getZkProof({
+        network: authState.network,
+        jwt: authState.jwt,
+        publicKey: authState.key.publicKey,
+        maxEpoch: authState.maxEpoch,
+        randomness: authState.randomness,
+        path: PATH,
+      });
+      console.log(1111, proof);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -38,6 +66,7 @@ export const WalletSelecter = () => {
             label="Wallet"
             defaultValue={selected}
             sx={{ maxWidth: '200px' }}
+            disabled={loading}
           >
             {wallets.map((item: Wallet, key) => (
               <MenuItem key={key} value={item.address}>
