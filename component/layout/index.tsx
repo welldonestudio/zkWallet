@@ -43,6 +43,15 @@ export default function Layout({
       <main>
         <Container maxWidth="lg" sx={{ padding: 2 }}>
           <Stack spacing={2} marginY={2}>
+            <Box width="100%">
+              {DEFAULT_NETWORK !== 'sui:mainnet' && (
+                <Alert severity="warning">
+                  {DEFAULT_NETWORK === 'sui:devnet'
+                    ? 'Sui Devnet'
+                    : 'Sui Testnet'}
+                </Alert>
+              )}
+            </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
               <Box
                 sx={{
@@ -93,16 +102,7 @@ export default function Layout({
               {initialized && actions}
             </Box>
             {initialized ? (
-              <Box minHeight={'100vh'}>
-                {DEFAULT_NETWORK !== 'sui:mainnet' && (
-                  <Alert severity="warning">
-                    {DEFAULT_NETWORK === 'sui:devnet'
-                      ? 'Sui Devnet'
-                      : 'Sui Testnet'}
-                  </Alert>
-                )}
-                {children}
-              </Box>
+              <Box minHeight={'100vh'}>{children}</Box>
             ) : (
               <Box
                 sx={{
