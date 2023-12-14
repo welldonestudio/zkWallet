@@ -1,3 +1,4 @@
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { IconButton, MenuItem, TextField, Tooltip } from '@mui/material';
@@ -16,6 +17,10 @@ export const WalletSelecter = () => {
   const { wallets }: { index: number; wallets: Wallet[] } =
     useSelector(selectWalletState);
 
+  const handleAdd = () => {
+    //
+  };
+
   return (
     <>
       {wallets && wallets.length > 0 && (
@@ -32,6 +37,10 @@ export const WalletSelecter = () => {
                 {item.address}
               </MenuItem>
             ))}
+            <MenuItem onClick={handleAdd}>
+              <AddCircleOutlineIcon sx={{ marginRight: 1 }} />
+              Add
+            </MenuItem>
           </TextField>
           <Tooltip title="copy address">
             <IconButton
