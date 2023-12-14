@@ -19,10 +19,11 @@ export default function SendTokenModal({
   confirm: (password: string, to: string, amount: string) => void;
 }) {
   const [to, setTo] = useState<string>('');
+  const [amount, setAmount] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const handleConfirm = () => {
-    confirm(password, to, '1');
+    confirm(password, to, amount);
     onClose();
   };
 
@@ -37,6 +38,15 @@ export default function SendTokenModal({
             label="To"
             onChange={(e) => {
               setTo(e.target.value);
+            }}
+          />
+          <TextField
+            fullWidth
+            variant="standard"
+            label="Amount"
+            type="number"
+            onChange={(e) => {
+              setAmount(e.target.value);
             }}
           />
           <TextField
