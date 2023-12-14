@@ -1,7 +1,7 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { IconButton, MenuItem, TextField, Tooltip } from '@mui/material';
+import { Box, IconButton, MenuItem, TextField, Tooltip } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -38,8 +38,10 @@ export const WalletSelecter = () => {
               </MenuItem>
             ))}
             <MenuItem onClick={handleAdd}>
-              <AddCircleOutlineIcon sx={{ marginRight: 1 }} />
-              Add
+              <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                  <AddCircleOutlineIcon sx={{ marginRight: 1 }} />
+                  Add
+              </Box>
             </MenuItem>
           </TextField>
           <Tooltip title="copy address">
