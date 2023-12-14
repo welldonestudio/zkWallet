@@ -5,6 +5,7 @@ import { genAddressSeed, getZkLoginSignature } from '@mysten/zklogin';
 import { hash } from 'argon2-browser';
 import { decodeJwt } from 'jose';
 import { JWE, JWK, util } from 'node-jose';
+import { enqueueSnackbar } from 'notistack';
 
 import { getProviderUrl } from './getProviderUrl';
 import { utils } from '../utils';
@@ -15,7 +16,6 @@ export const transferToken = async (
   request: RequestTransferToken,
 ): Promise<string> => {
   try {
-    console.log(request);
     const decodedJwt = request.auth.jwt && decodeJwt(request.auth.jwt);
 
     const addressSeed =
@@ -34,6 +34,9 @@ export const transferToken = async (
       ).toString();
 
     if (!addressSeed) {
+      enqueueSnackbar('jwt decode error', {
+        variant: 'error',
+      });  
       throw new Error(`jwt decode error (${decodedJwt?.sub})`);
     }
 
@@ -77,6 +80,9 @@ export const transferToken = async (
       });
 
     if (!zkLoginSignature) {
+      enqueueSnackbar('zkLoginSignature error', {
+        variant: 'error',
+      });  
       throw new Error(`zkLoginSignature error (${request.wallet.proof})`);
     }
 
@@ -84,9 +90,14 @@ export const transferToken = async (
       transactionBlock: bytes,
       signature: zkLoginSignature,
     });
+    enqueueSnackbar(`success: ${txreceipt.digest}`, {
+      variant: 'success',
+    });
     return txreceipt.digest;
   } catch (error) {
-    console.log(1, error);
+    enqueueSnackbar(`${error}`, {
+      variant: 'error',
+    });
     throw new Error(`not support provider (${request.auth.network})`);
   }
 };

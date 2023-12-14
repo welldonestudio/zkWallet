@@ -1,4 +1,5 @@
-import { MenuItem, TextField } from '@mui/material';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { IconButton, MenuItem, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
@@ -12,19 +13,30 @@ export const WalletSelecter = () => {
   return (
     <>
       {wallets && wallets.length > 0 && (
-        <TextField
-          select
-          size="small"
-          label="Wallet"
-          defaultValue={`${wallets[0].network}:${wallets[0].address}`}
-          sx={{ maxWidth: '200px' }}
-        >
-          {wallets.map((item: Wallet, key) => (
-            <MenuItem key={key} value={`${item.network}:${item.address}`}>
-              {item.address}
-            </MenuItem>
-          ))}
-        </TextField>
+        <>
+          <TextField
+            select
+            size="small"
+            label="Wallet"
+            defaultValue={`${wallets[0].network}:${wallets[0].address}`}
+            sx={{ maxWidth: '200px' }}
+          >
+            {wallets.map((item: Wallet, key) => (
+              <MenuItem key={key} value={`${item.network}:${item.address}`}>
+                {item.address}
+              </MenuItem>
+            ))}
+          </TextField>
+          <IconButton
+            sx={{ marginLeft: 1 }}
+            size="small"
+            onClick={() => {
+              navigator.clipboard.writeText(wallets[0].address);
+            }}
+          >
+            <ContentCopyIcon fontSize="small" />
+          </IconButton>
+        </>
       )}
     </>
   );
