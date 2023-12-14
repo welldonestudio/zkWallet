@@ -22,8 +22,6 @@ export default class MyDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
           <meta name="theme-color" content="#131417" />
-          {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-          <script src="node_modules/argon2-browser/lib/argon2.js"></script>
         </Head>
         <body>
           <Main />
