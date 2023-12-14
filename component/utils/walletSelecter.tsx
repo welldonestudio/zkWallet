@@ -6,6 +6,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   Box,
+  Button,
   IconButton,
   Menu,
   MenuItem,
@@ -85,6 +86,19 @@ export const WalletSelecter = () => {
             defaultValue={selected}
             sx={{ maxWidth: '200px' }}
             disabled={authState.network === 'sui:devnet' || loading}
+            InputProps={{
+              endAdornment: (
+                <IconButton
+                  sx={{ marginX: 1 }}
+                  size="small"
+                  onClick={() => {
+                    navigator.clipboard.writeText(selected);
+                  }}
+                >
+                  <ContentCopyIcon fontSize="small" />
+                </IconButton>
+              ),
+            }}
           >
             {wallets.map((item: Wallet, key) => (
               <MenuItem key={key} value={item.address}>
@@ -105,20 +119,21 @@ export const WalletSelecter = () => {
             </MenuItem>
           </TextField>
           <Tooltip title="Copy Address">
-            <IconButton
-              sx={{ marginRight: 1 }}
+            <Button
+              sx={{ marginX: 1 }}
               size="small"
+              variant="outlined"
               onClick={() => {
                 navigator.clipboard.writeText(selected);
               }}
             >
               <ContentCopyIcon fontSize="small" />
-            </IconButton>
+            </Button>
           </Tooltip>
           <Tooltip title="Sign Out">
-            <IconButton size="small" onClick={handleClick}>
+            <Button size="small" variant="outlined" onClick={handleClick}>
               <MenuIcon fontSize="small" />
-            </IconButton>
+            </Button>
           </Tooltip>
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
             <MenuItem
