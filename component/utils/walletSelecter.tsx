@@ -3,7 +3,15 @@ import { useState } from 'react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Box, IconButton, MenuItem, TextField, Tooltip } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import {
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  TextField,
+  Tooltip,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -30,6 +38,16 @@ export const WalletSelecter = () => {
   const { jwt, wallet } = useContextApi();
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = useState<undefined | HTMLElement>(undefined);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(undefined);
+  };
 
   const handleAdd = async () => {
     try {
@@ -86,9 +104,9 @@ export const WalletSelecter = () => {
               </Box>
             </MenuItem>
           </TextField>
-          <Tooltip title="copy address">
+          <Tooltip title="Copy Address">
             <IconButton
-              sx={{ marginLeft: 1 }}
+              sx={{ marginRight: 1 }}
               size="small"
               onClick={() => {
                 navigator.clipboard.writeText(selected);
@@ -97,19 +115,31 @@ export const WalletSelecter = () => {
               <ContentCopyIcon fontSize="small" />
             </IconButton>
           </Tooltip>
-          <Tooltip title="logout">
-            <IconButton
-              sx={{ marginLeft: 1 }}
-              size="small"
+          <Tooltip title="Sign Out">
+            <IconButton size="small" onClick={handleClick}>
+              <MenuIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+            <MenuItem
               onClick={() => {
+                //
+              }}
+            >
+              Refrash zkProof
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
                 dispatch(setAuthState(undefined));
                 dispatch(resetWallet());
                 router.push('/signup');
               }}
             >
-              <LogoutIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
+              <LogoutIcon fontSize="small" sx={{ marginRight: 1 }} />
+              Sign Out
+            </MenuItem>
+          </Menu>
         </>
       )}
     </>
