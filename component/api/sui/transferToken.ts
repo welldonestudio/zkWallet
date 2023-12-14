@@ -36,7 +36,7 @@ export const transferToken = async (
     if (!addressSeed) {
       enqueueSnackbar('jwt decode error', {
         variant: 'error',
-      });  
+      });
       throw new Error(`jwt decode error (${decodedJwt?.sub})`);
     }
 
@@ -82,7 +82,7 @@ export const transferToken = async (
     if (!zkLoginSignature) {
       enqueueSnackbar('zkLoginSignature error', {
         variant: 'error',
-      });  
+      });
       throw new Error(`zkLoginSignature error (${request.wallet.proof})`);
     }
 
