@@ -4,7 +4,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
-import RefreshIcon from '@mui/icons-material/Refresh';
+import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import {
   Box,
   IconButton,
@@ -90,7 +90,6 @@ export const WalletSelecter = () => {
               startAdornment: (
                 <Tooltip title="Copy Address">
                   <IconButton
-                    sx={{ marginX: 1 }}
                     size="small"
                     onClick={() => {
                       navigator.clipboard.writeText(selected);
@@ -120,7 +119,7 @@ export const WalletSelecter = () => {
               </Box>
             </MenuItem>
           </TextField>
-          <IconButton size="small" onClick={handleClick}>
+          <IconButton size="small" onClick={handleClick} sx={{ marginLeft: 1 }}>
             <MenuIcon fontSize="small" />
           </IconButton>
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
@@ -129,8 +128,8 @@ export const WalletSelecter = () => {
                 //
               }}
             >
-              <RefreshIcon fontSize="small" sx={{ marginRight: 1 }} />
-              Refrash zkProof
+              <MoreTimeIcon fontSize="small" sx={{ marginRight: 1 }} />
+              Refrash
             </MenuItem>
             <MenuItem
               onClick={() => {
