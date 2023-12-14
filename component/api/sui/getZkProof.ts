@@ -51,6 +51,11 @@ export const getZkProof = async (
           keyClaimName: 'sub',
         }),
       });
+
+      if (!res.ok) {
+        throw new Error('get zk proof error');
+      }
+
       const json = await res.json();
       return JSON.stringify(json);
     }
