@@ -91,6 +91,7 @@ export const WalletSelecter = () => {
                 <Tooltip title="Copy Address">
                   <IconButton
                     size="small"
+                    sx={{ marginRight: 1 }}
                     onClick={() => {
                       navigator.clipboard.writeText(selected);
                     }}
