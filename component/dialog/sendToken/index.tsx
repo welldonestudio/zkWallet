@@ -35,6 +35,7 @@ export default function SendTokenModal({
           <TextField
             fullWidth
             variant="standard"
+            autoComplete="off"
             label="To"
             onChange={(e) => {
               setTo(e.target.value);
@@ -43,6 +44,7 @@ export default function SendTokenModal({
           <TextField
             fullWidth
             variant="standard"
+            autoComplete="off"
             label="Amount"
             type="number"
             onChange={(e) => {
