@@ -34,13 +34,13 @@ export const WalletSelecter = () => {
   const handleAdd = async () => {
     try {
       setLoading(true);
+      /*
       const PATH = `${ZKPATH_PREFIX}:${authState.network}:${index}`;
       const address = await wallet.getAddress({
         network: authState.network,
         jwt: authState.jwt,
         path: PATH,
       });
-      console.log(authState)
       const proof = await jwt.sui.getZkProof({
         network: authState.network,
         jwt: authState.jwt,
@@ -49,7 +49,7 @@ export const WalletSelecter = () => {
         randomness: authState.randomness,
         path: PATH,
       });
-      console.log(1111, proof);
+      */
     } catch (error) {
       console.log(error);
     } finally {
@@ -67,7 +67,7 @@ export const WalletSelecter = () => {
             label="Wallet"
             defaultValue={selected}
             sx={{ maxWidth: '200px' }}
-            disabled={loading}
+            disabled
           >
             {wallets.map((item: Wallet, key) => (
               <MenuItem key={key} value={item.address}>
