@@ -52,11 +52,11 @@ export const getZkProof = async (
         }),
       });
 
-      if (!res.ok) {
-        throw new Error('get zk proof error');
-      }
-
       const json = await res.json();
+
+      if (!res.ok) {
+        throw new Error(`${json.message}`);
+      }
       return JSON.stringify(json);
     }
     throw new Error('not support network');
