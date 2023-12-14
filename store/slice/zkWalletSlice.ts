@@ -63,6 +63,7 @@ export const zkWalletSlice = createSlice({
     },
     resetWallet(state) {
       state.zkWalletState.wallets = [];
+      state.zkWalletState.selected = '';
       state.zkWalletState.index = 0;
     },
   },
