@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
-import { ZKPATH_PREFIX } from '@/store/slice/config';
+import { REDIRECT_AUTH_URL, ZKPATH_PREFIX } from '@/store/slice/config';
 import { resetWallet, selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import { useContextApi } from '../api';
@@ -75,6 +75,33 @@ export const WalletSelecter = () => {
     }
   };
 
+  const handleRefresh = async () => {
+    switch (authState.provider) {
+      case 'google':
+        {
+          const { url, maxEpoch } = await jwt.sui.getOAuthURL({
+            provider: authState.provider,
+            redirectUrl: REDIRECT_AUTH_URL,
+            network: authState.network,
+            publicKey: authState.key.publicKey,
+            randomness: authState.randomness,
+          });
+
+          dispatch(
+            setAuthState({
+              ...authState,
+              maxEpoch,
+              jwt: undefined,
+            }),
+          );
+          window.location.replace(url);
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <>
       {!!selected && (
@@ -124,11 +151,7 @@ export const WalletSelecter = () => {
             <MenuIcon fontSize="small" />
           </IconButton>
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-            <MenuItem
-              onClick={() => {
-                //
-              }}
-            >
+            <MenuItem onClick={handleRefresh}>
               <MoreTimeIcon fontSize="small" sx={{ marginRight: 1 }} />
               Refrash
             </MenuItem>
