@@ -16,5 +16,5 @@ export const CLIENT_ID: { [key: string]: string } = {
 
 export const ZKPATH_PREFIX = 'zkpath';
 
-export const DEFAULT_NETWORK: NETWORK = 'sui:devnet';
+export const DEFAULT_NETWORK: NETWORK = 'sui:mainnet';
 export const REDIRECT_AUTH_URL = 'https://zkwallet.welldonestudio.io/signup';
