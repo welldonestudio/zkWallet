@@ -4,9 +4,9 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import {
   Box,
-  Button,
   IconButton,
   Menu,
   MenuItem,
@@ -87,16 +87,18 @@ export const WalletSelecter = () => {
             sx={{ maxWidth: '200px' }}
             disabled={authState.network === 'sui:devnet' || loading}
             InputProps={{
-              endAdornment: (
-                <IconButton
-                  sx={{ marginX: 1 }}
-                  size="small"
-                  onClick={() => {
-                    navigator.clipboard.writeText(selected);
-                  }}
-                >
-                  <ContentCopyIcon fontSize="small" />
-                </IconButton>
+              startAdornment: (
+                <Tooltip title="Copy Address">
+                  <IconButton
+                    sx={{ marginX: 1 }}
+                    size="small"
+                    onClick={() => {
+                      navigator.clipboard.writeText(selected);
+                    }}
+                  >
+                    <ContentCopyIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
               ),
             }}
           >
@@ -118,29 +120,16 @@ export const WalletSelecter = () => {
               </Box>
             </MenuItem>
           </TextField>
-          <Tooltip title="Copy Address">
-            <Button
-              sx={{ marginX: 1 }}
-              size="small"
-              variant="outlined"
-              onClick={() => {
-                navigator.clipboard.writeText(selected);
-              }}
-            >
-              <ContentCopyIcon fontSize="small" />
-            </Button>
-          </Tooltip>
-          <Tooltip title="Sign Out">
-            <Button size="small" variant="outlined" onClick={handleClick}>
-              <MenuIcon fontSize="small" />
-            </Button>
-          </Tooltip>
+          <IconButton size="small" onClick={handleClick}>
+            <MenuIcon fontSize="small" />
+          </IconButton>
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
             <MenuItem
               onClick={() => {
                 //
               }}
             >
+              <RefreshIcon fontSize="small" sx={{ marginRight: 1 }} />
               Refrash zkProof
             </MenuItem>
             <MenuItem
