@@ -66,7 +66,7 @@ export const WalletSelecter = () => {
             label="Wallet"
             defaultValue={selected}
             sx={{ maxWidth: '200px' }}
-            disabled={loading}
+            disabled={authState.network === 'sui:devnet' || loading}
           >
             {wallets.map((item: Wallet, key) => (
               <MenuItem key={key} value={item.address}>
@@ -91,7 +91,7 @@ export const WalletSelecter = () => {
               sx={{ marginLeft: 1 }}
               size="small"
               onClick={() => {
-                navigator.clipboard.writeText(wallets[0].address);
+                navigator.clipboard.writeText(selected);
               }}
             >
               <ContentCopyIcon fontSize="small" />
@@ -104,7 +104,7 @@ export const WalletSelecter = () => {
               onClick={() => {
                 dispatch(setAuthState(undefined));
                 dispatch(resetWallet());
-                router.push('/');
+                router.push('/signup');
               }}
             >
               <LogoutIcon fontSize="small" />
