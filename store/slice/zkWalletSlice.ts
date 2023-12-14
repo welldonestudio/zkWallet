@@ -1,10 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { NETWORK } from './config';
 import type { AppState } from '../store';
 
 export interface Wallet {
-  network: NETWORK;
   path: string;
   address: string;
   proof?: string;
@@ -13,6 +11,7 @@ export interface Wallet {
 export interface zkWalletState {
   zkWalletState: {
     index: number;
+    selected: string;
     wallets: Wallet[];
   };
 }
@@ -20,6 +19,7 @@ export interface zkWalletState {
 const initialState: zkWalletState = {
   zkWalletState: {
     index: 0,
+    selected: '',
     wallets: [],
   },
 };
@@ -33,12 +33,23 @@ export const zkWalletSlice = createSlice({
         !state.zkWalletState.wallets.find(
           (item) =>
             item.path === action.payload.path &&
-            item.network === action.payload.network &&
             item.address === action.payload.address,
         )
       ) {
         state.zkWalletState.wallets.push(action.payload);
         state.zkWalletState.index = state.zkWalletState.index + 1;
+        state.zkWalletState.selected = action.payload.address;
+      }
+    },
+    selectWallet(state, action: { type: string; payload: Wallet }) {
+      if (
+        !!state.zkWalletState.wallets.find(
+          (item) =>
+            item.path === action.payload.path &&
+            item.address === action.payload.address,
+        )
+      ) {
+        state.zkWalletState.selected = action.payload.address;
       }
     },
     removeWallet(state, action: { type: string; payload: Wallet }) {
@@ -46,7 +57,6 @@ export const zkWalletSlice = createSlice({
         (item) =>
           !(
             item.path === action.payload.path &&
-            item.network === action.payload.network &&
             item.address === action.payload.address
           ),
       );

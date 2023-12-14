@@ -14,5 +14,7 @@ export const CLIENT_ID: { [key: string]: string } = {
     '603276468327-avmo3q7bt8kgvi1ru4k4p0anuobbd5p4.apps.googleusercontent.com',
 };
 
+export const ZKPATH_PREFIX = 'zkpath';
+
 export const DEFAULT_NETWORK: NETWORK = 'sui:devnet';
 export const REDIRECT_AUTH_URL = 'https://zkwallet.welldonestudio.io/signup';

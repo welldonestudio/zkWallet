@@ -53,7 +53,8 @@ export const WalletPage = () => {
   useEffect(() => {
     const update = async () => {
       const temp = await wallet.getBalance({
-        wallet: walletState.wallets[0],
+        auth: authState,
+        address: walletState.selected,
       });
       setBalances(temp);
     };

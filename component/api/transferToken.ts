@@ -5,7 +5,7 @@ import type { RequestTransferToken } from './types';
 export const transferToken = async (
   request: RequestTransferToken,
 ): Promise<string> => {
-  switch (request.wallet.network) {
+  switch (request.auth.network) {
     case 'sui:mainnet':
     case 'sui:devnet':
     case 'sui:testnet':

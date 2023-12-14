@@ -8,11 +8,11 @@ export const getBalance = async (
   request: RequestGetBalance,
 ): Promise<ResponseBalnce[]> => {
   try {
-    let url = getProviderUrl(request.wallet.network);
+    let url = getProviderUrl(request.auth.network);
     const client = new SuiClient({ url });
 
     const res = await client.getAllBalances({
-      owner: request.wallet.address,
+      owner: request.address,
     });
     const balances: ResponseBalnce[] = [];
     res.forEach((item) =>

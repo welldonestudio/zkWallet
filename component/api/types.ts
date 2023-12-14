@@ -9,7 +9,8 @@ export interface RequestGetAddress {
 }
 
 export interface RequestGetBalance {
-  wallet: Wallet;
+  auth: Auth;
+  address: string;
 }
 
 export interface ResponseBalnce {

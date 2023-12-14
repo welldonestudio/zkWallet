@@ -5,7 +5,8 @@ import { Box, IconButton, MenuItem, TextField, Tooltip } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setAuthState } from '@/store/slice/authSlice';
+import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
+import { ZKPATH_PREFIX } from '@/store/slice/config';
 import { resetWallet, selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import type { Wallet } from '@/store/slice/zkWalletSlice';
@@ -14,33 +15,45 @@ export const WalletSelecter = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { wallets }: { index: number; wallets: Wallet[] } =
+  const authState = useSelector(selectAuthState);
+  const {
+    index,
+    selected,
+    wallets,
+  }: { index: number; selected: string; wallets: Wallet[] } =
     useSelector(selectWalletState);
 
   const handleAdd = () => {
-    //
+    const PATH = `${ZKPATH_PREFIX}:${authState.network}:${index}`;
+    // TODO
   };
 
   return (
     <>
-      {wallets && wallets.length > 0 && (
+      {!!selected && (
         <>
           <TextField
             select
             size="small"
             label="Wallet"
-            defaultValue={`${wallets[0].network}:${wallets[0].address}`}
+            defaultValue={selected}
             sx={{ maxWidth: '200px' }}
           >
             {wallets.map((item: Wallet, key) => (
-              <MenuItem key={key} value={`${item.network}:${item.address}`}>
+              <MenuItem key={key} value={item.address}>
                 {item.address}
               </MenuItem>
             ))}
             <MenuItem onClick={handleAdd}>
-              <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                  <AddCircleOutlineIcon sx={{ marginRight: 1 }} />
-                  Add
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  width: '100%',
+                }}
+              >
+                <AddCircleOutlineIcon sx={{ marginRight: 1 }} />
+                Add
               </Box>
             </MenuItem>
           </TextField>
