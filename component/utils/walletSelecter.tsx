@@ -34,7 +34,7 @@ export const WalletSelecter = () => {
   const handleAdd = async () => {
     try {
       setLoading(true);
-      /*
+
       const PATH = `${ZKPATH_PREFIX}:${authState.network}:${index}`;
       const address = await wallet.getAddress({
         network: authState.network,
@@ -49,7 +49,6 @@ export const WalletSelecter = () => {
         randomness: authState.randomness,
         path: PATH,
       });
-      */
     } catch (error) {
       console.log(error);
     } finally {
@@ -67,7 +66,7 @@ export const WalletSelecter = () => {
             label="Wallet"
             defaultValue={selected}
             sx={{ maxWidth: '200px' }}
-            disabled
+            disabled={loading}
           >
             {wallets.map((item: Wallet, key) => (
               <MenuItem key={key} value={item.address}>
