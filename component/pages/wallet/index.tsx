@@ -37,7 +37,7 @@ export const WalletPage = () => {
     to: string,
     amount: string,
   ) => {
-    const hash = await wallet.transferToken({
+    await wallet.transferToken({
       auth: authState,
       wallet: walletState.wallets[0],
       password,
@@ -47,7 +47,6 @@ export const WalletPage = () => {
         amount,
       },
     });
-    console.log(hash);
   };
 
   useEffect(() => {
