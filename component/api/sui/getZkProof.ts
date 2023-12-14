@@ -5,7 +5,6 @@ import { utils } from '../utils';
 
 import type { NETWORK } from '@/store/slice/config';
 
-
 export interface RequestGetZkProof {
   network: NETWORK;
   jwt: string;

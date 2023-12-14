@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import type { NETWORK } from './config';
 import type { AppState } from '../store';
-import { NETWORK } from './config';
 
 export interface Wallet {
   network: NETWORK;

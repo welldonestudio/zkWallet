@@ -2,7 +2,9 @@ import { SuiClient } from '@mysten/sui.js/client';
 import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
 import { TransactionBlock } from '@mysten/sui.js/transactions';
 import { genAddressSeed, getZkLoginSignature } from '@mysten/zklogin';
+import { hash } from 'argon2-browser';
 import { decodeJwt } from 'jose';
+import { JWE, JWK, util } from 'node-jose';
 
 import { getProviderUrl } from './getProviderUrl';
 import { utils } from '../utils';
@@ -43,12 +45,23 @@ export const transferToken = async (
     const [coin] = txb.splitCoins(txb.gas, [100]);
     txb.transferObjects([coin], request.token.to);
 
+    const { hashHex } = await hash({
+      pass: request.password,
+      salt: 'zkWallet',
+    });
+    const key = await JWK.asKey({
+      kty: 'oct',
+      k: util.base64url.encode(hashHex),
+    });
+
+    const privateKey = await JWE.createDecrypt(key).decrypt(
+      request.auth.key.encrypt,
+    );
+
     const { bytes, signature: userSignature } = await txb.sign({
       client,
       signer: Ed25519Keypair.fromSecretKey(
-        request.auth.key?.privateKey
-          ? Buffer.from(request.auth.key.privateKey?.replace('0x', ''), 'hex') // ??
-          : Buffer.from(''),
+        Buffer.from(privateKey.plaintext.toString().replace('0x', ''), 'hex'),
       ),
     });
 

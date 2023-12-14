@@ -1,4 +1,3 @@
-
 import { SuiClient } from '@mysten/sui.js/client';
 import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
 import { generateNonce, generateRandomness } from '@mysten/zklogin';

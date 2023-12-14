@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import {
   Box,
   Button,
@@ -6,12 +8,17 @@ import {
   CardHeader,
   Fade,
 } from '@mui/material';
+import { hash } from 'argon2-browser';
+import { JWE, JWK, util } from 'node-jose';
 import { useDispatch, useSelector } from 'react-redux';
-import Layout from '@/component/layout';
+
 import { useContextApi } from '@/component/api';
+import NewPasswordModal from '@/component/dialog/newPassword';
+import Layout from '@/component/layout';
 import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
-import { useEffect, useState } from 'react';
 import { DEFAULT_NETWORK, REDIRECT_AUTH_URL } from '@/store/slice/config';
+
+import type { PROVIDER } from '@/store/slice/config';
 
 export const SelectProviderPage = () => {
   const authState = useSelector(selectAuthState);
@@ -21,18 +28,42 @@ export const SelectProviderPage = () => {
   const [show, setShow] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleClick = async (provider: string) => {
+  const [open, setOpen] = useState<boolean>(false);
+  const [provider, setProvider] = useState<PROVIDER | undefined>(undefined);
+
+  const handleClick = async (select: PROVIDER) => {
     if (!authState) {
+      setProvider(select);
+      setOpen(true);
+    }
+  };
+
+  const handleConfirm = async (password: string) => {
+    if (!authState) {
+      setLoading(true);
+      const { hashHex } = await hash({ pass: password, salt: 'zkWallet' });
+      const key = await JWK.asKey({
+        kty: 'oct',
+        k: util.base64url.encode(hashHex),
+      });
+
       switch (provider) {
         case 'google':
           {
-            setLoading(true);
             const { url, randomness, maxEpoch, crypto, privateKey, publicKey } =
               await jwt.sui.getLoginURL({
                 provider,
                 redirectUrl: REDIRECT_AUTH_URL,
                 network: DEFAULT_NETWORK,
               });
+
+            const encrypt = await JWE.createEncrypt(
+              { format: 'compact', contentAlg: 'A256GCM' },
+              key,
+            )
+              .update(privateKey)
+              .final();
+
             dispatch(
               setAuthState({
                 provider,
@@ -43,8 +74,8 @@ export const SelectProviderPage = () => {
                   type: 'local',
                   crypto,
                   publicKey,
-                  privateKey,
-                } as any, // TODO
+                  encrypt,
+                },
               }),
             );
             window.location.replace(url);
@@ -111,6 +142,11 @@ export const SelectProviderPage = () => {
           </Fade>
         </Box>
       </Box>
+      <NewPasswordModal
+        open={open}
+        onClose={() => setOpen(false)}
+        confirm={handleConfirm}
+      />
     </Layout>
   );
 };

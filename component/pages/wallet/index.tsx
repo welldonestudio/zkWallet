@@ -17,30 +17,34 @@ import {
 import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
+import SendTokenModal from '@/component/dialog/sendToken';
 import Layout from '@/component/layout';
 import { selectAuthState } from '@/store/slice/authSlice';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import type { ResponseBalnce } from '@/component/api/types';
 
-
-
 export const WalletPage = () => {
   const authState = useSelector(selectAuthState);
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
 
+  const [open, setOpen] = useState<boolean>(false);
   const [balances, setBalances] = useState<ResponseBalnce[]>([]);
 
-  const onClickSend = async (token: ResponseBalnce) => {
+  const handleConfirm = async (
+    password: string,
+    to: string,
+    amount: string,
+  ) => {
     const hash = await wallet.transferToken({
       auth: authState,
       wallet: walletState.wallets[0],
-      password: '',
+      password,
       token: {
-        to: '0x6741c41565eb5efbe0bbdec438f1fab5927d3d989967c81cc1760b6278a63d59',
-        address: token.address,
-        amount: '1',
+        to,
+        address: '0x2::sui::SUI',
+        amount,
       },
     });
     console.log(hash);
@@ -80,7 +84,7 @@ export const WalletPage = () => {
                         <TableCell align="right">
                           <IconButton
                             size="small"
-                            onClick={() => onClickSend(item)}
+                            onClick={() => setOpen(true)}
                           >
                             <SendIcon fontSize="small" />
                           </IconButton>
@@ -94,6 +98,11 @@ export const WalletPage = () => {
           </Card>
         </Grid>
       </Grid>
+      <SendTokenModal
+        open={open}
+        onClose={() => setOpen(false)}
+        confirm={handleConfirm}
+      />
     </Layout>
   );
 };

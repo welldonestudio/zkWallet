@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import type { CRYPTO, NETWORK, PROVIDER, TYPE } from './config';
 import type { AppState } from '../store';
-import { CRYPTO, NETWORK, PROVIDER, TYPE } from './config';
 
 export interface Auth {
   provider: PROVIDER;
@@ -9,15 +9,12 @@ export interface Auth {
   jwt?: string;
   maxEpoch: number;
   randomness: string;
-  key:
-    | {
-        type: TYPE;
-        crypto: CRYPTO;
-        encrypt: string;
-        publicKey: string;
-        privateKey?: string;
-      }
-    | undefined;
+  key: {
+    type: TYPE;
+    crypto: CRYPTO;
+    encrypt: string;
+    publicKey: string;
+  };
 }
 
 interface AuthState {

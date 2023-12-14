@@ -1,27 +1,30 @@
+import { useEffect, useState } from 'react';
+
 import {
   Box,
   Button,
   Card,
   CardActions,
+  CardContent,
   CardHeader,
   Fade,
   Tooltip,
 } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
 import { decodeJwt } from 'jose';
+import { useRouter } from 'next/router';
 import queryString from 'query-string';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { useContextApi } from '@/component/api';
 import Layout from '@/component/layout';
 import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
-import { useEffect, useState } from 'react';
-import { useContextApi } from '@/component/api';
-import { DEFAULT_NETWORK, REDIRECT_AUTH_URL } from '@/store/slice/config';
 import {
-  Wallet,
   addWallet,
   resetWallet,
   selectWalletState,
 } from '@/store/slice/zkWalletSlice';
+
+import type { Wallet } from '@/store/slice/zkWalletSlice';
 
 export const SignUpCallbackPage = () => {
   const authState = useSelector(selectAuthState);
@@ -41,39 +44,11 @@ export const SignUpCallbackPage = () => {
     router.push('/');
   };
 
-  const handleRestore = async () => {
-    switch (authState.provider) {
-      case 'google':
-        {
-          setLoading(true);
-          const { url, randomness, maxEpoch, crypto, privateKey, publicKey } =
-            await jwt.sui.getLoginURL({
-              provider: authState.provider,
-              redirectUrl: REDIRECT_AUTH_URL,
-              network: DEFAULT_NETWORK,
-            });
-          dispatch(
-            setAuthState({
-              provider: authState.provider,
-              network: DEFAULT_NETWORK,
-              maxEpoch,
-              randomness,
-              key: { publicKey, privateKey, crypto } as any, // TODO
-            }),
-          );
-          window.location.replace(url);
-        }
-        break;
-      default:
-        break;
-    }
-  };
-
   useEffect(() => {
     try {
       const createWallet = async (id_token: string) => {
         if (walletState.wallets.length === 0) {
-          const PATH = 'zkWallet/0'; // temp
+          const PATH = 'zkWallet/0'; // temp zk://sui:mainnet/0
           const address = await wallet.getAddress({
             network: authState.network,
             jwt: id_token,
@@ -108,10 +83,10 @@ export const SignUpCallbackPage = () => {
           jwt: id_token as string,
         }),
       );
-      // createWallet(id_token as string);
+      createWallet(id_token as string);
     } catch (err) {
       console.log(err);
-      setTimeout(() => setError(true), 300);
+      setTimeout(() => setError(true), 500);
     }
   }, [location]);
 
@@ -130,7 +105,8 @@ export const SignUpCallbackPage = () => {
           <Box width="400px" marginTop={-20}>
             {error && (
               <Card sx={{ minWidth: 275 }}>
-                <CardHeader title={`Sign Up (${authState.provider})`} />
+                <CardHeader title="ERROR" />
+                <CardContent>Callback Token Error</CardContent>
                 <CardActions>
                   <Box
                     sx={{
@@ -142,14 +118,7 @@ export const SignUpCallbackPage = () => {
                     <Tooltip title="Clear Wallet">
                       <span>
                         <Button onClick={handleClear} disabled={loading}>
-                          Clear
-                        </Button>
-                      </span>
-                    </Tooltip>
-                    <Tooltip title="Restore Wallet">
-                      <span>
-                        <Button onClick={handleRestore} disabled={loading}>
-                          Restore
+                          Reset
                         </Button>
                       </span>
                     </Tooltip>

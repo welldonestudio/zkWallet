@@ -2,16 +2,15 @@ import { createContext, useContext } from 'react';
 
 import { getAddress } from './getAddress';
 import { getBalance } from './getBalance';
-import {
-  getLoginURL,
-} from './sui/getLoginURL';
+import { getLoginURL } from './sui/getLoginURL';
 import { getZkProof } from './sui/getZkProof';
 import { transferToken } from './transferToken';
 
 import type {
   RequestGetLoginUrl,
-  ResponseGetLoginUrl} from './sui/getLoginURL';
-import type { RequestGetZkProof} from './sui/getZkProof';
+  ResponseGetLoginUrl,
+} from './sui/getLoginURL';
+import type { RequestGetZkProof } from './sui/getZkProof';
 import type {
   RequestGetAddress,
   RequestGetBalance,

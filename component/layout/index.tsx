@@ -1,6 +1,3 @@
-import { useEffect, useState } from 'react';
-
-
 import HomeIcon from '@mui/icons-material/Home';
 import LoopIcon from '@mui/icons-material/Loop';
 import {
@@ -13,7 +10,6 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
-
 
 import { selectAuthState } from '@/store/slice/authSlice';
 
