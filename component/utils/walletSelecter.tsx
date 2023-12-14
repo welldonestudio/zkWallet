@@ -34,7 +34,7 @@ export const WalletSelecter = () => {
   const handleAdd = async () => {
     try {
       setLoading(true);
-      const PATH = `${ZKPATH_PREFIX}:${authState.network}:${index}`;
+      const PATH = `${ZKPATH_PREFIX}:${authState.network}:${0}`;
       const address = await wallet.getAddress({
         network: authState.network,
         jwt: authState.jwt,
