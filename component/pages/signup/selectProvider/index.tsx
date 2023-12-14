@@ -51,34 +51,36 @@ export const SelectProviderPage = () => {
         case 'google':
           {
             const { url, randomness, maxEpoch, crypto, privateKey, publicKey } =
-              await jwt.sui.getLoginURL({
+              await jwt.sui.getOAuthURL({
                 provider,
                 redirectUrl: REDIRECT_AUTH_URL,
                 network: DEFAULT_NETWORK,
               });
 
-            const encrypt = await JWE.createEncrypt(
-              { format: 'compact', contentAlg: 'A256GCM' },
-              key,
-            )
-              .update(privateKey)
-              .final();
+            if (privateKey) {
+              const encrypt = await JWE.createEncrypt(
+                { format: 'compact', contentAlg: 'A256GCM' },
+                key,
+              )
+                .update(privateKey)
+                .final();
 
-            dispatch(
-              setAuthState({
-                provider,
-                network: DEFAULT_NETWORK,
-                maxEpoch,
-                randomness,
-                key: {
-                  type: 'local',
-                  crypto,
-                  publicKey,
-                  encrypt,
-                },
-              }),
-            );
-            window.location.replace(url);
+              dispatch(
+                setAuthState({
+                  provider,
+                  network: DEFAULT_NETWORK,
+                  maxEpoch,
+                  randomness,
+                  key: {
+                    type: 'local',
+                    crypto,
+                    publicKey,
+                    encrypt,
+                  },
+                }),
+              );
+              window.location.replace(url);
+            }
           }
           break;
         default:

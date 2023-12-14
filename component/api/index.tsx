@@ -2,14 +2,14 @@ import { createContext, useContext } from 'react';
 
 import { getAddress } from './getAddress';
 import { getBalance } from './getBalance';
-import { getLoginURL } from './sui/getLoginURL';
+import { getOAuthURL } from './sui/getOAuthURL';
 import { getZkProof } from './sui/getZkProof';
 import { transferToken } from './transferToken';
 
 import type {
-  RequestGetLoginUrl,
-  ResponseGetLoginUrl,
-} from './sui/getLoginURL';
+  RequestGetOAuthUrl,
+  ResponseGetOAuthUrl,
+} from './sui/getOAuthURL';
 import type { RequestGetZkProof } from './sui/getZkProof';
 import type {
   RequestGetAddress,
@@ -21,9 +21,9 @@ import type {
 export const ApiContext = createContext({
   jwt: {
     sui: {
-      getLoginURL: async (
-        request: RequestGetLoginUrl,
-      ): Promise<ResponseGetLoginUrl> => {
+      getOAuthURL: async (
+        request: RequestGetOAuthUrl,
+      ): Promise<ResponseGetOAuthUrl> => {
         throw new Error('jwt.sui.getLoginURL is not supported');
       },
       getZkProof: async (request: RequestGetZkProof): Promise<string> => {
@@ -56,7 +56,7 @@ export default function ApiProvider({
       value={{
         jwt: {
           sui: {
-            getLoginURL: getLoginURL,
+            getOAuthURL: getOAuthURL,
             getZkProof: getZkProof,
           },
         },
