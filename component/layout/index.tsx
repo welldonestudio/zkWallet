@@ -1,6 +1,7 @@
 import HomeIcon from '@mui/icons-material/Home';
 import LoopIcon from '@mui/icons-material/Loop';
 import {
+  Alert,
   Box,
   Breadcrumbs,
   Container,
@@ -91,7 +92,16 @@ export default function Layout({
               {initialized && actions}
             </Box>
             {initialized ? (
-              <Box minHeight={'100vh'}>{children}</Box>
+              <Box minHeight={'100vh'}>
+                {authState.network !== 'sui:mainnet' && (
+                  <Alert severity="warning">
+                    {authState.network === 'sui:devnet'
+                      ? 'Sui Devnet'
+                      : 'Sui Testnet'}
+                  </Alert>
+                )}
+                {children}
+              </Box>
             ) : (
               <Box
                 sx={{
