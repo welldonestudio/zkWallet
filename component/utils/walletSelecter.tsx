@@ -1,12 +1,18 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { IconButton, MenuItem, TextField } from '@mui/material';
-import { useSelector } from 'react-redux';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { IconButton, MenuItem, TextField, Tooltip } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { selectWalletState } from '@/store/slice/zkWalletSlice';
+import { setAuthState } from '@/store/slice/authSlice';
+import { resetWallet, selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import type { Wallet } from '@/store/slice/zkWalletSlice';
 
 export const WalletSelecter = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const { wallets }: { index: number; wallets: Wallet[] } =
     useSelector(selectWalletState);
 
@@ -27,15 +33,30 @@ export const WalletSelecter = () => {
               </MenuItem>
             ))}
           </TextField>
-          <IconButton
-            sx={{ marginLeft: 1 }}
-            size="small"
-            onClick={() => {
-              navigator.clipboard.writeText(wallets[0].address);
-            }}
-          >
-            <ContentCopyIcon fontSize="small" />
-          </IconButton>
+          <Tooltip title="copy address">
+            <IconButton
+              sx={{ marginLeft: 1 }}
+              size="small"
+              onClick={() => {
+                navigator.clipboard.writeText(wallets[0].address);
+              }}
+            >
+              <ContentCopyIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="logout">
+            <IconButton
+              sx={{ marginLeft: 1 }}
+              size="small"
+              onClick={() => {
+                dispatch(setAuthState(undefined));
+                dispatch(resetWallet());
+                router.push('/');
+              }}
+            >
+              <LogoutIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
         </>
       )}
     </>
