@@ -31,9 +31,7 @@ export const zkWalletSlice = createSlice({
     addWallet(state, action: { type: string; payload: Wallet }) {
       if (
         !state.zkWalletState.wallets.find(
-          (item) =>
-            item.path === action.payload.path &&
-            item.address === action.payload.address,
+          (item) => item.address === action.payload.address,
         )
       ) {
         state.zkWalletState.wallets.push(action.payload);
@@ -44,9 +42,7 @@ export const zkWalletSlice = createSlice({
     selectWallet(state, action: { type: string; payload: Wallet }) {
       if (
         !!state.zkWalletState.wallets.find(
-          (item) =>
-            item.path === action.payload.path &&
-            item.address === action.payload.address,
+          (item) => item.address === action.payload.address,
         )
       ) {
         state.zkWalletState.selected = action.payload.address;
@@ -54,11 +50,7 @@ export const zkWalletSlice = createSlice({
     },
     removeWallet(state, action: { type: string; payload: Wallet }) {
       state.zkWalletState.wallets = state.zkWalletState.wallets.filter(
-        (item) =>
-          !(
-            item.path === action.payload.path &&
-            item.address === action.payload.address
-          ),
+        (item) => !(item.address === action.payload.address),
       );
     },
     resetWallet(state) {
