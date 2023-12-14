@@ -71,6 +71,25 @@ export const SignUpCallbackPage = () => {
               proof,
             }),
           );
+        } else {
+          // TODO: update wallet array
+          const temp = walletState.wallets[0];
+          const proof = await jwt.sui.getZkProof({
+            network: authState.network,
+            jwt: id_token,
+            publicKey: authState.key.publicKey,
+            maxEpoch: authState.maxEpoch,
+            randomness: authState.randomness,
+            path: temp.path,
+          });
+          dispatch(resetWallet());
+          dispatch(
+            addWallet({
+              path: temp.path,
+              address: temp.address,
+              proof,
+            }),
+          );
         }
         router.push('/');
       };
