@@ -78,6 +78,7 @@ export const WalletPage = () => {
           address: walletState.selected,
         }));
       temp && setBalances(temp);
+      console.log('balance', temp);
     };
     walletState.wallets[0] && update();
   }, [walletState.wallets]);
