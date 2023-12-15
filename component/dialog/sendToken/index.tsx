@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import { Button, Stack, TextField } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
+import { Button, IconButton, Stack, TextField } from '@mui/material';
 
 import {
   Dialog,
@@ -29,7 +30,7 @@ export default function SendTokenModal({
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>Set Password</DialogTitle>
+      <DialogTitle>Transfer</DialogTitle>
       <DialogContent>
         <Stack spacing={2}>
           <TextField
@@ -56,6 +57,17 @@ export default function SendTokenModal({
             variant="standard"
             label="Password"
             type="password"
+            InputProps={{
+              endAdornment: (
+                <IconButton
+                  size="small"
+                  disabled={!password}
+                  onClick={handleConfirm}
+                >
+                  <SendIcon fontSize="small" />
+                </IconButton>
+              ),
+            }}
             onChange={(e) => {
               setPassword(e.target.value);
             }}
@@ -64,7 +76,8 @@ export default function SendTokenModal({
       </DialogContent>
       <DialogActions>
         <Button disabled={!password} onClick={handleConfirm}>
-          Confirm
+          <SendIcon />
+          Excute
         </Button>
       </DialogActions>
     </Dialog>
