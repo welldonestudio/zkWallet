@@ -9,15 +9,19 @@ export interface Wallet {
 }
 
 export interface zkWalletState {
-  index: number;
-  selected: string;
-  wallets: Wallet[];
+  zkWalletState: {
+    index: number;
+    selected: string;
+    wallets: Wallet[];
+  };
 }
 
 const initialState: zkWalletState = {
-  index: 0,
-  selected: '',
-  wallets: [],
+  zkWalletState: {
+    index: 0,
+    selected: '',
+    wallets: [],
+  },
 };
 
 export const zkWalletSlice = createSlice({
@@ -26,34 +30,42 @@ export const zkWalletSlice = createSlice({
   reducers: {
     addWallet(state, action: { type: string; payload: Wallet }) {
       if (
-        !state.wallets.find((item) => item.address === action.payload.address)
+        !state.zkWalletState.wallets.find(
+          (item) => item.address === action.payload.address,
+        )
       ) {
-        state.wallets.push(action.payload);
-        state.index = state.index + 1;
-        state.selected = action.payload.address;
+        state.zkWalletState.wallets.push(action.payload);
+        state.zkWalletState.index = state.zkWalletState.index + 1;
+        state.zkWalletState.selected = action.payload.address;
       }
     },
     selectWallet(state, action: { type: string; payload: Wallet }) {
       if (
-        !!state.wallets.find((item) => item.address === action.payload.address)
+        !!state.zkWalletState.wallets.find(
+          (item) => item.address === action.payload.address,
+        )
       ) {
-        state.selected = action.payload.address;
+        state.zkWalletState.selected = action.payload.address;
       }
     },
     removeWallet(state, action: { type: string; payload: Wallet }) {
-      state.wallets = state.wallets.filter(
+      state.zkWalletState.wallets = state.zkWalletState.wallets.filter(
         (item) => !(item.address === action.payload.address),
       );
     },
     resetWallet(state) {
-      state.wallets = [];
-      state.selected = '';
-      state.index = 0;
+      state.zkWalletState.wallets = [];
+      state.zkWalletState.selected = '';
+      state.zkWalletState.index = 0;
     },
   },
 });
 
 export const { addWallet, removeWallet, resetWallet } = zkWalletSlice.actions;
 export const selectWalletState = (state: AppState) =>
-  state.wallet as zkWalletState;
+  state.wallet.zkWalletState as {
+    index: number;
+    selected: string;
+    wallets: Wallet[];
+  };
 export default zkWalletSlice.reducer;
