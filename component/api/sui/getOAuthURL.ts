@@ -5,7 +5,7 @@ import {
 } from '@mysten/sui.js/keypairs/ed25519';
 import { generateNonce, generateRandomness } from '@mysten/zklogin';
 
-import { CLIENT_ID } from '@/store/slice/config';
+import { CLIENT_ID, MAX_EPOCH } from '@/store/slice/config';
 
 import { utils } from '../utils';
 
@@ -54,7 +54,7 @@ export const getOAuthURL = async (
 
     const suiClient = new SuiClient({ url });
     const { epoch } = await suiClient.getLatestSuiSystemState();
-    const maxEpoch = Number(epoch) + 50;
+    const maxEpoch = Number(epoch) + MAX_EPOCH;
 
     const randomness = request.randomness || generateRandomness();
 
