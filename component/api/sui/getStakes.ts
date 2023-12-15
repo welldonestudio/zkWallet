@@ -2,11 +2,11 @@ import { SuiClient } from '@mysten/sui.js/client';
 
 import { getProviderUrl } from './utils/getProviderUrl';
 
-import type { RequestGetStake, ResponseGetStake } from '../types';
+import type { RequestGetStake, ResponseStake } from '../types';
 
 export const getStakes = async (
   request: RequestGetStake,
-): Promise<ResponseGetStake[]> => {
+): Promise<ResponseStake[]> => {
   try {
     let url = getProviderUrl(request.auth.network);
     const client = new SuiClient({ url });
@@ -14,19 +14,26 @@ export const getStakes = async (
     const res = await client.getStakes({
       owner: request.address,
     });
-    console.log(res);
-    const staking: ResponseGetStake[] = [];
-    /*
+    const staking: ResponseStake[] = [];
     res.forEach((item) =>
-    item.stakes[0].
-      staking.push({
-        validatorAddress: item.validatorAddress,
-        stakingPool: item.stakingPool,
-        value: item.totalBalance,
-        locked: item.lockedBalance,
-      }),
+      item.stakes.forEach((stake) =>
+        staking.push({
+          id: stake.stakedSuiId,
+          status:
+            stake.status === 'Active'
+              ? 'active'
+              : stake.status === 'Pending'
+                ? 'pending'
+                : 'unstaked',
+          reward: (stake as any).estimatedReward || '',
+          amount: stake.principal,
+          validator: {
+            name: item.validatorAddress,
+            address: item.validatorAddress,
+          },
+        }),
+      ),
     );
-    */
     return staking;
   } catch (error) {
     throw new Error(`${error}`);

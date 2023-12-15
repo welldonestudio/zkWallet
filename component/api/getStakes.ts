@@ -1,10 +1,10 @@
 import { getStakes as sui } from './sui/getStakes';
 
-import type { RequestGetStake, ResponseGetStake } from './types';
+import type { RequestGetStake, ResponseStake } from './types';
 
 export const getStakes = async (
   request: RequestGetStake,
-): Promise<ResponseGetStake[]> => {
+): Promise<ResponseStake[]> => {
   switch (request.auth.network) {
     case 'sui:mainnet':
     case 'sui:devnet':

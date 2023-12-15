@@ -20,16 +20,6 @@ export interface ResponseBalnce {
   locked: { [key: string]: string };
 }
 
-export interface RequestGetStake {
-  auth: Auth;
-  address: string;
-}
-
-export interface ResponseGetStake {
-  validatorAddress: string;
-  stakingPool: string;
-}
-
 export interface RequestSend {
   password: string;
   auth: Auth;
@@ -54,5 +44,21 @@ export interface RequestSuiStake extends RequestSend {
 export interface RequestSuiUnStake extends RequestSend {
   unStake: {
     stakedSuiId: string;
+  };
+}
+
+export interface RequestGetStake {
+  auth: Auth;
+  address: string;
+}
+
+export interface ResponseStake {
+  id: string;
+  status: 'pending' | 'active' | 'unstaked';
+  amount: string;
+  reward: string;
+  validator: {
+    name: string;
+    address: string;
   };
 }

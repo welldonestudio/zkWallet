@@ -22,7 +22,7 @@ import type {
   RequestSuiStake,
   RequestSuiUnStake,
   ResponseBalnce,
-  ResponseGetStake,
+  ResponseStake,
 } from './types';
 
 export const ApiContext = createContext({
@@ -56,7 +56,7 @@ export const ApiContext = createContext({
     unStake: (request: RequestSuiUnStake): Promise<string> => {
       throw new Error('wallet.unStake is not supported');
     },
-    getStakes: (request: RequestGetStake): Promise<ResponseGetStake[]> => {
+    getStakes: (request: RequestGetStake): Promise<ResponseStake[]> => {
       throw new Error('wallet.getStakes is not supported');
     },
   },
