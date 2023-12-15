@@ -20,6 +20,16 @@ export interface ResponseBalnce {
   locked: { [key: string]: string };
 }
 
+export interface RequestGetStake {
+  auth: Auth;
+  address: string;
+}
+
+export interface ResponseGetStake {
+  validatorAddress: string;
+  stakingPool: string;
+}
+
 export interface RequestSend {
   password: string;
   auth: Auth;

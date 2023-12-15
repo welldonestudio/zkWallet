@@ -2,6 +2,7 @@ import { createContext, useContext } from 'react';
 
 import { getAddress } from './getAddress';
 import { getBalance } from './getBalance';
+import { getStakes } from './getStakes';
 import { sendToken } from './sendToken';
 import { stake } from './stake';
 import { getOAuthURL } from './sui/getOAuthURL';
@@ -16,10 +17,12 @@ import type { RequestGetZkProof } from './sui/getZkProof';
 import type {
   RequestGetAddress,
   RequestGetBalance,
+  RequestGetStake,
   RequestSendToken,
   RequestSuiStake,
   RequestSuiUnStake,
   ResponseBalnce,
+  ResponseGetStake,
 } from './types';
 
 export const ApiContext = createContext({
@@ -53,6 +56,9 @@ export const ApiContext = createContext({
     unStake: (request: RequestSuiUnStake): Promise<string> => {
       throw new Error('wallet.unStake is not supported');
     },
+    getStakes: (request: RequestGetStake): Promise<ResponseGetStake[]> => {
+      throw new Error('wallet.getStakes is not supported');
+    },
   },
 });
 
@@ -76,6 +82,7 @@ export default function ApiProvider({
           sendToken: sendToken,
           stake: stake,
           unStake: unStake,
+          getStakes: getStakes,
         },
       }}
     >
