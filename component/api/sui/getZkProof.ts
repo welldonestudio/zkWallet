@@ -9,7 +9,7 @@ export interface RequestGetZkProof {
   network: NETWORK;
   jwt: string;
   publicKey: string;
-  maxEpoch: string;
+  maxEpoch: number;
   randomness: string;
   path: string;
 }

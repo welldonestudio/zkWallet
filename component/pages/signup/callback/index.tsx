@@ -48,7 +48,7 @@ export const SignUpCallbackPage = () => {
   useEffect(() => {
     try {
       const createWallet = async (id_token: string) => {
-        if (walletState.wallets.length === 0) {
+        if (authState && walletState.wallets.length === 0) {
           const PATH = `${ZKPATH_PREFIX}:${authState.network}:0`;
           const address = await wallet.getAddress({
             network: authState.network,
@@ -71,7 +71,7 @@ export const SignUpCallbackPage = () => {
               proof,
             }),
           );
-        } else {
+        } else if (authState) {
           // TODO: update wallet array
           const temp = walletState.wallets[0];
           const proof = await jwt.sui.getZkProof({
@@ -94,15 +94,17 @@ export const SignUpCallbackPage = () => {
         router.push('/');
       };
 
-      const { id_token } = queryString.parse(location.hash);
-      decodeJwt(id_token as string);
-      dispatch(
-        setAuthState({
-          ...authState,
-          jwt: id_token as string,
-        }),
-      );
-      createWallet(id_token as string);
+      if (authState) {
+        const { id_token } = queryString.parse(location.hash);
+        decodeJwt(id_token as string);
+        dispatch(
+          setAuthState({
+            ...authState,
+            jwt: id_token as string,
+          }),
+        );
+        createWallet(id_token as string);
+      }
     } catch (err) {
       console.log(err);
       setTimeout(() => setError(true), 500);

@@ -13,10 +13,10 @@ import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
 import { selectAuthState } from '@/store/slice/authSlice';
+import { DEFAULT_NETWORK } from '@/store/slice/config';
 
 import Footer from './footer';
 import NavBar from './navbar';
-import { DEFAULT_NETWORK } from '@/store/slice/config';
 
 interface LayoutProps {
   breadcrumbs: {
@@ -45,7 +45,7 @@ export default function Layout({
           <Stack spacing={2} marginY={2}>
             <Box width="100%">
               {DEFAULT_NETWORK !== 'sui:mainnet' && (
-                <Alert severity="warning">
+                <Alert variant="filled" severity="warning">
                   {DEFAULT_NETWORK === 'sui:devnet'
                     ? 'Sui Devnet'
                     : 'Sui Testnet'}

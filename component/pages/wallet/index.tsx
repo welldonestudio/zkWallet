@@ -37,25 +37,28 @@ export const WalletPage = () => {
     to: string,
     amount: string,
   ) => {
-    await wallet.transferToken({
-      auth: authState,
-      wallet: walletState.wallets[0],
-      password,
-      token: {
-        to,
-        address: '0x2::sui::SUI',
-        amount,
-      },
-    });
+    authState &&
+      (await wallet.transferToken({
+        auth: authState,
+        wallet: walletState.wallets[0],
+        password,
+        token: {
+          to,
+          address: '0x2::sui::SUI',
+          amount,
+        },
+      }));
   };
 
   useEffect(() => {
     const update = async () => {
-      const temp = await wallet.getBalance({
-        auth: authState,
-        address: walletState.selected,
-      });
-      setBalances(temp);
+      const temp =
+        authState &&
+        (await wallet.getBalance({
+          auth: authState,
+          address: walletState.selected,
+        }));
+      temp && setBalances(temp);
     };
     walletState.wallets[0] && update();
   }, [walletState.wallets]);

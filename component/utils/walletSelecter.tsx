@@ -29,12 +29,7 @@ export const WalletSelecter = () => {
   const router = useRouter();
 
   const authState = useSelector(selectAuthState);
-  const {
-    index,
-    selected,
-    wallets,
-  }: { index: number; selected: string; wallets: Wallet[] } =
-    useSelector(selectWalletState);
+  const { index, selected, wallets } = useSelector(selectWalletState);
 
   const { jwt, wallet } = useContextApi();
 
@@ -52,22 +47,25 @@ export const WalletSelecter = () => {
 
   const handleAdd = async () => {
     try {
-      setLoading(true);
+      if (authState && authState.jwt) {
+        setLoading(true);
 
-      const PATH = `${ZKPATH_PREFIX}:${authState.network}:${index}`;
-      const address = await wallet.getAddress({
-        network: authState.network,
-        jwt: authState.jwt,
-        path: PATH,
-      });
-      const proof = await jwt.sui.getZkProof({
-        network: authState.network,
-        jwt: authState.jwt,
-        publicKey: authState.key.publicKey,
-        maxEpoch: authState.maxEpoch,
-        randomness: authState.randomness,
-        path: PATH,
-      });
+        const PATH = `${ZKPATH_PREFIX}:${authState.network}:${index}`;
+        const address = await wallet.getAddress({
+          network: authState.network,
+          jwt: authState.jwt,
+          path: PATH,
+        });
+        const proof = await jwt.sui.getZkProof({
+          network: authState.network,
+          jwt: authState.jwt,
+          publicKey: authState.key.publicKey,
+          maxEpoch: authState.maxEpoch,
+          randomness: authState.randomness,
+          path: PATH,
+        });
+        // TODO
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -76,29 +74,31 @@ export const WalletSelecter = () => {
   };
 
   const handleRefresh = async () => {
-    switch (authState.provider) {
-      case 'google':
-        {
-          const { url, maxEpoch } = await jwt.sui.getOAuthURL({
-            provider: authState.provider,
-            redirectUrl: REDIRECT_AUTH_URL,
-            network: authState.network,
-            publicKey: authState.key.publicKey,
-            randomness: authState.randomness,
-          });
+    if (authState) {
+      switch (authState.provider) {
+        case 'google':
+          {
+            const { url, maxEpoch } = await jwt.sui.getOAuthURL({
+              provider: authState.provider,
+              redirectUrl: REDIRECT_AUTH_URL,
+              network: authState.network,
+              publicKey: authState.key.publicKey,
+              randomness: authState.randomness,
+            });
 
-          dispatch(
-            setAuthState({
-              ...authState,
-              maxEpoch,
-              jwt: undefined,
-            }),
-          );
-          window.location.replace(url);
-        }
-        break;
-      default:
-        break;
+            dispatch(
+              setAuthState({
+                ...authState,
+                maxEpoch,
+                jwt: undefined,
+              }),
+            );
+            window.location.replace(url);
+          }
+          break;
+        default:
+          break;
+      }
     }
   };
 
@@ -112,7 +112,9 @@ export const WalletSelecter = () => {
             label="Wallet"
             defaultValue={selected}
             sx={{ maxWidth: '200px' }}
-            disabled={authState.network === 'sui:devnet' || loading}
+            disabled={
+              !authState || authState.network === 'sui:devnet' || loading
+            }
             InputProps={{
               startAdornment: (
                 <Tooltip title="Copy Address">
