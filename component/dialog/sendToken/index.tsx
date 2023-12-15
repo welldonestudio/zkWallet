@@ -57,17 +57,6 @@ export default function SendTokenModal({
             variant="standard"
             label="Password"
             type="password"
-            InputProps={{
-              endAdornment: (
-                <IconButton
-                  size="small"
-                  disabled={!password}
-                  onClick={handleConfirm}
-                >
-                  <SendIcon fontSize="small" />
-                </IconButton>
-              ),
-            }}
             onChange={(e) => {
               setPassword(e.target.value);
             }}
@@ -76,8 +65,8 @@ export default function SendTokenModal({
       </DialogContent>
       <DialogActions>
         <Button disabled={!password} onClick={handleConfirm}>
-          <SendIcon />
-          Excute
+          <SendIcon fontSize="small" sx={{ marginRight: 1 }} />
+          Send
         </Button>
       </DialogActions>
     </Dialog>
