@@ -20,13 +20,29 @@ export interface ResponseBalnce {
   locked: { [key: string]: string };
 }
 
-export interface RequestTransferToken {
+export interface RequestSend {
   password: string;
   auth: Auth;
   wallet: Wallet;
+}
+
+export interface RequestSendToken extends RequestSend {
   token: {
     type: string;
     to: string;
     amount: string;
+  };
+}
+
+export interface RequestSuiStake extends RequestSend {
+  stake: {
+    amount: string;
+    validator: string;
+  };
+}
+
+export interface RequestSuiUnStake extends RequestSend {
+  unStake: {
+    stakedSuiId: string;
   };
 }

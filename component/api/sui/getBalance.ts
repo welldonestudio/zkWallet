@@ -1,6 +1,6 @@
 import { SuiClient } from '@mysten/sui.js/client';
 
-import { getProviderUrl } from './getProviderUrl';
+import { getProviderUrl } from './utils/getProviderUrl';
 
 import type { RequestGetBalance, ResponseBalnce } from '../types';
 

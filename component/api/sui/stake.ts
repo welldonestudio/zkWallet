@@ -1,17 +1,16 @@
 import { enqueueSnackbar } from 'notistack';
 
-import { createSendTokenTransaction } from './utils/createSendTokenTransaction';
+import { createStakeTransaction } from './utils/createStakeTransaction';
 import { signAndSendTx } from './utils/signAndSendTx';
 
-import type { RequestSendToken } from '../types';
+import type { RequestSuiStake } from '../types';
 
-export const sendToken = async (request: RequestSendToken): Promise<string> => {
+export const stake = async (request: RequestSuiStake): Promise<string> => {
   try {
-    const txb = createSendTokenTransaction(
+    const txb = createStakeTransaction(
       request.wallet.address,
-      request.token.to,
-      request.token.type,
-      request.token.amount,
+      request.stake.amount,
+      request.stake.validator,
     );
     const hash = await signAndSendTx(request, txb);
     return hash;

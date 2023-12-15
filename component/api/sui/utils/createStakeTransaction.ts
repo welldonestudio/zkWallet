@@ -3,7 +3,7 @@ import { SUI_SYSTEM_STATE_OBJECT_ID } from '@mysten/sui.js/utils';
 
 export const createStakeTransaction = (
   from: string,
-  amount: bigint,
+  amount: string,
   validator: string,
 ): TransactionBlock => {
   const txb = new TransactionBlock();

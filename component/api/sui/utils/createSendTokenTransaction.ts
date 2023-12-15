@@ -4,7 +4,7 @@ export const createSendTokenTransaction = (
   from: string,
   to: string,
   type: string,
-  amount: number,
+  amount: string,
 ): TransactionBlock => {
   const txb = new TransactionBlock();
   txb.setSender(from);

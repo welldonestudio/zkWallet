@@ -14,7 +14,7 @@ import type { RequestGetZkProof } from './sui/getZkProof';
 import type {
   RequestGetAddress,
   RequestGetBalance,
-  RequestTransferToken,
+  RequestSendToken,
   ResponseBalnce,
 } from './types';
 
@@ -40,7 +40,7 @@ export const ApiContext = createContext({
     ): Promise<ResponseBalnce[]> => {
       throw new Error('wallet.getBalance is not supported');
     },
-    sendToken: (request: RequestTransferToken): Promise<string> => {
+    sendToken: (request: RequestSendToken): Promise<string> => {
       throw new Error('wallet.sendToken is not supported');
     },
   },
