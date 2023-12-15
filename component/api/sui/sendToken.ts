@@ -1,14 +1,11 @@
 import { SuiClient } from '@mysten/sui.js/client';
 import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
-import { TransactionBlock } from '@mysten/sui.js/transactions';
-import { genAddressSeed, getZkLoginSignature } from '@mysten/zklogin';
-import { hash } from 'argon2-browser';
-import { decodeJwt } from 'jose';
-import { JWE, JWK, util } from 'node-jose';
 import { enqueueSnackbar } from 'notistack';
 
 import { getProviderUrl } from './getProviderUrl';
-import { utils } from '../utils';
+import { createSendTokenTransaction } from './utils/createSendTokenTransaction';
+import { getPrivateKey } from './utils/getPrivateKey';
+import { getZkSignature } from './utils/getZkSignature';
 
 import type { RequestTransferToken } from '../types';
 
@@ -16,68 +13,36 @@ export const sendToken = async (
   request: RequestTransferToken,
 ): Promise<string> => {
   try {
-    const decodedJwt = request.auth.jwt && decodeJwt(request.auth.jwt);
-
-    const addressSeed =
-      decodedJwt &&
-      decodedJwt.sub &&
-      decodedJwt.aud &&
-      genAddressSeed(
-        BigInt(
-          `0x${utils
-            .hex2buffer(utils.str2Hash(request.wallet.path, 16))
-            .toString('hex')}`,
-        ),
-        'sub',
-        decodedJwt.sub,
-        decodedJwt.aud as string,
-      ).toString();
-
-    if (!addressSeed) {
-      enqueueSnackbar('jwt decode error', {
-        variant: 'error',
-      });
-      throw new Error(`jwt decode error (${decodedJwt?.sub})`);
-    }
-
     let url = getProviderUrl(request.auth.network);
-    const client = new SuiClient({ url });
-    const txb = new TransactionBlock();
-    txb.setSender(request.wallet.address);
 
-    const [coin] = txb.splitCoins(txb.gas, [100]);
-    txb.transferObjects([coin], request.token.to);
-
-    const { hashHex } = await hash({
-      pass: request.password,
-      salt: 'zkWallet',
-    });
-    const key = await JWK.asKey({
-      kty: 'oct',
-      k: util.base64url.encode(hashHex),
-    });
-
-    const privateKey = await JWE.createDecrypt(key).decrypt(
+    const privateKey = await getPrivateKey(
+      request.password,
       request.auth.key.encrypt,
     );
 
+    const client = new SuiClient({ url });
+
+    // create tx
+    const txb = createSendTokenTransaction(
+      request.wallet.address,
+      request.token.to,
+      request.token.type,
+      100, // TODO
+    );
+
+    // sign tx
     const { bytes, signature: userSignature } = await txb.sign({
       client,
       signer: Ed25519Keypair.fromSecretKey(
-        Buffer.from(privateKey.plaintext.toString().replace('0x', ''), 'hex'),
+        Buffer.from(privateKey.replace('0x', ''), 'hex'),
       ),
     });
 
+    // create zk signature
     const zkLoginSignature =
+      request.auth.jwt &&
       request.wallet.proof &&
-      getZkLoginSignature({
-        inputs: {
-          ...JSON.parse(request.wallet.proof),
-          addressSeed,
-        },
-        maxEpoch: request.auth.maxEpoch,
-        userSignature,
-      });
+      getZkSignature(request.auth, request.wallet, userSignature);
 
     if (!zkLoginSignature) {
       enqueueSnackbar('zkLoginSignature error', {

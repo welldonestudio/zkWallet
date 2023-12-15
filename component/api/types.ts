@@ -14,8 +14,8 @@ export interface RequestGetBalance {
 }
 
 export interface ResponseBalnce {
+  type: string;
   name: string;
-  address: string;
   value: string;
   locked: { [key: string]: string };
 }
@@ -25,8 +25,8 @@ export interface RequestTransferToken {
   auth: Auth;
   wallet: Wallet;
   token: {
+    type: string;
     to: string;
-    address: string;
     amount: string;
   };
 }

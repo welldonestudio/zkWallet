@@ -44,7 +44,7 @@ export const WalletPage = () => {
         password,
         token: {
           to,
-          address: '0x2::sui::SUI',
+          type: '0x2::sui::SUI',
           amount,
         },
       }));
@@ -85,7 +85,7 @@ export const WalletPage = () => {
                         <TableCell>{item.name}</TableCell>
                         <TableCell align="right">{item.value}</TableCell>
                         <TableCell align="right">
-                          {item.address === '0x2::sui::SUI' && (
+                          {item.type === '0x2::sui::SUI' && (
                             <IconButton
                               size="small"
                               onClick={() => setOpen(true)}
