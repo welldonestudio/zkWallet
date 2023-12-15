@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import SendIcon from '@mui/icons-material/Send';
-import { Button, IconButton, Stack, TextField } from '@mui/material';
+import { Button, Stack, TextField } from '@mui/material';
 
 import {
   Dialog,
