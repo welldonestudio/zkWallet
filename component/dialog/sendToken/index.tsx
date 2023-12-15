@@ -11,10 +11,12 @@ import {
 } from '@/component/theme/component';
 
 export default function SendTokenModal({
+  title,
   open,
   onClose,
   confirm,
 }: {
+  title: string;
   open: boolean;
   onClose: () => void;
   confirm: (password: string, to: string, amount: string) => void;
@@ -30,7 +32,7 @@ export default function SendTokenModal({
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>Transfer</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <Stack spacing={2}>
           <TextField

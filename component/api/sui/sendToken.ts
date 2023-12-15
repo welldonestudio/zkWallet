@@ -12,7 +12,7 @@ import { utils } from '../utils';
 
 import type { RequestTransferToken } from '../types';
 
-export const transferToken = async (
+export const sendToken = async (
   request: RequestTransferToken,
 ): Promise<string> => {
   try {

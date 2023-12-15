@@ -2,9 +2,9 @@ import { createContext, useContext } from 'react';
 
 import { getAddress } from './getAddress';
 import { getBalance } from './getBalance';
+import { sendToken } from './sendToken';
 import { getOAuthURL } from './sui/getOAuthURL';
 import { getZkProof } from './sui/getZkProof';
-import { transferToken } from './transferToken';
 
 import type {
   RequestGetOAuthUrl,
@@ -40,8 +40,8 @@ export const ApiContext = createContext({
     ): Promise<ResponseBalnce[]> => {
       throw new Error('wallet.getBalance is not supported');
     },
-    transferToken: (request: RequestTransferToken): Promise<string> => {
-      throw new Error('wallet.transferToken is not supported');
+    sendToken: (request: RequestTransferToken): Promise<string> => {
+      throw new Error('wallet.sendToken is not supported');
     },
   },
 });
@@ -63,7 +63,7 @@ export default function ApiProvider({
         wallet: {
           getAddress: getAddress,
           getBalance: getBalance,
-          transferToken: transferToken,
+          sendToken: sendToken,
         },
       }}
     >

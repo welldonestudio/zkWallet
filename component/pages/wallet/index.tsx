@@ -32,13 +32,13 @@ export const WalletPage = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [balances, setBalances] = useState<ResponseBalnce[]>([]);
 
-  const handleConfirm = async (
+  const handleTransferConfirm = async (
     password: string,
     to: string,
     amount: string,
   ) => {
     authState &&
-      (await wallet.transferToken({
+      (await wallet.sendToken({
         auth: authState,
         wallet: walletState.wallets[0],
         password,
@@ -104,9 +104,10 @@ export const WalletPage = () => {
         </Grid>
       </Grid>
       <SendTokenModal
+        title="Transfer Token"
         open={open}
         onClose={() => setOpen(false)}
-        confirm={handleConfirm}
+        confirm={handleTransferConfirm}
       />
     </Layout>
   );
