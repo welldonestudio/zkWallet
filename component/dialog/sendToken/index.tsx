@@ -64,7 +64,7 @@ export default function SendTokenModal({
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button disabled={!password} onClick={handleConfirm}>
+        <Button disabled={!password || !to || !amount} onClick={handleConfirm}>
           <SendIcon fontSize="small" sx={{ marginRight: 1 }} />
           Send
         </Button>
