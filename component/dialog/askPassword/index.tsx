@@ -29,7 +29,7 @@ export default function AskPasswordModal({
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>Set Password</DialogTitle>
       <DialogContent>
-        <Stack>
+        <Stack spacing={2}>
           <TextField
             fullWidth
             variant="standard"
