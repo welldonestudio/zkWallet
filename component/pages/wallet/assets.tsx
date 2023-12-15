@@ -95,14 +95,12 @@ export const Assets = ({ balances }: { balances: ResponseBalnce[] }) => {
                       <TableCell>{item.name}</TableCell>
                       <TableCell align="right">{item.value}</TableCell>
                       <TableCell align="right">
-                        {item.type === '0x2::sui::SUI' && (
-                          <IconButton
-                            size="small"
-                            onClick={() => setOpenSend(true)}
-                          >
-                            <SendIcon fontSize="small" />
-                          </IconButton>
-                        )}
+                        <IconButton
+                          size="small"
+                          onClick={() => setOpenSend(true)}
+                        >
+                          <SendIcon fontSize="small" />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   ))}
