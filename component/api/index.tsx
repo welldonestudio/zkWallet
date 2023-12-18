@@ -2,6 +2,7 @@ import { createContext, useContext } from 'react';
 
 import { useSignAndExecuteTransactionBlock } from '@mysten/dapp-kit';
 import { TransactionBlock } from '@mysten/sui.js/transactions';
+import { enqueueSnackbar } from 'notistack';
 
 import { getAddress } from './getAddress';
 import { getBalance } from './getBalance';
@@ -93,12 +94,15 @@ export default function ApiProvider({
             console.log('executed transaction block', result);
           },
           onError: (result) => {
-            console.log(result);
+            enqueueSnackbar(result.message, {
+              variant: 'error',
+            });
+            throw(new Error(result.message));
           }
         },
       );  
     } catch (error) {
-      console.log(999, error);
+      throw(`${error}`);
     }
     return '';
   };
