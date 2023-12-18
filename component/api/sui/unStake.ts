@@ -12,7 +12,7 @@ export const unStake = async (request: RequestSuiUnStake): Promise<string> => {
       request.unStake.stakedSuiId,
     );
 
-    if (request.password) {
+    if (request.auth.key.type === 'local') {
       const hash = await signAndSendTx(request, txb);
       return hash;
     }

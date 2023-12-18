@@ -13,7 +13,7 @@ export const stake = async (request: RequestSuiStake): Promise<string> => {
       request.stake.validator,
     );
 
-    if (request.password) {
+    if (request.auth.key.type === 'local') {
       const hash = await signAndSendTx(request, txb);
       return hash;
     }

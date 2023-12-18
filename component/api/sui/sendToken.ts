@@ -14,7 +14,7 @@ export const sendToken = async (request: RequestSendToken): Promise<string> => {
       request.token.amount,
     );
 
-    if (request.password) {
+    if (request.auth.key.type === 'local') {
       const hash = await signAndSendTx(request, txb);
       return hash;
     }
