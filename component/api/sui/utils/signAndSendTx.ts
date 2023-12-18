@@ -14,44 +14,47 @@ export const signAndSendTx = async (
   txb: TransactionBlock,
 ): Promise<string> => {
   try {
-    let url = getProviderUrl(request.auth.network);
+    if (request.password && request.auth.key.encrypt) {
+      let url = getProviderUrl(request.auth.network);
 
-    const privateKey = await getPrivateKey(
-      request.password,
-      request.auth.key.encrypt,
-    );
+      const privateKey = await getPrivateKey(
+        request.password,
+        request.auth.key.encrypt,
+      );
 
-    const client = new SuiClient({ url });
+      const client = new SuiClient({ url });
 
-    // sign tx
-    const { bytes, signature: userSignature } = await txb.sign({
-      client,
-      signer: Ed25519Keypair.fromSecretKey(
-        Buffer.from(privateKey.replace('0x', ''), 'hex'),
-      ),
-    });
-
-    // create zk signature
-    const zkLoginSignature =
-      request.auth.jwt &&
-      request.wallet.proof &&
-      getZkSignature(request.auth, request.wallet, userSignature);
-
-    if (!zkLoginSignature) {
-      enqueueSnackbar('zkLoginSignature error', {
-        variant: 'error',
+      // sign tx
+      const { bytes, signature: userSignature } = await txb.sign({
+        client,
+        signer: Ed25519Keypair.fromSecretKey(
+          Buffer.from(privateKey.replace('0x', ''), 'hex'),
+        ),
       });
-      throw new Error(`zkLoginSignature error (${request.wallet.proof})`);
-    }
 
-    const txreceipt = await client.executeTransactionBlock({
-      transactionBlock: bytes,
-      signature: zkLoginSignature,
-    });
-    enqueueSnackbar(`success: ${txreceipt.digest}`, {
-      variant: 'success',
-    });
-    return txreceipt.digest;
+      // create zk signature
+      const zkLoginSignature =
+        request.auth.jwt &&
+        request.wallet.proof &&
+        getZkSignature(request.auth, request.wallet, userSignature);
+
+      if (!zkLoginSignature) {
+        enqueueSnackbar('zkLoginSignature error', {
+          variant: 'error',
+        });
+        throw new Error(`zkLoginSignature error (${request.wallet.proof})`);
+      }
+
+      const txreceipt = await client.executeTransactionBlock({
+        transactionBlock: bytes,
+        signature: zkLoginSignature,
+      });
+      enqueueSnackbar(`success: ${txreceipt.digest}`, {
+        variant: 'success',
+      });
+      return txreceipt.digest;
+    }
+    throw new Error(`wallet error (${request.auth.key.publicKey})`);
   } catch (error) {
     enqueueSnackbar(`${error}`, {
       variant: 'error',

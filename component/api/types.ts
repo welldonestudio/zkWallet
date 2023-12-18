@@ -21,7 +21,7 @@ export interface ResponseBalnce {
 }
 
 export interface RequestSend {
-  password: string;
+  password?: string;
   auth: Auth;
   wallet: Wallet;
 }

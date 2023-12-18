@@ -11,8 +11,13 @@ export const unStake = async (request: RequestSuiUnStake): Promise<string> => {
       request.wallet.address,
       request.unStake.stakedSuiId,
     );
-    const hash = await signAndSendTx(request, txb);
-    return hash;
+
+    if (request.password) {
+      const hash = await signAndSendTx(request, txb);
+      return hash;
+    }
+
+    return txb.serialize();
   } catch (error) {
     enqueueSnackbar(`${error}`, {
       variant: 'error',

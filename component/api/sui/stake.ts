@@ -12,8 +12,13 @@ export const stake = async (request: RequestSuiStake): Promise<string> => {
       request.stake.amount,
       request.stake.validator,
     );
-    const hash = await signAndSendTx(request, txb);
-    return hash;
+
+    if (request.password) {
+      const hash = await signAndSendTx(request, txb);
+      return hash;
+    }
+
+    return txb.serialize();
   } catch (error) {
     enqueueSnackbar(`${error}`, {
       variant: 'error',

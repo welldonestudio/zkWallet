@@ -13,8 +13,13 @@ export const sendToken = async (request: RequestSendToken): Promise<string> => {
       request.token.type,
       request.token.amount,
     );
-    const hash = await signAndSendTx(request, txb);
-    return hash;
+
+    if (request.password) {
+      const hash = await signAndSendTx(request, txb);
+      return hash;
+    }
+
+    return txb.serialize();
   } catch (error) {
     enqueueSnackbar(`${error}`, {
       variant: 'error',

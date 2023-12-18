@@ -1,5 +1,8 @@
 import { createContext, useContext } from 'react';
 
+import { useSignAndExecuteTransactionBlock } from '@mysten/dapp-kit';
+import { TransactionBlock } from '@mysten/sui.js/transactions';
+
 import { getAddress } from './getAddress';
 import { getBalance } from './getBalance';
 import { getStakes } from './getStakes';
@@ -67,6 +70,31 @@ export default function ApiProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const { mutate: signAndExecuteTransactionBlock } =
+    useSignAndExecuteTransactionBlock();
+
+  const HandleSendToken = async (
+    req: RequestSendToken,
+  ): Promise<string> => {
+    if (req.password) {
+      return sendToken(req);
+    }
+
+    const txb = await sendToken(req);
+    signAndExecuteTransactionBlock(
+      {
+        chain: 'sui:devnet',
+        transactionBlock: TransactionBlock.from(txb) as any, // TODO
+      },
+      {
+        onSuccess: (result) => {
+          console.log('executed transaction block', result);
+        },
+      },
+    );
+    return '';
+  };
+
   return (
     <ApiContext.Provider
       value={{
@@ -79,7 +107,7 @@ export default function ApiProvider({
         wallet: {
           getAddress: getAddress,
           getBalance: getBalance,
-          sendToken: sendToken,
+          sendToken: HandleSendToken,
           stake: stake,
           unStake: unStake,
           getStakes: getStakes,
