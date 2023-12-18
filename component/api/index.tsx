@@ -73,15 +73,14 @@ export default function ApiProvider({
   const { mutate: signAndExecuteTransactionBlock } =
     useSignAndExecuteTransactionBlock();
 
-  const HandleSendToken = async (
-    req: RequestSendToken,
-  ): Promise<string> => {
+  const HandleSendToken = async (req: RequestSendToken): Promise<string> => {
+    console.log(1, req);
     if (req.password) {
       return sendToken(req);
     }
 
     const txb = await sendToken(req);
-    console.log(111, txb);
+    console.log(2, txb);
     signAndExecuteTransactionBlock(
       {
         chain: 'sui:devnet',

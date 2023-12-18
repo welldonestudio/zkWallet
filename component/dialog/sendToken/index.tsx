@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import SendIcon from '@mui/icons-material/Send';
 import { Button, Stack, TextField } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 import {
   Dialog,
@@ -9,6 +10,7 @@ import {
   DialogContent,
   DialogTitle,
 } from '@/component/theme/component';
+import { selectAuthState } from '@/store/slice/authSlice';
 
 export default function SendTokenModal({
   title,
@@ -21,6 +23,8 @@ export default function SendTokenModal({
   onClose: () => void;
   confirm: (password: string, to: string, amount: string) => void;
 }) {
+  const authState = useSelector(selectAuthState);
+
   const [to, setTo] = useState<string>('');
   const [amount, setAmount] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -54,19 +58,26 @@ export default function SendTokenModal({
               setAmount(e.target.value);
             }}
           />
-          <TextField
-            fullWidth
-            variant="standard"
-            label="Password"
-            type="password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
+          {authState?.key.type === 'local' && (
+            <TextField
+              fullWidth
+              variant="standard"
+              label="Password"
+              type="password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
+          )}{' '}
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button disabled={!password || !to || !amount} onClick={handleConfirm}>
+        <Button
+          disabled={
+            (!password && authState?.key.type === 'local') || !to || !amount
+          }
+          onClick={handleConfirm}
+        >
           <SendIcon fontSize="small" sx={{ marginRight: 1 }} />
           Send
         </Button>
