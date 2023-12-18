@@ -12,7 +12,7 @@ export interface Auth {
   key: {
     type: TYPE;
     crypto: CRYPTO;
-    encrypt: string;
+    encrypt?: string;
     publicKey: string;
   };
 }

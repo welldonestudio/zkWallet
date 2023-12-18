@@ -8,6 +8,7 @@ import {
   CardHeader,
   Fade,
 } from '@mui/material';
+import { ConnectButton, useCurrentAccount } from '@mysten/dapp-kit';
 import { hash } from 'argon2-browser';
 import { JWE, JWK, util } from 'node-jose';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,10 +32,16 @@ export const SelectProviderPage = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [provider, setProvider] = useState<PROVIDER | undefined>(undefined);
 
+  const account = useCurrentAccount();
+
   const handleClick = async (select: PROVIDER) => {
     if (!authState) {
       setProvider(select);
-      setOpen(true);
+      if (account) {
+        handleConfirm('');
+      } else {
+        setOpen(true);
+      }
     }
   };
 
@@ -84,6 +91,35 @@ export const SelectProviderPage = () => {
           }
           break;
         default:
+          {
+            if (account) {
+              const { url, randomness, maxEpoch, crypto, publicKey } =
+                await jwt.sui.getOAuthURL({
+                  provider: 'google',
+                  redirectUrl: REDIRECT_AUTH_URL,
+                  network: DEFAULT_NETWORK,
+                  publicKey: `0x${Buffer.from(account.publicKey).toString(
+                    'hex',
+                  )}`,
+                });
+
+              dispatch(
+                setAuthState({
+                  provider: 'google',
+                  network: DEFAULT_NETWORK,
+                  maxEpoch,
+                  randomness,
+                  key: {
+                    type: 'extension',
+                    crypto,
+                    publicKey,
+                  },
+                }),
+              );
+
+              window.location.replace(url);
+            }
+          }
           break;
       }
     }
@@ -104,45 +140,60 @@ export const SelectProviderPage = () => {
           height: '100vh',
         }}
       >
-        <Box width="400px" marginTop={-20}>
-          <Fade in={show}>
-            <Card sx={{ minWidth: 275 }}>
-              <CardHeader title="Sign Up" />
-              <CardContent>
-                <Button
-                  fullWidth
-                  onClick={() => handleClick('google')}
-                  disabled={loading}
-                >
-                  Google
-                </Button>
-                <Button
-                  fullWidth
-                  onClick={() => handleClick('facebook')}
-                  disabled
-                >
-                  Facebook
-                </Button>
-                <Button
-                  fullWidth
-                  onClick={() => handleClick('twitch')}
-                  disabled
-                >
-                  Twitch
-                </Button>
-                <Button fullWidth onClick={() => handleClick('slack')} disabled>
-                  Slack
-                </Button>
-                <Button fullWidth onClick={() => handleClick('kakao')} disabled>
-                  Kakao
-                </Button>
-                <Button fullWidth onClick={() => handleClick('apple')} disabled>
-                  Apple
-                </Button>
-              </CardContent>
-            </Card>
-          </Fade>
-        </Box>
+        {account && (
+          <Box width="400px" marginTop={-20}>
+            <Fade in={account && show}>
+              <Card sx={{ minWidth: 275 }}>
+                <CardHeader title="Sign Up" />
+                <CardContent>
+                  <Button
+                    fullWidth
+                    onClick={() => handleClick('google')}
+                    disabled={loading}
+                  >
+                    Google
+                  </Button>
+                  <Button
+                    fullWidth
+                    onClick={() => handleClick('facebook')}
+                    disabled
+                  >
+                    Facebook
+                  </Button>
+                  <Button
+                    fullWidth
+                    onClick={() => handleClick('twitch')}
+                    disabled
+                  >
+                    Twitch
+                  </Button>
+                  <Button
+                    fullWidth
+                    onClick={() => handleClick('slack')}
+                    disabled
+                  >
+                    Slack
+                  </Button>
+                  <Button
+                    fullWidth
+                    onClick={() => handleClick('kakao')}
+                    disabled
+                  >
+                    Kakao
+                  </Button>
+                  <Button
+                    fullWidth
+                    onClick={() => handleClick('apple')}
+                    disabled
+                  >
+                    Apple
+                  </Button>
+                </CardContent>
+              </Card>
+            </Fade>
+          </Box>
+        )}
+        {!account && <ConnectButton />}
       </Box>
       <NewPasswordModal
         open={open}
