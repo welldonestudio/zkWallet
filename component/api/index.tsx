@@ -81,6 +81,7 @@ export default function ApiProvider({
     }
 
     const txb = await sendToken(req);
+    console.log(111, txb);
     signAndExecuteTransactionBlock(
       {
         chain: 'sui:devnet',
