@@ -81,17 +81,25 @@ export default function ApiProvider({
 
     const txb = await sendToken(req);
     console.log(2, txb);
-    signAndExecuteTransactionBlock(
-      {
-        chain: 'sui:devnet',
-        transactionBlock: TransactionBlock.from(txb) as any, // TODO
-      },
-      {
-        onSuccess: (result) => {
-          console.log('executed transaction block', result);
+
+    try {
+      signAndExecuteTransactionBlock(
+        {
+          chain: 'sui:devnet',
+          transactionBlock: TransactionBlock.from(txb) as any, // TODO
         },
-      },
-    );
+        {
+          onSuccess: (result) => {
+            console.log('executed transaction block', result);
+          },
+          onError: (result) => {
+            console.log(result);
+          }
+        },
+      );  
+    } catch (error) {
+      console.log(999, error);
+    }
     return '';
   };
 
