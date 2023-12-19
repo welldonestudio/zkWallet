@@ -14,7 +14,6 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { useCurrentWallet } from '@mysten/dapp-kit';
 import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
@@ -29,8 +28,6 @@ export const Balances = ({ balances }: { balances: ResponseBalnce[] }) => {
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
 
-  const { currentWallet } = useCurrentWallet();
-
   const [openSend, setOpenSend] = useState<boolean>(false);
   const [openStake, setOpenStake] = useState<boolean>(false);
 
@@ -39,7 +36,6 @@ export const Balances = ({ balances }: { balances: ResponseBalnce[] }) => {
     to: string,
     amount: string,
   ) => {
-    console.log(currentWallet); // TODO
     authState &&
       (await wallet.sendToken({
         auth: authState,
