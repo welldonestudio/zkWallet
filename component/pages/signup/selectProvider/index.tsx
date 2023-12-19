@@ -93,6 +93,7 @@ export const SelectProviderPage = () => {
         default:
           {
             if (account) {
+              console.log(123, account);
               const { url, randomness, maxEpoch, crypto, publicKey } =
                 await jwt.sui.getOAuthURL({
                   provider: 'google',
