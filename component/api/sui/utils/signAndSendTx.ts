@@ -49,9 +49,6 @@ export const signAndSendTx = async (
         transactionBlock: bytes,
         signature: zkLoginSignature,
       });
-      enqueueSnackbar(`success: ${txreceipt.digest}`, {
-        variant: 'success',
-      });
       return txreceipt.digest;
     }
     throw new Error(`wallet error (${request.auth.key.publicKey})`);

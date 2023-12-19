@@ -51,17 +51,17 @@ export const ApiContext = createContext({
     ): Promise<ResponseBalnce[]> => {
       throw new Error('wallet.getBalance is not supported');
     },
-    sendToken: (request: RequestSendToken): Promise<string> => {
-      throw new Error('wallet.sendToken is not supported');
-    },
-    stake: (request: RequestSuiStake): Promise<string> => {
-      throw new Error('wallet.stake is not supported');
-    },
-    unStake: (request: RequestSuiUnStake): Promise<string> => {
-      throw new Error('wallet.unStake is not supported');
-    },
     getStakes: (request: RequestGetStake): Promise<ResponseStake[]> => {
       throw new Error('wallet.getStakes is not supported');
+    },
+    sendToken: (request: RequestSendToken): Promise<string | void> => {
+      throw new Error('wallet.sendToken is not supported');
+    },
+    stake: (request: RequestSuiStake): Promise<string | void> => {
+      throw new Error('wallet.stake is not supported');
+    },
+    unStake: (request: RequestSuiUnStake): Promise<string | void> => {
+      throw new Error('wallet.unStake is not supported');
     },
   },
 });
@@ -74,16 +74,19 @@ export default function ApiProvider({
   const { mutate: signAndExecuteTransactionBlock } =
     useSignAndExecuteTransactionBlock();
 
-  const HandleSendToken = async (req: RequestSendToken): Promise<string> => {
-    console.log(1, req);
+  const HandleSendToken = async (
+    req: RequestSendToken,
+  ): Promise<string | void> => {
     if (req.password) {
-      return sendToken(req);
+      const hash = await sendToken(req);
+      enqueueSnackbar(`success: ${hash}`, {
+        variant: 'success',
+      });
+      return hash;
     }
 
-    const txb = await sendToken(req);
-    console.log(2, txb);
-
     try {
+      const txb = await sendToken(req);
       signAndExecuteTransactionBlock(
         {
           chain: 'sui:devnet',
@@ -91,20 +94,21 @@ export default function ApiProvider({
         },
         {
           onSuccess: (result) => {
-            console.log('executed transaction block', result);
+            enqueueSnackbar(`success: ${result.digest}`, {
+              variant: 'success',
+            });
           },
           onError: (result) => {
             enqueueSnackbar(result.message, {
               variant: 'error',
             });
-            throw(new Error(result.message));
-          }
+            throw new Error(result.message);
+          },
         },
-      );  
+      );
     } catch (error) {
-      throw(`${error}`);
+      throw `${error}`;
     }
-    return '';
   };
 
   return (
@@ -119,10 +123,10 @@ export default function ApiProvider({
         wallet: {
           getAddress: getAddress,
           getBalance: getBalance,
+          getStakes: getStakes,
           sendToken: HandleSendToken,
           stake: stake,
           unStake: unStake,
-          getStakes: getStakes,
         },
       }}
     >
