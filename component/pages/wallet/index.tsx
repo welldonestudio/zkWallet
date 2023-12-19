@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Grid } from '@mui/material';
+import { useCurrentAccount, useCurrentWallet } from '@mysten/dapp-kit';
 import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
@@ -17,6 +18,9 @@ export const WalletPage = () => {
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
 
+	const { currentWallet } = useCurrentWallet();
+	const currentAccount = useCurrentAccount();
+
   const [balances, setBalances] = useState<ResponseBalnce[]>([]);
 
   useEffect(() => {
@@ -29,6 +33,8 @@ export const WalletPage = () => {
         }));
       _balances && setBalances(_balances);
       console.log('balance', _balances);
+      console.log(1, currentWallet);
+      console.log(2, currentAccount);
     };
     walletState.wallets[0] && update();
   }, [walletState.wallets]);
