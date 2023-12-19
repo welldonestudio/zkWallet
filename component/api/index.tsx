@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import { useSignAndExecuteTransactionBlock } from '@mysten/dapp-kit';
+import { useSignTransactionBlock, useSuiClient } from '@mysten/dapp-kit';
 import { TransactionBlock } from '@mysten/sui.js/transactions';
 import { enqueueSnackbar } from 'notistack';
 
@@ -71,8 +71,9 @@ export default function ApiProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { mutate: signAndExecuteTransactionBlock } =
-    useSignAndExecuteTransactionBlock();
+  const { mutate: signTransactionBlock } =
+  useSignTransactionBlock();
+  const client = useSuiClient();
 
   const HandleSendToken = async (
     req: RequestSendToken,
@@ -87,15 +88,24 @@ export default function ApiProvider({
 
     try {
       const txb = await sendToken(req);
-      signAndExecuteTransactionBlock(
+      signTransactionBlock(
         {
           chain: 'sui:devnet',
           transactionBlock: TransactionBlock.from(txb) as any, // TODO
         },
         {
           onSuccess: (result) => {
-            enqueueSnackbar(`success: ${result.digest}`, {
-              variant: 'success',
+            client.executeTransactionBlock({
+              transactionBlock: result.transactionBlockBytes,
+              signature: result.signature,
+            }).then((txreceipt) => {
+              enqueueSnackbar(`success: ${txreceipt.digest}`, {
+                variant: 'success',
+              });
+            }).catch((error) => {
+              enqueueSnackbar(`${error}`, {
+                variant: 'error',
+              });              
             });
           },
           onError: (result) => {
