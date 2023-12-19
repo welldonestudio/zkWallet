@@ -11,6 +11,7 @@ import { sendToken } from './sendToken';
 import { stake } from './stake';
 import { getOAuthURL } from './sui/getOAuthURL';
 import { getZkProof } from './sui/getZkProof';
+import { getZkSignature } from './sui/utils/getZkSignature';
 import { unStake } from './unStake';
 
 import type {
@@ -88,6 +89,7 @@ export default function ApiProvider({
 
     try {
       const txb = await sendToken(req);
+      //////////////////////////////
       signTransactionBlock(
         {
           chain: 'sui:devnet',
@@ -95,9 +97,22 @@ export default function ApiProvider({
         },
         {
           onSuccess: (result) => {
+            // create zk signature
+            const zkLoginSignature =
+              req.auth.jwt &&
+              req.wallet.proof &&
+              getZkSignature(req.auth, req.wallet, result.signature);
+
+            if (!zkLoginSignature) {
+              enqueueSnackbar('zkLoginSignature error', {
+                variant: 'error',
+              });
+              throw new Error(`zkLoginSignature error (${req.wallet.proof})`);
+            }
+
             client.executeTransactionBlock({
               transactionBlock: result.transactionBlockBytes,
-              signature: result.signature,
+              signature: zkLoginSignature,
             }).then((txreceipt) => {
               enqueueSnackbar(`success: ${txreceipt.digest}`, {
                 variant: 'success',
@@ -116,6 +131,7 @@ export default function ApiProvider({
           },
         },
       );
+      //////////////////////////////
     } catch (error) {
       throw `${error}`;
     }
