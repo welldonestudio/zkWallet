@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Grid } from '@mui/material';
+import { ConnectButton, useCurrentAccount } from '@mysten/dapp-kit';
 import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
@@ -16,6 +17,8 @@ export const WalletPage = () => {
   const authState = useSelector(selectAuthState);
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
+
+  const account = useCurrentAccount();
 
   const [balances, setBalances] = useState<ResponseBalnce[]>([]);
 
@@ -35,14 +38,17 @@ export const WalletPage = () => {
 
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={6}>
-          <Balances balances={balances} />
+      {!account && <ConnectButton />}
+      {account && (
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6} md={6}>
+            <Balances balances={balances} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={6}>
+            <Assets balances={balances} />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <Assets balances={balances} />
-        </Grid>
-      </Grid>
+      )}
     </Layout>
   );
 };
