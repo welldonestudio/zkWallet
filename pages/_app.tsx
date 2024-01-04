@@ -28,7 +28,7 @@ function App({ Component, pageProps }: AppProps) {
             anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
           />
           <PersistGate persistor={store.__persistor} loading={<></>}>
-            <WalletProvider>
+            <WalletProvider autoConnect>
               <ApiProvider>{<Component {...pageProps} />}</ApiProvider>
             </WalletProvider>
           </PersistGate>
