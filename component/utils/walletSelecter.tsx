@@ -106,7 +106,7 @@ export const WalletSelecter = () => {
 
   return (
     <>
-      {!account && <ConnectButton connectText='Wallet' />}
+      {!(account || selected) && <ConnectButton connectText='Wallet' />}
       {!!selected && (
         <>
           <TextField
