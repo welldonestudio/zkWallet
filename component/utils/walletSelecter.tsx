@@ -13,6 +13,7 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
+import { ConnectButton, useCurrentAccount } from '@mysten/dapp-kit';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -28,6 +29,7 @@ export const WalletSelecter = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const account = useCurrentAccount();
   const authState = useSelector(selectAuthState);
   const { index, selected, wallets } = useSelector(selectWalletState);
 
@@ -104,6 +106,7 @@ export const WalletSelecter = () => {
 
   return (
     <>
+      {!account && <ConnectButton connectText='Wallet' />}
       {!!selected && (
         <>
           <TextField

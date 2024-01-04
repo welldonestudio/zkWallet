@@ -8,7 +8,7 @@ import {
   CardHeader,
   Fade,
 } from '@mui/material';
-import { ConnectButton, useCurrentAccount } from '@mysten/dapp-kit';
+import { useCurrentAccount } from '@mysten/dapp-kit';
 import { hash } from 'argon2-browser';
 import { JWE, JWK, util } from 'node-jose';
 import { useDispatch, useSelector } from 'react-redux';
@@ -193,7 +193,6 @@ export const SelectProviderPage = () => {
             </Fade>
           </Box>
         )}
-        {!account && <ConnectButton />}
       </Box>
       <NewPasswordModal
         open={open}
