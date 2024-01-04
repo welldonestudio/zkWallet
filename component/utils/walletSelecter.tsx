@@ -13,7 +13,7 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-import { ConnectButton, useCurrentAccount } from '@mysten/dapp-kit';
+import { ConnectButton, useCurrentAccount, useDisconnectWallet } from '@mysten/dapp-kit';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -30,6 +30,7 @@ export const WalletSelecter = () => {
   const router = useRouter();
 
   const account = useCurrentAccount();
+  const { mutate: disconnect } = useDisconnectWallet();
   const authState = useSelector(selectAuthState);
   const { index, selected, wallets } = useSelector(selectWalletState);
 
@@ -163,6 +164,7 @@ export const WalletSelecter = () => {
             <MenuItem
               onClick={() => {
                 handleClose();
+                disconnect();
                 dispatch(setAuthState(undefined));
                 dispatch(resetWallet());
                 router.push('/signup');
