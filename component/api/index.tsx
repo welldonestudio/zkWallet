@@ -72,66 +72,89 @@ export default function ApiProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { mutate: signTransactionBlock } =
-  useSignTransactionBlock();
+  const { mutate: signTransactionBlock } = useSignTransactionBlock();
   const client = useSuiClient();
+
+  const SignTransactionBlock = (
+    req: RequestSendToken | RequestSuiStake,
+    txb: string,
+  ) => {
+    signTransactionBlock(
+      {
+        chain: 'sui:devnet', // TODO
+        transactionBlock: TransactionBlock.from(txb) as any, // TODO
+      },
+      {
+        onSuccess: (result) => {
+          // create zk signature
+          const zkLoginSignature =
+            req.auth.jwt &&
+            req.wallet.proof &&
+            getZkSignature(req.auth, req.wallet, result.signature);
+
+          if (!zkLoginSignature) {
+            enqueueSnackbar('zkLoginSignature error', {
+              variant: 'error',
+            });
+            throw new Error(`zkLoginSignature error (${req.wallet.proof})`);
+          }
+
+          client
+            .executeTransactionBlock({
+              transactionBlock: result.transactionBlockBytes,
+              signature: zkLoginSignature,
+            })
+            .then((txreceipt) => {
+              enqueueSnackbar(`success: ${txreceipt.digest}`, {
+                variant: 'success',
+              });
+            })
+            .catch((error) => {
+              enqueueSnackbar(`${error}`, {
+                variant: 'error',
+              });
+            });
+        },
+        onError: (result) => {
+          enqueueSnackbar(result.message, {
+            variant: 'error',
+          });
+          throw new Error(result.message);
+        },
+      },
+    );
+  };
 
   const HandleSendToken = async (
     req: RequestSendToken,
   ): Promise<string | void> => {
-    if (req.password) {
-      const hash = await sendToken(req);
-      enqueueSnackbar(`success: ${hash}`, {
-        variant: 'success',
-      });
-      return hash;
-    }
-
     try {
-      const txb = await sendToken(req);
-      //////////////////////////////
-      signTransactionBlock(
-        {
-          chain: 'sui:devnet',
-          transactionBlock: TransactionBlock.from(txb) as any, // TODO
-        },
-        {
-          onSuccess: (result) => {
-            // create zk signature
-            const zkLoginSignature =
-              req.auth.jwt &&
-              req.wallet.proof &&
-              getZkSignature(req.auth, req.wallet, result.signature);
+      const data = await sendToken(req);
 
-            if (!zkLoginSignature) {
-              enqueueSnackbar('zkLoginSignature error', {
-                variant: 'error',
-              });
-              throw new Error(`zkLoginSignature error (${req.wallet.proof})`);
-            }
+      if (req.password) {
+        enqueueSnackbar(`success: ${data}`, {
+          variant: 'success',
+        });
+        return data;
+      }
+      SignTransactionBlock(req, data);
+    } catch (error) {
+      throw `${error}`;
+    }
+  };
 
-            client.executeTransactionBlock({
-              transactionBlock: result.transactionBlockBytes,
-              signature: zkLoginSignature,
-            }).then((txreceipt) => {
-              enqueueSnackbar(`success: ${txreceipt.digest}`, {
-                variant: 'success',
-              });
-            }).catch((error) => {
-              enqueueSnackbar(`${error}`, {
-                variant: 'error',
-              });              
-            });
-          },
-          onError: (result) => {
-            enqueueSnackbar(result.message, {
-              variant: 'error',
-            });
-            throw new Error(result.message);
-          },
-        },
-      );
-      //////////////////////////////
+  const HandleStakeToken = async (
+    req: RequestSuiStake,
+  ): Promise<string | void> => {
+    try {
+      const data = await stake(req);
+      if (req.password) {
+        enqueueSnackbar(`success: ${data}`, {
+          variant: 'success',
+        });
+        return data;
+      }
+      SignTransactionBlock(req, data);
     } catch (error) {
       throw `${error}`;
     }
@@ -151,7 +174,7 @@ export default function ApiProvider({
           getBalance: getBalance,
           getStakes: getStakes,
           sendToken: HandleSendToken,
-          stake: stake,
+          stake: HandleStakeToken,
           unStake: unStake,
         },
       }}
