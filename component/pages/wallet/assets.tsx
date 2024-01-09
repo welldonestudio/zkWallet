@@ -58,6 +58,7 @@ export const Assets = ({ balances }: { balances: ResponseBalnce[] }) => {
           address: walletState.selected,
         }));
       _stakes && setStakes(_stakes);
+      _stakes && console.log(_stakes)
     };
     walletState.wallets[0] && update();
   }, [walletState.wallets]);
