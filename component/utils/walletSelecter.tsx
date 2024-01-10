@@ -14,7 +14,7 @@ import {
   Tooltip,
 } from '@mui/material';
 import {
-  ConnectButton,
+  ConnectModal,
   useCurrentAccount,
   useDisconnectWallet,
 } from '@mysten/dapp-kit';
@@ -111,7 +111,11 @@ export const WalletSelecter = () => {
 
   return (
     <>
-      {!(account || selected) && <ConnectButton connectText="Wallet" />}
+      <ConnectModal
+        open={!(account || selected)}
+        trigger={<></>}
+        onOpenChange={() => {}}
+      />
       {!!selected && (
         <>
           <TextField
