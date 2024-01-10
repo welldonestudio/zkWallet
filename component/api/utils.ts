@@ -27,6 +27,7 @@ export const utils = {
   },
   formatUnit: (value: string, decimal: number): string => {
     const num1 = (BigInt(value) / BigInt(decimal)).toString(10);
+    console.log(num1);
     if (num1.length > 0) {
       return `${num1}.${value.slice(num1.length)}`;
     }

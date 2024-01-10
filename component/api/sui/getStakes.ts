@@ -1,6 +1,7 @@
 import { SuiClient } from '@mysten/sui.js/client';
 
 import { getProviderUrl } from './utils/getProviderUrl';
+import { utils } from '../utils';
 
 import type { RequestGetStake, ResponseStake } from '../types';
 import type { ValidatorApy } from '@mysten/sui.js/client';
@@ -38,8 +39,8 @@ export const getStakes = async (
         validator: {
           name: '', // TODO
           address: item.validatorAddress,
-          totalAmount: totalAmount.toString(10),
-          estimatedReward: estimatedReward.toString(10),
+          totalAmount: utils.formatUnit(totalAmount.toString(10), 6),
+          estimatedReward: utils.formatUnit(estimatedReward.toString(10), 6),
           apy: getApy(apys, item.validatorAddress),
         },
         stakes: item.stakes.map((stake) => ({
@@ -50,8 +51,10 @@ export const getStakes = async (
               : stake.status === 'Pending'
                 ? 'pending'
                 : 'unstaked',
-          reward: (stake as any).estimatedReward || '',
-          amount: stake.principal,
+          reward: (stake as any).estimatedReward
+            ? utils.formatUnit((stake as any).estimatedReward, 6)
+            : '',
+          amount: utils.formatUnit(stake.principal, 6),
           activeEpoch: stake.stakeActiveEpoch,
           requestEpoch: stake.stakeRequestEpoch,
         })),
