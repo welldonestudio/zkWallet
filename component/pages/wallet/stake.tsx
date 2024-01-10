@@ -89,7 +89,7 @@ export const Stake = () => {
           <Accordion key={key} disableGutters elevation={0}>
             <MyAccordionSummary expandIcon={<ExpandMoreIcon />}>
               {validator.name} / {validator.totalAmount} /{' '}
-              {validator.estimatedReward}
+              {validator.estimatedReward} / {`${validator.apy} %`}
             </MyAccordionSummary>
             <AccordionDetails>
               <TableContainer>

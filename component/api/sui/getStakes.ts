@@ -8,7 +8,7 @@ import type { ValidatorApy } from '@mysten/sui.js/client';
 const getApy = (apys: ValidatorApy[], address: string) => {
   const item = apys.find((apy) => address === apy.address);
   return item ? (item.apy * 100).toFixed(2) : 'n/a';
-}
+};
 
 export const getStakes = async (
   request: RequestGetStake,
