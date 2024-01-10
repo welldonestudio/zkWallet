@@ -23,7 +23,7 @@ export const getBalance = async (
         value: item.totalBalance,
         fValue:
           item.coinType === '0x2::sui::SUI'
-            ? utils.formatUnit(item.totalBalance, 6)
+            ? utils.formatUnit(item.totalBalance, 9)
             : item.totalBalance,
         locked: item.lockedBalance,
       }),

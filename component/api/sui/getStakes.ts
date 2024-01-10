@@ -39,8 +39,8 @@ export const getStakes = async (
         validator: {
           name: '', // TODO
           address: item.validatorAddress,
-          totalAmount: utils.formatUnit(totalAmount.toString(10), 6),
-          estimatedReward: utils.formatUnit(estimatedReward.toString(10), 6),
+          totalAmount: utils.formatUnit(totalAmount.toString(10), 9),
+          estimatedReward: utils.formatUnit(estimatedReward.toString(10), 9),
           apy: getApy(apys, item.validatorAddress),
         },
         stakes: item.stakes.map((stake) => ({
@@ -52,9 +52,9 @@ export const getStakes = async (
                 ? 'pending'
                 : 'unstaked',
           reward: (stake as any).estimatedReward
-            ? utils.formatUnit((stake as any).estimatedReward, 6)
+            ? utils.formatUnit((stake as any).estimatedReward, 9)
             : '',
-          amount: utils.formatUnit(stake.principal, 6),
+          amount: utils.formatUnit(stake.principal, 9),
           activeEpoch: stake.stakeActiveEpoch,
           requestEpoch: stake.stakeRequestEpoch,
         })),
