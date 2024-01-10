@@ -28,6 +28,6 @@ export const utils = {
   formatUnit: (value: string, decimal: number): string => {
     const num =
       value.length > decimal ? value.slice(0, value.length - decimal) : '0';
-    return `${num}.${value.slice(num.length)}`;
+    return `${num}.${value.slice(num.length).replace(/0+$/, '')}`;
   },
 };
