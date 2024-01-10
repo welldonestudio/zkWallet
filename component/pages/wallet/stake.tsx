@@ -102,10 +102,21 @@ export const Stake = () => {
                   alignContent: 'center',
                 }}
               >
-                <Box>{validator.name || utils.shortenString( validator.address)}</Box>
+                <Stack marginLeft={2} sx={{ flexGrow: 1 }}>
+                  <Box>
+                    <Typography variant="caption" style={{ opacity: 0.5 }}>
+                      Validator
+                    </Typography>
+                  </Box>
+                  <Box>
+                    {validator.name || utils.shortenString(validator.address)}
+                  </Box>
+                </Stack>
                 <Stack marginLeft={2}>
                   <Box>
-                    <Typography variant="caption">APY</Typography>
+                    <Typography variant="caption" style={{ opacity: 0.5 }}>
+                      APY
+                    </Typography>
                   </Box>
                   <Box>{`${validator.apy} %`}</Box>
                 </Stack>
