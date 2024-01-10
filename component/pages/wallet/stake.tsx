@@ -17,6 +17,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 
@@ -55,17 +56,16 @@ export const Stake = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleUnStake = async (stakeId: string) => {
-    console.log(1, stakeId);
     try {
       setLoading(true);
       authState &&
-      (await wallet.unStake({
-        auth: authState,
-        wallet: walletState.wallets[0],
-        unStake: {
-          stakedSuiId: stakeId
-        },
-      }));      
+        (await wallet.unStake({
+          auth: authState,
+          wallet: walletState.wallets[0],
+          unStake: {
+            stakedSuiId: stakeId,
+          },
+        }));
     } catch (error) {
       console.log(error);
     } finally {
@@ -93,18 +93,33 @@ export const Stake = () => {
         {stakes.map(({ validator, stakes }, key) => (
           <Accordion key={key} disableGutters elevation={0}>
             <MyAccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', alignContent: 'center' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  alignContent: 'center',
+                }}
+              >
                 <Box>{validator.name}</Box>
                 <Stack marginLeft={2}>
-                  <Box>APY</Box>
+                  <Box>
+                    <Typography variant="caption">APY</Typography>
+                  </Box>
                   <Box>{`${validator.apy} %`}</Box>
                 </Stack>
                 <Stack marginLeft={2}>
-                  <Box>Total Stacked Amount</Box>
+                  <Box>
+                    <Typography variant="caption">
+                      Total Stacked Amount
+                    </Typography>
+                  </Box>
                   <Box>{validator.totalAmount}</Box>
                 </Stack>
                 <Stack marginLeft={2}>
-                  <Box>Estimate Reward</Box>
+                  <Box>
+                    <Typography variant="caption">Estimate Reward</Typography>
+                  </Box>
                   <Box>{validator.estimatedReward}</Box>
                 </Stack>
               </Box>

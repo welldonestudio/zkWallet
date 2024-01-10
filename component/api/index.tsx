@@ -76,12 +76,12 @@ export default function ApiProvider({
   const client = useSuiClient();
 
   const SignTransactionBlock = (
-    req: RequestSendToken | RequestSuiStake,
+    req: RequestSendToken | RequestSuiStake | RequestSuiUnStake,
     txb: string,
   ) => {
     signTransactionBlock(
       {
-        chain: 'sui:devnet', // TODO
+        chain: req.auth.network,
         transactionBlock: TransactionBlock.from(txb) as any, // TODO
       },
       {
@@ -160,6 +160,23 @@ export default function ApiProvider({
     }
   };
 
+  const HandleUnStakeToken = async (
+    req: RequestSuiUnStake,
+  ): Promise<string | void> => {
+    try {
+      const data = await unStake(req);
+      if (req.password) {
+        enqueueSnackbar(`success: ${data}`, {
+          variant: 'success',
+        });
+        return data;
+      }
+      SignTransactionBlock(req, data);
+    } catch (error) {
+      throw `${error}`;
+    }
+  };
+
   return (
     <ApiContext.Provider
       value={{
@@ -175,7 +192,7 @@ export default function ApiProvider({
           getStakes: getStakes,
           sendToken: HandleSendToken,
           stake: HandleStakeToken,
-          unStake: unStake,
+          unStake: HandleUnStakeToken,
         },
       }}
     >
