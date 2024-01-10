@@ -55,18 +55,22 @@ export const Stake = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleUnStake = async (stakeId: string) => {
-    /*
-    authState &&
-    (await wallet.stake({
-      auth: authState,
-      wallet: walletState.wallets[0],
-      password,
-      stake: {
-        amount,
-        validator: to,
-      },
-    }));
-    */
+    try {
+      setLoading(true);
+      authState &&
+      (await wallet.unStake({
+        auth: authState,
+        wallet: walletState.wallets[0],
+        unStake: {
+          stakedSuiId: stakeId
+        },
+      }));      
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+
   };
 
   useEffect(() => {
@@ -89,7 +93,7 @@ export const Stake = () => {
         {stakes.map(({ validator, stakes }, key) => (
           <Accordion key={key} disableGutters elevation={0}>
             <MyAccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Box>
+              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', alignContent: 'center' }}>
                 <Box>{validator.name}</Box>
                 <Stack>
                   <Box>APY</Box>
