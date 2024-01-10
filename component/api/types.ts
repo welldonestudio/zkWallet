@@ -67,6 +67,7 @@ export interface ResponseStake {
     address: string;
     totalAmount: string;
     estimatedReward: string;
+    apy: string;
   };
   stakes: StakeData[];
 }

@@ -11,12 +11,15 @@ export const getStakes = async (
     let url = getProviderUrl(request.auth.network);
     const client = new SuiClient({ url });
 
-    const res = await client.getStakes({
+    const apys = await client.getValidatorsApy();
+    console.log(111, apys);
+
+    const stakes = await client.getStakes({
       owner: request.address,
     });
 
     const staking: ResponseStake[] = [];
-    res.forEach((item) => {
+    stakes.forEach((item) => {
       let totalAmount = BigInt(0);
       let estimatedReward = BigInt(0);
 
@@ -32,6 +35,7 @@ export const getStakes = async (
           address: item.validatorAddress,
           totalAmount: totalAmount.toString(10),
           estimatedReward: estimatedReward.toString(10),
+          apy: '',
         },
         stakes: item.stakes.map((stake) => ({
           id: stake.stakedSuiId,

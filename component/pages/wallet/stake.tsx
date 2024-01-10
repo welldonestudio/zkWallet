@@ -7,6 +7,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Button,
   Chip,
   styled,
   Table,
@@ -50,6 +51,22 @@ export const Stake = () => {
   const { wallet } = useContextApi();
 
   const [stakes, setStakes] = useState<ResponseStake[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleUnStake = async (stakeId: string) => {
+    /*
+    authState &&
+    (await wallet.stake({
+      auth: authState,
+      wallet: walletState.wallets[0],
+      password,
+      stake: {
+        amount,
+        validator: to,
+      },
+    }));
+    */
+  };
 
   useEffect(() => {
     const update = async () => {
@@ -83,39 +100,50 @@ export const Stake = () => {
                       <TableCell align="left">Status</TableCell>
                       <TableCell align="left">Active Epoch</TableCell>
                       <TableCell align="right">Reward</TableCell>
+                      <TableCell align="right" />
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {stakes.map((item, key2) => (
+                    {stakes.map((stake, key2) => (
                       <TableRow key={key2}>
-                        <TableCell align="left">{item.amount}</TableCell>
+                        <TableCell align="left">{stake.amount}</TableCell>
                         <TableCell align="left">
                           <>
-                            {item.status === 'active' && (
+                            {stake.status === 'active' && (
                               <Chip
-                                label={item.status}
+                                label={stake.status}
                                 color="success"
                                 size="small"
                               />
                             )}
-                            {item.status === 'pending' && (
+                            {stake.status === 'pending' && (
                               <Chip
-                                label={item.status}
+                                label={stake.status}
                                 color="info"
                                 size="small"
                               />
                             )}
-                            {item.status === 'unstaked' && (
+                            {stake.status === 'unstaked' && (
                               <Chip
-                                label={item.status}
+                                label={stake.status}
                                 color="warning"
                                 size="small"
                               />
                             )}
                           </>
                         </TableCell>
-                        <TableCell align="left">{item.activeEpoch}</TableCell>
-                        <TableCell align="right">{item.reward}</TableCell>
+                        <TableCell align="left">{stake.activeEpoch}</TableCell>
+                        <TableCell align="right">{stake.reward}</TableCell>
+                        <TableCell align="right">
+                          <Button
+                            disabled={loading}
+                            onClick={() => {
+                              handleUnStake(stake.id);
+                            }}
+                          >
+                            Unstake
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
