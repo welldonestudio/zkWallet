@@ -101,6 +101,7 @@ export const Stake = () => {
                   flexDirection: 'row',
                   alignItems: 'center',
                   alignContent: 'center',
+                  width: '100%',
                 }}
               >
                 <Box sx={{ flexGrow: 1 }}>
@@ -111,11 +112,11 @@ export const Stake = () => {
                       </Typography>
                     </Box>
                     <Box>
-                      <Hidden smUp>
+                      <Hidden smDown>
                         {validator.name ||
                           utils.shortenString(validator.address, 8, 8)}
                       </Hidden>
-                      <Hidden smDown>
+                      <Hidden smUp>
                         {validator.name ||
                           utils.shortenString(validator.address)}
                       </Hidden>
