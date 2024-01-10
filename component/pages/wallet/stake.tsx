@@ -92,7 +92,6 @@ export const Stake = () => {
 
   return (
     <Grid item xs={12}>
-      asdf
       {stakes.map(({ validator, stakes }, key) => (
         <Accordion key={key} disableGutters elevation={0}>
           <MyAccordionSummary expandIcon={<ExpandMoreIcon />}>
