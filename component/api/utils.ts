@@ -25,4 +25,11 @@ export const utils = {
     }
     return str;
   },
+  formatUnit: (value: string, decimal: number): string => {
+    const num1 = (BigInt(value) / BigInt(decimal)).toString(10);
+    if (num1.length > 0) {
+      return `${num1}.${value.slice(num1.length)}`;
+    }
+    return `0.${value.padStart(decimal - value.length, '0')}`;
+  },
 };

@@ -103,9 +103,7 @@ export const Assets = () => {
                   <TableBody>
                     {balances.map((item, key) => (
                       <TableRow key={key}>
-                        <TableCell>
-                          {item.name === '0x2::sui::SUI' ? ' SUI' : item.name}
-                        </TableCell>
+                        <TableCell>{item.name}</TableCell>
                         <TableCell align="right">{item.value}</TableCell>
                         <TableCell align="right">
                           {item.type === '0x2::sui::SUI' && (

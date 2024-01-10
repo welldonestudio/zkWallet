@@ -9,6 +9,7 @@ import {
   Box,
   Button,
   Chip,
+  Hidden,
   Stack,
   styled,
   Table,
@@ -102,38 +103,53 @@ export const Stake = () => {
                   alignContent: 'center',
                 }}
               >
-                <Stack marginLeft={2} sx={{ flexGrow: 1 }}>
-                  <Box>
-                    <Typography variant="caption" style={{ opacity: 0.5 }}>
-                      Validator
-                    </Typography>
-                  </Box>
-                  <Box>
-                    {validator.name || utils.shortenString(validator.address)}
-                  </Box>
-                </Stack>
-                <Stack marginLeft={2}>
-                  <Box>
-                    <Typography variant="caption" style={{ opacity: 0.5 }}>
-                      APY
-                    </Typography>
-                  </Box>
-                  <Box>{`${validator.apy} %`}</Box>
-                </Stack>
-                <Stack marginLeft={2}>
-                  <Box>
-                    <Typography variant="caption">
-                      Total Stacked Amount
-                    </Typography>
-                  </Box>
-                  <Box>{validator.totalAmount}</Box>
-                </Stack>
-                <Stack marginLeft={2}>
-                  <Box>
-                    <Typography variant="caption">Estimate Reward</Typography>
-                  </Box>
-                  <Box>{validator.estimatedReward}</Box>
-                </Stack>
+                <Box sx={{ flexGrow: 1 }}>
+                  <Stack marginLeft={2}>
+                    <Box>
+                      <Typography variant="caption" style={{ opacity: 0.5 }}>
+                        Validator
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Hidden smUp>
+                        {validator.name ||
+                          utils.shortenString(validator.address, 8, 8)}
+                      </Hidden>
+                      <Hidden smDown>
+                        {validator.name ||
+                          utils.shortenString(validator.address)}
+                      </Hidden>
+                    </Box>
+                  </Stack>
+                </Box>
+                <Box marginLeft={2}>
+                  <Stack>
+                    <Box>
+                      <Typography variant="caption" style={{ opacity: 0.5 }}>
+                        APY
+                      </Typography>
+                    </Box>
+                    <Box>{`${validator.apy} %`}</Box>
+                  </Stack>
+                </Box>
+                <Box marginLeft={2}>
+                  <Stack>
+                    <Box>
+                      <Typography variant="caption">
+                        Total Stacked Amount
+                      </Typography>
+                    </Box>
+                    <Box>{validator.totalAmount}</Box>
+                  </Stack>
+                </Box>
+                <Box marginLeft={2}>
+                  <Stack>
+                    <Box>
+                      <Typography variant="caption">Estimate Reward</Typography>
+                    </Box>
+                    <Box>{validator.estimatedReward}</Box>
+                  </Stack>
+                </Box>
               </Box>
             </MyAccordionSummary>
             <AccordionDetails>

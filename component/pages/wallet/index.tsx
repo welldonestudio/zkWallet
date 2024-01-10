@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import { useCurrentAccount } from '@mysten/dapp-kit';
 
 import Layout from '@/component/layout';
@@ -12,10 +12,14 @@ export const WalletPage = () => {
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
       {account && (
-        <Stack spacing={4} paddingY={4}>
-          <Assets />
-          <Stake />
-        </Stack>
+        <Grid container spacing={4} paddingY={4}>
+          <Grid item xs={12}>
+            <Assets />
+          </Grid>
+          <Grid item xs={12}>
+            <Stake />
+          </Grid>
+        </Grid>
       )}
     </Layout>
   );

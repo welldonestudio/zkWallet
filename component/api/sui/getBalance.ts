@@ -1,6 +1,7 @@
 import { SuiClient } from '@mysten/sui.js/client';
 
 import { getProviderUrl } from './utils/getProviderUrl';
+import { utils } from '../utils';
 
 import type { RequestGetBalance, ResponseBalnce } from '../types';
 
@@ -17,9 +18,13 @@ export const getBalance = async (
     const balances: ResponseBalnce[] = [];
     res.forEach((item) =>
       balances.push({
-        name: item.coinType,
+        name: item.coinType === '0x2::sui::SUI' ? 'SUI' : item.coinType,
         type: item.coinType,
         value: item.totalBalance,
+        fValue:
+          item.coinType === '0x2::sui::SUI'
+            ? utils.formatUnit(item.totalBalance, 6)
+            : item.totalBalance,
         locked: item.lockedBalance,
       }),
     );

@@ -17,6 +17,7 @@ export interface ResponseBalnce {
   type: string;
   name: string;
   value: string;
+  fValue: string;
   locked: { [key: string]: string };
 }
 
