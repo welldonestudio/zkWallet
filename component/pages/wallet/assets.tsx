@@ -85,8 +85,8 @@ export const Assets = () => {
   }, [walletState.wallets]);
 
   return (
-    <Box>
-      <Grid container height="360px" spacing={2} paddingX={0}>
+    <Box height="360px">
+      <Grid container height="100%" spacing={2} paddingX={0}>
         <Grid item xs={12} sm={6} md={6}>
           <Card style={{ height: '100%' }}>
             <CardHeader title="Balance" />
@@ -131,45 +131,43 @@ export const Assets = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <Card
-            variant="outlined"
-            style={{ height: '100%', backgroundColor: 'transparent' }}
-          >
-            <CardHeader title="Tokens" />
-            <CardContent>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Token</TableCell>
-                      <TableCell align="right">Balance</TableCell>
-                      <TableCell align="right"></TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {balances
-                      .filter((item) => item.type !== '0x2::sui::SUI')
-                      .map((item, key) => (
-                        <TableRow key={key}>
-                          <TableCell>{item.name}</TableCell>
-                          <TableCell align="right">{item.fValue}</TableCell>
-                          <TableCell align="right">
-                            <IconButton
-                              size="small"
-                              onClick={() => setOpenSend(true)}
-                            >
-                              <SendIcon fontSize="small" />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </CardContent>
-          </Card>
-        </Grid>
+        <Card
+          variant="outlined"
+          style={{ height: '100%', backgroundColor: 'transparent' }}
+        >
+          <CardHeader title="Tokens" />
+          <CardContent>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Token</TableCell>
+                    <TableCell align="right">Balance</TableCell>
+                    <TableCell align="right"></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {balances
+                    .filter((item) => item.type !== '0x2::sui::SUI')
+                    .map((item, key) => (
+                      <TableRow key={key}>
+                        <TableCell>{item.name}</TableCell>
+                        <TableCell align="right">{item.fValue}</TableCell>
+                        <TableCell align="right">
+                          <IconButton
+                            size="small"
+                            onClick={() => setOpenSend(true)}
+                          >
+                            <SendIcon fontSize="small" />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </CardContent>
+        </Card>
       </Grid>
       <SendTokenModal
         title="Transfer Token"

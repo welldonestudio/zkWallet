@@ -7,6 +7,8 @@ import {
   CardContent,
   CardHeader,
   Fade,
+  Grid,
+  Typography,
 } from '@mui/material';
 import { useCurrentAccount } from '@mysten/dapp-kit';
 import { hash } from 'argon2-browser';
@@ -20,6 +22,39 @@ import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
 import { DEFAULT_NETWORK, REDIRECT_AUTH_URL } from '@/store/slice/config';
 
 import type { PROVIDER } from '@/store/slice/config';
+
+const BUTTONS: { name: PROVIDER; src: string; disabled: boolean }[] = [
+  {
+    name: 'google',
+    src: '/images/provider/google.svg',
+    disabled: false,
+  },
+  {
+    name: 'apple',
+    src: '/images/provider/apple.svg',
+    disabled: true,
+  },
+  {
+    name: 'facebook',
+    src: '/images/provider/facebook.svg',
+    disabled: true,
+  },
+  {
+    name: 'twitch',
+    src: '/images/provider/twitch.svg',
+    disabled: true,
+  },
+  {
+    name: 'slack',
+    src: '/images/provider/slack.svg',
+    disabled: true,
+  },
+  {
+    name: 'kakao',
+    src: '/images/provider/kakao.svg',
+    disabled: true,
+  },
+];
 
 export const SelectProviderPage = () => {
   const authState = useSelector(selectAuthState);
@@ -146,48 +181,38 @@ export const SelectProviderPage = () => {
               <Card sx={{ minWidth: 275 }}>
                 <CardHeader title="Sign Up" />
                 <CardContent>
-                  <Button
-                    fullWidth
-                    onClick={() => handleClick('google')}
-                    disabled={loading}
-                  >
-                    Google
-                  </Button>
-                  <Button
-                    fullWidth
-                    onClick={() => handleClick('facebook')}
-                    disabled
-                  >
-                    Facebook
-                  </Button>
-                  <Button
-                    fullWidth
-                    onClick={() => handleClick('twitch')}
-                    disabled
-                  >
-                    Twitch
-                  </Button>
-                  <Button
-                    fullWidth
-                    onClick={() => handleClick('slack')}
-                    disabled
-                  >
-                    Slack
-                  </Button>
-                  <Button
-                    fullWidth
-                    onClick={() => handleClick('kakao')}
-                    disabled
-                  >
-                    Kakao
-                  </Button>
-                  <Button
-                    fullWidth
-                    onClick={() => handleClick('apple')}
-                    disabled
-                  >
-                    Apple
-                  </Button>
+                  <Grid container spacing={2}>
+                    {BUTTONS.map((item, key) => (
+                      <Grid item key={key} sm={6}>
+                        <Button
+                          fullWidth
+                          disableRipple
+                          onClick={() => handleClick(item.name)}
+                          disabled={item.disabled || loading}
+                          startIcon={<img src={item.src} />}
+                          sx={{
+                            color: 'black',
+                            opacity: item.disabled ? 0.5 : 1,
+                            backgroundColor: 'white',
+                            '&:hover': {
+                              color: 'white',
+                            },
+                          }}
+                        >
+                          <Typography
+                            alignSelf="center"
+                            variant="body2"
+                            textTransform="capitalize"
+                            style={{
+                              fontWeight: 600,
+                            }}
+                          >
+                            {item.name}
+                          </Typography>
+                        </Button>
+                      </Grid>
+                    ))}
+                  </Grid>
                 </CardContent>
               </Card>
             </Fade>
