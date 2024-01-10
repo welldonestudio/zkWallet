@@ -52,13 +52,19 @@ export interface RequestGetStake {
   address: string;
 }
 
-export interface ResponseStake {
+export interface StakeData {
   id: string;
   status: 'pending' | 'active' | 'unstaked';
   amount: string;
   reward: string;
+  activeEpoch: string;
+  requestEpoch: string;
+}
+
+export interface ResponseStake {
   validator: {
     name: string;
     address: string;
   };
+  stakes: StakeData[];
 }

@@ -14,11 +14,16 @@ export const getStakes = async (
     const res = await client.getStakes({
       owner: request.address,
     });
+
     const staking: ResponseStake[] = [];
-    console.log(res);
+    console.log(1, res);
     res.forEach((item) =>
-      item.stakes.forEach((stake) =>
-        staking.push({
+      staking.push({
+        validator: {
+          name: item.validatorAddress,
+          address: item.validatorAddress,
+        },
+        stakes: item.stakes.map((stake) => ({
           id: stake.stakedSuiId,
           status:
             stake.status === 'Active'
@@ -28,12 +33,10 @@ export const getStakes = async (
                 : 'unstaked',
           reward: (stake as any).estimatedReward || '',
           amount: stake.principal,
-          validator: {
-            name: item.validatorAddress,
-            address: item.validatorAddress,
-          },
-        }),
-      ),
+          activeEpoch: stake.stakeActiveEpoch,
+          requestEpoch: stake.stakeRequestEpoch,
+        })),
+      }),
     );
     return staking;
   } catch (error) {

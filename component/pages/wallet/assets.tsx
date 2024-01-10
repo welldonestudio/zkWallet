@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import SavingsIcon from '@mui/icons-material/Savings';
 import SendIcon from '@mui/icons-material/Send';
@@ -24,10 +24,12 @@ import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import type { ResponseBalnce } from '@/component/api/types';
 
-export const Assets = ({ balances }: { balances: ResponseBalnce[] }) => {
+export const Assets = () => {
   const authState = useSelector(selectAuthState);
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
+
+  const [balances, setBalances] = useState<ResponseBalnce[]>([]);
 
   const [openSend, setOpenSend] = useState<boolean>(false);
   const [openStake, setOpenStake] = useState<boolean>(false);
@@ -67,9 +69,23 @@ export const Assets = ({ balances }: { balances: ResponseBalnce[] }) => {
       }));
   };
 
+  useEffect(() => {
+    const update = async () => {
+      const _balances =
+        authState &&
+        (await wallet.getBalance({
+          auth: authState,
+          address: walletState.selected,
+        }));
+      _balances && setBalances(_balances);
+      console.log('balance', _balances);
+    };
+    walletState.wallets[0] && update();
+  }, [walletState.wallets]);
+
   return (
     <>
-      <Grid container height="360px" width="100%" spacing={2}>
+      <Grid container height="360px" width="100%" spacing={2} paddingX={0}>
         <Grid item xs={12} sm={6} md={6}>
           <Card style={{ height: '100%' }}>
             <CardHeader title="Balance" />

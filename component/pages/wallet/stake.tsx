@@ -24,7 +24,7 @@ export const Stake = () => {
           address: walletState.selected,
         }));
       _stakes && setStakes(_stakes);
-      _stakes && console.log(_stakes);
+      _stakes && console.log(2, _stakes);
     };
     walletState.wallets[0] && update();
   }, [walletState.wallets]);
