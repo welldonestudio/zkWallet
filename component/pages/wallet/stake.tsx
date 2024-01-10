@@ -9,6 +9,7 @@ import {
   Box,
   Button,
   Chip,
+  Grid,
   Hidden,
   Stack,
   styled,
@@ -90,143 +91,141 @@ export const Stake = () => {
   }, [walletState.wallets]);
 
   return (
-    <>
-      <Box>
-        {stakes.map(({ validator, stakes }, key) => (
-          <Accordion key={key} disableGutters elevation={0}>
-            <MyAccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  alignContent: 'center',
-                  width: '100%',
-                }}
-              >
-                <Box sx={{ flexGrow: 1 }}>
-                  <Stack marginLeft={2}>
-                    <Box>
-                      <Typography variant="caption" style={{ opacity: 0.5 }}>
-                        Validator
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <Hidden smDown>
-                        {validator.name ||
-                          utils.shortenString(validator.address, 8, 8)}
-                      </Hidden>
-                      <Hidden smUp>
-                        {validator.name ||
-                          utils.shortenString(validator.address)}
-                      </Hidden>
-                    </Box>
-                  </Stack>
-                </Box>
-                <Box marginLeft={2}>
-                  <Stack>
-                    <Box>
-                      <Typography
-                        variant="caption"
-                        style={{ opacity: 0.5 }}
-                        textAlign="end"
-                      >
-                        Total Stacked Amount
-                      </Typography>
-                    </Box>
-                    <Box sx={{ textAlign: 'end' }}>{validator.totalAmount}</Box>
-                  </Stack>
-                </Box>
-                <Box marginLeft={2}>
-                  <Stack>
-                    <Box>
-                      <Typography
-                        variant="caption"
-                        style={{ opacity: 0.5 }}
-                        textAlign="end"
-                      >
-                        Estimate Reward
-                      </Typography>
-                    </Box>
-                    <Box sx={{ textAlign: 'end' }}>
-                      {validator.estimatedReward}
-                    </Box>
-                  </Stack>
-                </Box>
-                <Box marginLeft={2}>
-                  <Stack>
-                    <Box>
-                      <Typography variant="caption" style={{ opacity: 0.5 }}>
-                        APY
-                      </Typography>
-                    </Box>
-                    <Box>{`${validator.apy} %`}</Box>
-                  </Stack>
-                </Box>
+    <Grid item xs={12}>
+      asdf
+      {stakes.map(({ validator, stakes }, key) => (
+        <Accordion key={key} disableGutters elevation={0}>
+          <MyAccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                alignContent: 'center',
+                width: '100%',
+              }}
+            >
+              <Box sx={{ flexGrow: 1 }}>
+                <Stack marginLeft={2}>
+                  <Box>
+                    <Typography variant="caption" style={{ opacity: 0.5 }}>
+                      Validator
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Hidden smDown>
+                      {validator.name ||
+                        utils.shortenString(validator.address, 8, 8)}
+                    </Hidden>
+                    <Hidden smUp>
+                      {validator.name || utils.shortenString(validator.address)}
+                    </Hidden>
+                  </Box>
+                </Stack>
               </Box>
-            </MyAccordionSummary>
-            <AccordionDetails>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="left">Deligated Stake</TableCell>
-                      <TableCell align="left">Status</TableCell>
-                      <TableCell align="left">Active Epoch</TableCell>
-                      <TableCell align="right">Reward</TableCell>
-                      <TableCell align="right" />
+              <Box marginLeft={2}>
+                <Stack>
+                  <Box>
+                    <Typography
+                      variant="caption"
+                      style={{ opacity: 0.5 }}
+                      textAlign="end"
+                    >
+                      Total Stacked Amount
+                    </Typography>
+                  </Box>
+                  <Box sx={{ textAlign: 'end' }}>{validator.totalAmount}</Box>
+                </Stack>
+              </Box>
+              <Box marginLeft={2}>
+                <Stack>
+                  <Box>
+                    <Typography
+                      variant="caption"
+                      style={{ opacity: 0.5 }}
+                      textAlign="end"
+                    >
+                      Estimate Reward
+                    </Typography>
+                  </Box>
+                  <Box sx={{ textAlign: 'end' }}>
+                    {validator.estimatedReward}
+                  </Box>
+                </Stack>
+              </Box>
+              <Box marginLeft={2}>
+                <Stack>
+                  <Box>
+                    <Typography variant="caption" style={{ opacity: 0.5 }}>
+                      APY
+                    </Typography>
+                  </Box>
+                  <Box>{`${validator.apy} %`}</Box>
+                </Stack>
+              </Box>
+            </Box>
+          </MyAccordionSummary>
+          <AccordionDetails>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="left">Deligated Stake</TableCell>
+                    <TableCell align="left">Status</TableCell>
+                    <TableCell align="left">Active Epoch</TableCell>
+                    <TableCell align="right">Reward</TableCell>
+                    <TableCell align="right" />
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {stakes.map((stake, key2) => (
+                    <TableRow key={key2}>
+                      <TableCell align="left">{stake.amount}</TableCell>
+                      <TableCell align="left">
+                        <>
+                          {stake.status === 'active' && (
+                            <Chip
+                              label={stake.status}
+                              color="success"
+                              size="small"
+                            />
+                          )}
+                          {stake.status === 'pending' && (
+                            <Chip
+                              label={stake.status}
+                              color="info"
+                              size="small"
+                            />
+                          )}
+                          {stake.status === 'unstaked' && (
+                            <Chip
+                              label={stake.status}
+                              color="warning"
+                              size="small"
+                            />
+                          )}
+                        </>
+                      </TableCell>
+                      <TableCell align="left">{`Epoch ${stake.activeEpoch}`}</TableCell>
+                      <TableCell align="right">{stake.reward}</TableCell>
+                      <TableCell align="right">
+                        <Button
+                          disabled={loading}
+                          onClick={() => {
+                            handleUnStake(stake.id);
+                          }}
+                        >
+                          Unstake
+                        </Button>
+                      </TableCell>
                     </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {stakes.map((stake, key2) => (
-                      <TableRow key={key2}>
-                        <TableCell align="left">{stake.amount}</TableCell>
-                        <TableCell align="left">
-                          <>
-                            {stake.status === 'active' && (
-                              <Chip
-                                label={stake.status}
-                                color="success"
-                                size="small"
-                              />
-                            )}
-                            {stake.status === 'pending' && (
-                              <Chip
-                                label={stake.status}
-                                color="info"
-                                size="small"
-                              />
-                            )}
-                            {stake.status === 'unstaked' && (
-                              <Chip
-                                label={stake.status}
-                                color="warning"
-                                size="small"
-                              />
-                            )}
-                          </>
-                        </TableCell>
-                        <TableCell align="left">{`Epoch ${stake.activeEpoch}`}</TableCell>
-                        <TableCell align="right">{stake.reward}</TableCell>
-                        <TableCell align="right">
-                          <Button
-                            disabled={loading}
-                            onClick={() => {
-                              handleUnStake(stake.id);
-                            }}
-                          >
-                            Unstake
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </AccordionDetails>
-          </Accordion>
-        ))}
-      </Box>
-    </>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </Grid>
   );
 };

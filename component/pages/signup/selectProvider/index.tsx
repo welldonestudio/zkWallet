@@ -183,7 +183,7 @@ export const SelectProviderPage = () => {
                 <CardContent>
                   <Grid container spacing={2}>
                     {BUTTONS.map((item, key) => (
-                      <Grid item key={key} sm={6}>
+                      <Grid item key={key} xs={6}>
                         <Button
                           fullWidth
                           disableRipple
