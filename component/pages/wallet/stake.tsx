@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
   Accordion,
@@ -7,6 +8,7 @@ import {
   AccordionSummary,
   Box,
   Chip,
+  styled,
   Table,
   TableBody,
   TableCell,
@@ -21,6 +23,26 @@ import { selectAuthState } from '@/store/slice/authSlice';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import type { ResponseStake } from '@/component/api/types';
+import type { AccordionSummaryProps } from '@mui/material';
+
+const MyAccordionSummary = styled((props: AccordionSummaryProps) => (
+  <AccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === 'dark'
+      ? 'rgba(255, 255, 255, .05)'
+      : 'rgba(0, 0, 0, .03)',
+  flexDirection: 'row-reverse',
+  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+    transform: 'rotate(90deg)',
+  },
+  '& .MuiAccordionSummary-content': {
+    marginLeft: theme.spacing(1),
+  },
+}));
 
 export const Stake = () => {
   const authState = useSelector(selectAuthState);
@@ -45,51 +67,63 @@ export const Stake = () => {
 
   return (
     <>
-    <Box>
-      {stakes.map(({ validator, stakes }, key) => (
-        <Accordion key={key} disableGutters elevation={0} square>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            {validator.name} / {validator.totalAmount} /{' '}
-            {validator.estimatedReward}
-          </AccordionSummary>
-          <AccordionDetails>
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="left">Deligated Stake</TableCell>
-                    <TableCell align="left">Status</TableCell>
-                    <TableCell align="left">Active Epoch</TableCell>
-                    <TableCell align="right">Reward</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {stakes.map((item, key2) => (
-                    <TableRow key={key2}>
-                      <TableCell align="left">{item.amount}</TableCell>
-                      <TableCell align="left">
-                        <>
-                          {item.status === 'active' && (
-                            <Chip label={item.status} color="success" />
-                          )}
-                          {item.status === 'pending' && (
-                            <Chip label={item.status} color="info" />
-                          )}
-                          {item.status === 'unstaked' && (
-                            <Chip label={item.status} color="warning" />
-                          )}
-                        </>
-                      </TableCell>
-                      <TableCell align="left">{item.activeEpoch}</TableCell>
-                      <TableCell align="right">{item.reward}</TableCell>
+      <Box>
+        {stakes.map(({ validator, stakes }, key) => (
+          <Accordion key={key} disableGutters elevation={0}>
+            <MyAccordionSummary expandIcon={<ExpandMoreIcon />}>
+              {validator.name} / {validator.totalAmount} /{' '}
+              {validator.estimatedReward}
+            </MyAccordionSummary>
+            <AccordionDetails>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="left">Deligated Stake</TableCell>
+                      <TableCell align="left">Status</TableCell>
+                      <TableCell align="left">Active Epoch</TableCell>
+                      <TableCell align="right">Reward</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </AccordionDetails>
-        </Accordion>
-      ))}
+                  </TableHead>
+                  <TableBody>
+                    {stakes.map((item, key2) => (
+                      <TableRow key={key2}>
+                        <TableCell align="left">{item.amount}</TableCell>
+                        <TableCell align="left">
+                          <>
+                            {item.status === 'active' && (
+                              <Chip
+                                label={item.status}
+                                color="success"
+                                size="small"
+                              />
+                            )}
+                            {item.status === 'pending' && (
+                              <Chip
+                                label={item.status}
+                                color="info"
+                                size="small"
+                              />
+                            )}
+                            {item.status === 'unstaked' && (
+                              <Chip
+                                label={item.status}
+                                color="warning"
+                                size="small"
+                              />
+                            )}
+                          </>
+                        </TableCell>
+                        <TableCell align="left">{item.activeEpoch}</TableCell>
+                        <TableCell align="right">{item.reward}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </AccordionDetails>
+          </Accordion>
+        ))}
       </Box>
     </>
   );
