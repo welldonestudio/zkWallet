@@ -65,6 +65,8 @@ export interface ResponseStake {
   validator: {
     name: string;
     address: string;
+    totalAmount: string;
+    estimatedReward: string;
   };
   stakes: StakeData[];
 }

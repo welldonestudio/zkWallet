@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import SavingsIcon from '@mui/icons-material/Savings';
 import SendIcon from '@mui/icons-material/Send';
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
@@ -84,7 +85,7 @@ export const Assets = () => {
   }, [walletState.wallets]);
 
   return (
-    <>
+    <Box>
       <Grid container height="360px" width="100%" spacing={2} paddingX={0}>
         <Grid item xs={12} sm={6} md={6}>
           <Card style={{ height: '100%' }}>
@@ -184,6 +185,6 @@ export const Assets = () => {
         onClose={() => setOpenStake(false)}
         confirm={handleStakeConfirm}
       />
-    </>
+    </Box>
   );
 };

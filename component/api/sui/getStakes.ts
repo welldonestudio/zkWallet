@@ -16,12 +16,22 @@ export const getStakes = async (
     });
 
     const staking: ResponseStake[] = [];
-    console.log(1, res);
-    res.forEach((item) =>
+    res.forEach((item) => {
+      let totalAmount = BigInt(0);
+      let estimatedReward = BigInt(0);
+
+      item.stakes.forEach((stake) => {
+        totalAmount = totalAmount + BigInt(stake.principal);
+        estimatedReward =
+          estimatedReward + BigInt((stake as any).estimatedReward || '0');
+      });
+
       staking.push({
         validator: {
           name: item.validatorAddress,
           address: item.validatorAddress,
+          totalAmount: totalAmount.toString(10),
+          estimatedReward: estimatedReward.toString(10),
         },
         stakes: item.stakes.map((stake) => ({
           id: stake.stakedSuiId,
@@ -36,8 +46,8 @@ export const getStakes = async (
           activeEpoch: stake.stakeActiveEpoch,
           requestEpoch: stake.stakeRequestEpoch,
         })),
-      }),
-    );
+      });
+    });
     return staking;
   } catch (error) {
     throw new Error(`${error}`);

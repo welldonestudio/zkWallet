@@ -1,5 +1,17 @@
 import { useEffect, useState } from 'react';
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
@@ -29,5 +41,40 @@ export const Stake = () => {
     walletState.wallets[0] && update();
   }, [walletState.wallets]);
 
-  return <>stake</>;
+  return (
+    <>
+      {stakes.map(({ validator, stakes }, key) => (
+        <Accordion key={key}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            {validator.name} / {validator.totalAmount} /{' '}
+            {validator.estimatedReward}
+          </AccordionSummary>
+          <AccordionDetails>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="left">Deligated Stake</TableCell>
+                    <TableCell align="left">Status</TableCell>
+                    <TableCell align="left">Active Epoch</TableCell>
+                    <TableCell align="right">Reward</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {stakes.map((item, key2) => (
+                    <TableRow key={key2}>
+                      <TableCell align="left">{item.amount}</TableCell>
+                      <TableCell align="left">{item.status}</TableCell>
+                      <TableCell align="left">{item.activeEpoch}</TableCell>
+                      <TableCell align="right">{item.reward}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </>
+  );
 };
