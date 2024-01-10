@@ -5,6 +5,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Chip,
   Table,
   TableBody,
   TableCell,
@@ -36,7 +37,7 @@ export const Stake = () => {
           address: walletState.selected,
         }));
       _stakes && setStakes(_stakes);
-      _stakes && console.log(2, _stakes);
+      _stakes && console.log('stakes', _stakes);
     };
     walletState.wallets[0] && update();
   }, [walletState.wallets]);
@@ -44,7 +45,7 @@ export const Stake = () => {
   return (
     <>
       {stakes.map(({ validator, stakes }, key) => (
-        <Accordion key={key}>
+        <Accordion key={key} disableGutters elevation={0} square>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             {validator.name} / {validator.totalAmount} /{' '}
             {validator.estimatedReward}
@@ -64,7 +65,19 @@ export const Stake = () => {
                   {stakes.map((item, key2) => (
                     <TableRow key={key2}>
                       <TableCell align="left">{item.amount}</TableCell>
-                      <TableCell align="left">{item.status}</TableCell>
+                      <TableCell align="left">
+                        <>
+                          {item.status === 'active' && (
+                            <Chip label={item.status} color="success" />
+                          )}
+                          {item.status === 'pending' && (
+                            <Chip label={item.status} color="info" />
+                          )}
+                          {item.status === 'unstaked' && (
+                            <Chip label={item.status} color="warning" />
+                          )}
+                        </>
+                      </TableCell>
                       <TableCell align="left">{item.activeEpoch}</TableCell>
                       <TableCell align="right">{item.reward}</TableCell>
                     </TableRow>
