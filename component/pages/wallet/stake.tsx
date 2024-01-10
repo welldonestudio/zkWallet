@@ -126,29 +126,41 @@ export const Stake = () => {
                 <Box marginLeft={2}>
                   <Stack>
                     <Box>
+                      <Typography
+                        variant="caption"
+                        style={{ opacity: 0.5 }}
+                        textAlign="end"
+                      >
+                        Total Stacked Amount
+                      </Typography>
+                    </Box>
+                    <Box sx={{ textAlign: 'end' }}>{validator.totalAmount}</Box>
+                  </Stack>
+                </Box>
+                <Box marginLeft={2}>
+                  <Stack>
+                    <Box>
+                      <Typography
+                        variant="caption"
+                        style={{ opacity: 0.5 }}
+                        textAlign="end"
+                      >
+                        Estimate Reward
+                      </Typography>
+                    </Box>
+                    <Box sx={{ textAlign: 'end' }}>
+                      {validator.estimatedReward}
+                    </Box>
+                  </Stack>
+                </Box>
+                <Box marginLeft={2}>
+                  <Stack>
+                    <Box>
                       <Typography variant="caption" style={{ opacity: 0.5 }}>
                         APY
                       </Typography>
                     </Box>
                     <Box>{`${validator.apy} %`}</Box>
-                  </Stack>
-                </Box>
-                <Box marginLeft={2}>
-                  <Stack>
-                    <Box>
-                      <Typography variant="caption">
-                        Total Stacked Amount
-                      </Typography>
-                    </Box>
-                    <Box>{validator.totalAmount}</Box>
-                  </Stack>
-                </Box>
-                <Box marginLeft={2}>
-                  <Stack>
-                    <Box>
-                      <Typography variant="caption">Estimate Reward</Typography>
-                    </Box>
-                    <Box>{validator.estimatedReward}</Box>
                   </Stack>
                 </Box>
               </Box>
