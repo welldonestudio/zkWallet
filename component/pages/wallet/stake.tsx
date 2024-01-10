@@ -55,6 +55,7 @@ export const Stake = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleUnStake = async (stakeId: string) => {
+    console.log(1, stakeId);
     try {
       setLoading(true);
       authState &&
@@ -70,7 +71,6 @@ export const Stake = () => {
     } finally {
       setLoading(false);
     }
-
   };
 
   useEffect(() => {
@@ -95,15 +95,15 @@ export const Stake = () => {
             <MyAccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', alignContent: 'center' }}>
                 <Box>{validator.name}</Box>
-                <Stack>
+                <Stack marginLeft={2}>
                   <Box>APY</Box>
                   <Box>{`${validator.apy} %`}</Box>
                 </Stack>
-                <Stack>
+                <Stack marginLeft={2}>
                   <Box>Total Stacked Amount</Box>
                   <Box>{validator.totalAmount}</Box>
                 </Stack>
-                <Stack>
+                <Stack marginLeft={2}>
                   <Box>Estimate Reward</Box>
                   <Box>{validator.estimatedReward}</Box>
                 </Stack>
