@@ -12,7 +12,7 @@ export const WalletPage = () => {
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
       {account && (
-        <Stack spacing={4} paddingTop={4}>
+        <Stack spacing={4} paddingY={4}>
           <Assets />
           <Stake />
         </Stack>

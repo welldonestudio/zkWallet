@@ -9,6 +9,7 @@ import {
   Box,
   Button,
   Chip,
+  Stack,
   styled,
   Table,
   TableBody,
@@ -88,8 +89,21 @@ export const Stake = () => {
         {stakes.map(({ validator, stakes }, key) => (
           <Accordion key={key} disableGutters elevation={0}>
             <MyAccordionSummary expandIcon={<ExpandMoreIcon />}>
-              {validator.name} / {validator.totalAmount} /{' '}
-              {validator.estimatedReward} / {`${validator.apy} %`}
+              <Box>
+                <Box>{validator.name}</Box>
+                <Stack>
+                  <Box>APY</Box>
+                  <Box>{`${validator.apy} %`}</Box>
+                </Stack>
+                <Stack>
+                  <Box>Total Stacked Amount</Box>
+                  <Box>{validator.totalAmount}</Box>
+                </Stack>
+                <Stack>
+                  <Box>Estimate Reward</Box>
+                  <Box>{validator.estimatedReward}</Box>
+                </Stack>
+              </Box>
             </MyAccordionSummary>
             <AccordionDetails>
               <TableContainer>
@@ -132,7 +146,7 @@ export const Stake = () => {
                             )}
                           </>
                         </TableCell>
-                        <TableCell align="left">{stake.activeEpoch}</TableCell>
+                        <TableCell align="left">{`Epoch ${stake.activeEpoch}`}</TableCell>
                         <TableCell align="right">{stake.reward}</TableCell>
                         <TableCell align="right">
                           <Button
