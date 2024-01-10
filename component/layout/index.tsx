@@ -2,6 +2,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import LoopIcon from '@mui/icons-material/Loop';
 import {
   Alert,
+  AlertTitle,
   Box,
   Breadcrumbs,
   Container,
@@ -43,12 +44,18 @@ export default function Layout({
       <main>
         <Container maxWidth="lg" sx={{ padding: 2 }}>
           <Stack spacing={2} marginY={2}>
+            {/*
             <Box width="100%">
               {DEFAULT_NETWORK !== 'sui:mainnet' && (
-                <Alert variant="filled" severity="warning">
-                  {DEFAULT_NETWORK === 'sui:devnet'
-                    ? 'Sui Devnet'
-                    : 'Sui Testnet'}
+                <Alert variant="outlined" severity="warning">
+                  <AlertTitle>
+                    {DEFAULT_NETWORK === 'sui:devnet'
+                      ? 'Devnet Alert'
+                      : 'Testnet Alert'}
+                  </AlertTitle>
+                  Please set your network to{' '}
+                  {DEFAULT_NETWORK === 'sui:devnet' ? 'DevNet' : 'TestNet'}
+                  . Otherwise, it will be difficult to use.
                 </Alert>
               )}
             </Box>
@@ -101,6 +108,7 @@ export default function Layout({
               </Box>
               {initialized && actions}
             </Box>
+            */}
             {initialized ? (
               <Box minHeight={'100vh'}>{children}</Box>
             ) : (

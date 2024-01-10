@@ -1,17 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import SendIcon from '@mui/icons-material/Send';
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
   IconButton,
+  Tab,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Tabs,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 
@@ -20,14 +23,16 @@ import SendTokenModal from '@/component/dialog/sendToken';
 import { selectAuthState } from '@/store/slice/authSlice';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
-import type { ResponseBalnce } from '@/component/api/types';
+import type { ResponseBalnce, ResponseStake } from '@/component/api/types';
 
-export const Assets = ({ balances }: { balances: ResponseBalnce[] }) => {
+export const Stake = ({ balances }: { balances: ResponseBalnce[] }) => {
   const authState = useSelector(selectAuthState);
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
 
   const [openSend, setOpenSend] = useState<boolean>(false);
+  const [stakes, setStakes] = useState<ResponseStake[]>([]);
+  const [tab, setTab] = useState(0);
 
   const handleSendConfirm = async (
     password: string,
@@ -46,6 +51,20 @@ export const Assets = ({ balances }: { balances: ResponseBalnce[] }) => {
         },
       }));
   };
+
+  useEffect(() => {
+    const update = async () => {
+      const _stakes =
+        authState &&
+        (await wallet.getStakes({
+          auth: authState,
+          address: walletState.selected,
+        }));
+      _stakes && setStakes(_stakes);
+      _stakes && console.log(_stakes);
+    };
+    walletState.wallets[0] && update();
+  }, [walletState.wallets]);
 
   return (
     <>
