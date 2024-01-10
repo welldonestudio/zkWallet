@@ -23,16 +23,15 @@ import SendTokenModal from '@/component/dialog/sendToken';
 import { selectAuthState } from '@/store/slice/authSlice';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
-import type { ResponseBalnce, ResponseStake } from '@/component/api/types';
+import type { ResponseStake } from '@/component/api/types';
 
-export const Stake = ({ balances }: { balances: ResponseBalnce[] }) => {
+export const Stake = () => {
   const authState = useSelector(selectAuthState);
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
 
   const [openSend, setOpenSend] = useState<boolean>(false);
   const [stakes, setStakes] = useState<ResponseStake[]>([]);
-  const [tab, setTab] = useState(0);
 
   const handleSendConfirm = async (
     password: string,

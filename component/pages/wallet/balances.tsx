@@ -68,7 +68,7 @@ export const Balances = ({ balances }: { balances: ResponseBalnce[] }) => {
 
   return (
     <>
-      <Card>
+      <Card style={{ height: '100%' }}>
         <CardHeader title="Balance" />
         <CardContent>
           <TableContainer>

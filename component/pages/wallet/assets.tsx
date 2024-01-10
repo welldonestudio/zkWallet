@@ -49,7 +49,10 @@ export const Assets = ({ balances }: { balances: ResponseBalnce[] }) => {
 
   return (
     <>
-      <Card variant="outlined">
+      <Card
+        variant="outlined"
+        style={{ height: '100%', backgroundColor: 'transparent' }}
+      >
         <CardHeader title="Tokens" />
         <CardContent>
           <TableContainer>

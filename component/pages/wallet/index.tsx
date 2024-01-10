@@ -39,11 +39,11 @@ export const WalletPage = () => {
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
       {account && (
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6} md={6}>
+        <Grid container spacing={2} height="360px">
+          <Grid item xs={12} sm={6} md={6} height="100%">
             <Balances balances={balances} />
           </Grid>
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={12} sm={6} md={6} height="100%">
             <Assets balances={balances} />
           </Grid>
         </Grid>
