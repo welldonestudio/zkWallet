@@ -36,7 +36,7 @@ export const getStakes = async (
 
       staking.push({
         validator: {
-          name: item.validatorAddress,
+          name: '', // TODO
           address: item.validatorAddress,
           totalAmount: totalAmount.toString(10),
           estimatedReward: estimatedReward.toString(10),

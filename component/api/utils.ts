@@ -15,4 +15,10 @@ export const utils = {
   base642Hex: (b64: string): string => {
     return `0x${Buffer.from(b64, 'base64').toString('hex')}`;
   },
+  shortenString: (str: string, prefix: number = 4, postfix: number = 4): string => {
+    if (str.length > prefix + postfix + 3) {
+      return `${str.slice(0, prefix)}...${str.slice(-postfix)}`
+    }
+    return str;
+  },
 };

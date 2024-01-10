@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createContext, useContext } from 'react';
 
 import { useSignTransactionBlock, useSuiClient } from '@mysten/dapp-kit';

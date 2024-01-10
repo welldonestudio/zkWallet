@@ -22,6 +22,7 @@ import {
 import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
+import { utils } from '@/component/api/utils';
 import { selectAuthState } from '@/store/slice/authSlice';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
@@ -101,7 +102,7 @@ export const Stake = () => {
                   alignContent: 'center',
                 }}
               >
-                <Box>{validator.name}</Box>
+                <Box>{validator.name || utils.shortenString( validator.address)}</Box>
                 <Stack marginLeft={2}>
                   <Box>
                     <Typography variant="caption">APY</Typography>
