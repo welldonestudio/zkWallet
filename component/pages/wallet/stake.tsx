@@ -29,5 +29,5 @@ export const Stake = () => {
     walletState.wallets[0] && update();
   }, [walletState.wallets]);
 
-  return <>test</>;
+  return <>stake</>;
 };

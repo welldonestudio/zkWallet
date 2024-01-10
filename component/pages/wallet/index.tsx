@@ -11,7 +11,7 @@ import { selectAuthState } from '@/store/slice/authSlice';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import { Assets } from './assets';
-import { Balances } from './balances';
+import { Stake } from './stake';
 
 export const WalletPage = () => {
   const authState = useSelector(selectAuthState);
@@ -39,12 +39,12 @@ export const WalletPage = () => {
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
       {account && (
-        <Grid container spacing={2} height="360px">
-          <Grid item xs={12} sm={6} md={6} height="100%">
-            <Balances balances={balances} />
-          </Grid>
-          <Grid item xs={12} sm={6} md={6} height="100%">
+        <Grid container spacing={2}>
+          <Grid item xs={12} height="360px">
             <Assets balances={balances} />
+          </Grid>
+          <Grid item xs={12}>
+            <Stake />
           </Grid>
         </Grid>
       )}

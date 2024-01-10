@@ -1,10 +1,12 @@
 import { useState } from 'react';
 
+import SavingsIcon from '@mui/icons-material/Savings';
 import SendIcon from '@mui/icons-material/Send';
 import {
   Card,
   CardContent,
   CardHeader,
+  Grid,
   IconButton,
   Table,
   TableBody,
@@ -28,6 +30,7 @@ export const Assets = ({ balances }: { balances: ResponseBalnce[] }) => {
   const { wallet } = useContextApi();
 
   const [openSend, setOpenSend] = useState<boolean>(false);
+  const [openStake, setOpenStake] = useState<boolean>(false);
 
   const handleSendConfirm = async (
     password: string,
@@ -47,50 +50,123 @@ export const Assets = ({ balances }: { balances: ResponseBalnce[] }) => {
       }));
   };
 
+  const handleStakeConfirm = async (
+    password: string,
+    to: string,
+    amount: string,
+  ) => {
+    authState &&
+      (await wallet.stake({
+        auth: authState,
+        wallet: walletState.wallets[0],
+        password,
+        stake: {
+          amount,
+          validator: to,
+        },
+      }));
+  };
+
   return (
     <>
-      <Card
-        variant="outlined"
-        style={{ height: '100%', backgroundColor: 'transparent' }}
-      >
-        <CardHeader title="Tokens" />
-        <CardContent>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Token</TableCell>
-                  <TableCell align="right">Balance</TableCell>
-                  <TableCell align="right"></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {balances
-                  .filter((item) => item.type !== '0x2::sui::SUI')
-                  .map((item, key) => (
-                    <TableRow key={key}>
-                      <TableCell>{item.name}</TableCell>
-                      <TableCell align="right">{item.value}</TableCell>
-                      <TableCell align="right">
-                        <IconButton
-                          size="small"
-                          onClick={() => setOpenSend(true)}
-                        >
-                          <SendIcon fontSize="small" />
-                        </IconButton>
-                      </TableCell>
+      <Grid container item height="100%" width="100%">
+        <Grid item xs={12} sm={6} md={6}>
+          <Card style={{ height: '100%' }}>
+            <CardHeader title="Balance" />
+            <CardContent>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Token</TableCell>
+                      <TableCell align="right">Balance</TableCell>
+                      <TableCell align="right"></TableCell>
                     </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </CardContent>
-      </Card>
+                  </TableHead>
+                  <TableBody>
+                    {balances.map((item, key) => (
+                      <TableRow key={key}>
+                        <TableCell>
+                          {item.name === '0x2::sui::SUI' ? ' SUI' : item.name}
+                        </TableCell>
+                        <TableCell align="right">{item.value}</TableCell>
+                        <TableCell align="right">
+                          {item.type === '0x2::sui::SUI' && (
+                            <>
+                              <IconButton
+                                size="small"
+                                onClick={() => setOpenStake(true)}
+                              >
+                                <SavingsIcon fontSize="small" />
+                              </IconButton>
+                              <IconButton
+                                size="small"
+                                onClick={() => setOpenSend(true)}
+                              >
+                                <SendIcon fontSize="small" />
+                              </IconButton>
+                            </>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={6} md={6}>
+          <Card
+            variant="outlined"
+            style={{ height: '100%', backgroundColor: 'transparent' }}
+          >
+            <CardHeader title="Tokens" />
+            <CardContent>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Token</TableCell>
+                      <TableCell align="right">Balance</TableCell>
+                      <TableCell align="right"></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {balances
+                      .filter((item) => item.type !== '0x2::sui::SUI')
+                      .map((item, key) => (
+                        <TableRow key={key}>
+                          <TableCell>{item.name}</TableCell>
+                          <TableCell align="right">{item.value}</TableCell>
+                          <TableCell align="right">
+                            <IconButton
+                              size="small"
+                              onClick={() => setOpenSend(true)}
+                            >
+                              <SendIcon fontSize="small" />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
       <SendTokenModal
         title="Transfer Token"
         open={openSend}
         onClose={() => setOpenSend(false)}
         confirm={handleSendConfirm}
+      />
+      <SendTokenModal
+        title="Stake"
+        open={openStake}
+        onClose={() => setOpenStake(false)}
+        confirm={handleStakeConfirm}
       />
     </>
   );
