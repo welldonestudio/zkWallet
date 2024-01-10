@@ -69,7 +69,7 @@ export const Assets = ({ balances }: { balances: ResponseBalnce[] }) => {
 
   return (
     <>
-      <Grid container item height="100%" width="100%">
+      <Grid container height="360px" width="100%" spacing={2}>
         <Grid item xs={12} sm={6} md={6}>
           <Card style={{ height: '100%' }}>
             <CardHeader title="Balance" />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Grid } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import { useCurrentAccount } from '@mysten/dapp-kit';
 import { useSelector } from 'react-redux';
 
@@ -39,14 +39,10 @@ export const WalletPage = () => {
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
       {account && (
-        <Grid container spacing={2}>
-          <Grid item xs={12} height="360px">
-            <Assets balances={balances} />
-          </Grid>
-          <Grid item xs={12}>
-            <Stake />
-          </Grid>
-        </Grid>
+        <Stack spacing={4}>
+          <Assets balances={balances} />
+          <Stake />
+        </Stack>
       )}
     </Layout>
   );

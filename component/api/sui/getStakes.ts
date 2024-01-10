@@ -15,6 +15,7 @@ export const getStakes = async (
       owner: request.address,
     });
     const staking: ResponseStake[] = [];
+    console.log(res);
     res.forEach((item) =>
       item.stakes.forEach((stake) =>
         staking.push({
