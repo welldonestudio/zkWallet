@@ -5,6 +5,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Chip,
   Table,
   TableBody,
@@ -44,6 +45,7 @@ export const Stake = () => {
 
   return (
     <>
+    <Box>
       {stakes.map(({ validator, stakes }, key) => (
         <Accordion key={key} disableGutters elevation={0} square>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -88,6 +90,7 @@ export const Stake = () => {
           </AccordionDetails>
         </Accordion>
       ))}
+      </Box>
     </>
   );
 };
