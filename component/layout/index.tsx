@@ -44,7 +44,6 @@ export default function Layout({
       <main>
         <Container maxWidth="lg" sx={{ padding: 2 }}>
           <Stack spacing={2} marginY={2}>
-            {/*
             <Box width="100%">
               {DEFAULT_NETWORK !== 'sui:mainnet' && (
                 <Alert variant="outlined" severity="warning">
@@ -59,7 +58,7 @@ export default function Layout({
                 </Alert>
               )}
             </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+            {/*<Box sx={{ display: 'flex', flexDirection: 'row' }}>
               <Box
                 sx={{
                   display: 'flex',
@@ -107,8 +106,7 @@ export default function Layout({
                 )}
               </Box>
               {initialized && actions}
-            </Box>
-            */}
+            </Box>*/}
             {initialized ? (
               <Box minHeight={'100vh'}>{children}</Box>
             ) : (
