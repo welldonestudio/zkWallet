@@ -104,7 +104,7 @@ export const Assets = () => {
                     {balances.map((item, key) => (
                       <TableRow key={key}>
                         <TableCell>{item.name}</TableCell>
-                        <TableCell align="right">{item.value}</TableCell>
+                        <TableCell align="right">{item.fValue}</TableCell>
                         <TableCell align="right">
                           {item.type === '0x2::sui::SUI' && (
                             <>
@@ -153,7 +153,7 @@ export const Assets = () => {
                       .map((item, key) => (
                         <TableRow key={key}>
                           <TableCell>{item.name}</TableCell>
-                          <TableCell align="right">{item.value}</TableCell>
+                          <TableCell align="right">{item.fValue}</TableCell>
                           <TableCell align="right">
                             <IconButton
                               size="small"
