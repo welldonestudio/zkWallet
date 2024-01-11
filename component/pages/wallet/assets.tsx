@@ -64,22 +64,24 @@ export const Assets = ({
       <Grid container item spacing={2} paddingX={0}>
         <Grid item height="360px" xs={12} sm={6} md={6}>
           <Card style={{ height: '100%' }}>
-            <CardContent>
+            <CardContent sx={{ height: '100%' }}>
               <Box
                 sx={{
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
+                  height: '100%',
                 }}
               >
                 <Box>
-                  <Typography variant="body2">Sui Balance</Typography>
+                  <Typography variant="h6">Sui Balance</Typography>
                 </Box>
-                <Box marginTop={2}>
-                  <Typography variant="h3">{currency}</Typography>
+                <Box marginTop={4}>
+                  <Typography variant="h2">{currency}</Typography>
                 </Box>
-                <Stack spacing={1} direction="row">
+                <Stack spacing={2} direction="row" width="100%">
                   <Button
+                    fullWidth
                     sx={{ marginX: 1 }}
                     variant="outlined"
                     onClick={() => openSend(true)}
@@ -87,6 +89,7 @@ export const Assets = ({
                     Send
                   </Button>
                   <Button
+                    fullWidth
                     sx={{ marginX: 1 }}
                     variant="contained"
                     onClick={() => openStake(true)}
