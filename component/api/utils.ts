@@ -31,4 +31,11 @@ export const utils = {
     const point = value.slice(num.length).replace(/0+$/, '');
     return `${num}.${point || '0'}`;
   },
+  parseUnit: (value: string, decimal: number): string => {
+    const num = value.split('.');
+    if (num.length === 2) {
+      return `${num[0]}${num[1].padEnd(decimal, '0').slice(0, decimal)}`;
+    }
+    return '';
+  },
 };

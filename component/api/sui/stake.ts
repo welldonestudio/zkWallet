@@ -2,6 +2,7 @@ import { enqueueSnackbar } from 'notistack';
 
 import { createStakeTransaction } from './utils/createStakeTransaction';
 import { signAndSendTx } from './utils/signAndSendTx';
+import { utils } from '../utils';
 
 import type { RequestSuiStake } from '../types';
 
@@ -9,7 +10,7 @@ export const stake = async (request: RequestSuiStake): Promise<string> => {
   try {
     const txb = createStakeTransaction(
       request.wallet.address,
-      request.stake.amount,
+      utils.parseUnit(request.stake.amount, 9),
       request.stake.validator,
     );
 
