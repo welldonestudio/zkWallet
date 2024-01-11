@@ -57,7 +57,7 @@ export const WalletSelecter = () => {
       if (authState && authState.jwt) {
         setLoading(true);
 
-        const PATH = `${ZKPATH_PREFIX}:${authState.network}:${index}`;
+        const PATH = `${ZKPATH_PREFIX}:${authState.network}:${index}`; // TODO
         const address = await wallet.getAddress({
           network: authState.network,
           jwt: authState.jwt,

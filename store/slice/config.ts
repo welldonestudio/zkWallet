@@ -1,5 +1,5 @@
 export type NETWORK = 'sui:mainnet' | 'sui:devnet' | 'sui:testnet';
-export type TYPE = 'local' | 'extension' | 'ledger';
+export type TYPE = 'extension' | 'ledger';
 export type CRYPTO = 'ed25519';
 export type PROVIDER =
   | 'google'

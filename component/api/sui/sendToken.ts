@@ -1,7 +1,6 @@
 import { enqueueSnackbar } from 'notistack';
 
 import { createSendTokenTransaction } from './utils/createSendTokenTransaction';
-import { signAndSendTx } from './utils/signAndSendTx';
 import { utils } from '../utils';
 
 import type { RequestSendToken } from '../types';
@@ -16,12 +15,6 @@ export const sendToken = async (request: RequestSendToken): Promise<string> => {
         ? utils.parseUnit(request.token.amount, 9)
         : request.token.amount,
     );
-
-    if (request.auth.key.type === 'local') {
-      const hash = await signAndSendTx(request, txb);
-      return hash;
-    }
-
     return txb.serialize();
   } catch (error) {
     enqueueSnackbar(`${error}`, {

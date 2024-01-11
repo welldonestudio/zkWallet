@@ -26,16 +26,11 @@ export const WalletPage = () => {
 
   const [validators, setVelidators] = useState<ResponseValidator[]>([]);
 
-  const handleSendConfirm = async (
-    password: string,
-    to: string,
-    amount: string,
-  ) => {
+  const handleSendConfirm = async (to: string, amount: string) => {
     authState &&
       (await wallet.sendToken({
         auth: authState,
         wallet: walletState.wallets[0],
-        password,
         token: {
           to,
           type: '0x2::sui::SUI',
@@ -44,16 +39,11 @@ export const WalletPage = () => {
       }));
   };
 
-  const handleStakeConfirm = async (
-    password: string,
-    to: string,
-    amount: string,
-  ) => {
+  const handleStakeConfirm = async (to: string, amount: string) => {
     authState &&
       (await wallet.stake({
         auth: authState,
         wallet: walletState.wallets[0],
-        password,
         stake: {
           amount,
           validator: to,

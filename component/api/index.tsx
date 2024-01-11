@@ -139,13 +139,6 @@ export default function ApiProvider({
   ): Promise<string | void> => {
     try {
       const data = await sendToken(req);
-
-      if (req.password) {
-        enqueueSnackbar(`success: ${data}`, {
-          variant: 'success',
-        });
-        return data;
-      }
       SignTransactionBlock(req, data);
     } catch (error) {
       throw `${error}`;
@@ -157,12 +150,6 @@ export default function ApiProvider({
   ): Promise<string | void> => {
     try {
       const data = await stake(req);
-      if (req.password) {
-        enqueueSnackbar(`success: ${data}`, {
-          variant: 'success',
-        });
-        return data;
-      }
       SignTransactionBlock(req, data);
     } catch (error) {
       throw `${error}`;
@@ -174,12 +161,6 @@ export default function ApiProvider({
   ): Promise<string | void> => {
     try {
       const data = await unStake(req);
-      if (req.password) {
-        enqueueSnackbar(`success: ${data}`, {
-          variant: 'success',
-        });
-        return data;
-      }
       SignTransactionBlock(req, data);
     } catch (error) {
       throw `${error}`;
