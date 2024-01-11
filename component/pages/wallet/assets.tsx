@@ -65,8 +65,12 @@ export const Assets = ({
       <Grid container item spacing={2} paddingX={0}>
         <Grid item height="360px" xs={12} sm={6} md={6}>
           <Card style={{ height: '100%' }}>
+            <CardHeader title="Sui Balance" />
             <CardContent style={{ height: '100%' }}>
-              <Box height="100%" justifyContent="center">
+              <Box
+                height="100%"
+                sx={{ display: 'flex', justifyContent: 'center' }}
+              >
                 <Box
                   sx={{
                     display: 'flex',
@@ -74,9 +78,6 @@ export const Assets = ({
                     height: '100%',
                   }}
                 >
-                  <Box>
-                    <Typography variant="h6">Sui Balance</Typography>
-                  </Box>
                   <Box marginTop={6}>
                     {!currency && (
                       <Skeleton variant="text" animation="wave">
