@@ -66,7 +66,7 @@ export const Assets = ({
         <Grid item height="360px" xs={12} sm={6} md={6}>
           <Card style={{ height: '100%' }}>
             <CardContent style={{ height: '100%' }}>
-              <Box height="100%">
+              <Box height="100%" justifyContent="center">
                 <Box
                   sx={{
                     display: 'flex',
@@ -76,21 +76,18 @@ export const Assets = ({
                 >
                   <Box>
                     <Typography variant="h6">Sui Balance</Typography>
-                    <Typography variant="h2">
-                      <Typography variant="body1">
-                        {walletState.selected}
-                      </Typography>
-                    </Typography>
                   </Box>
-                  <Box marginTop={4}>
+                  <Box marginTop={6}>
                     {!currency && (
-                      <Skeleton variant="text" width={210} height={118} />
+                      <Skeleton variant="text" animation="wave">
+                        <Typography variant="h2">{` `}</Typography>
+                      </Skeleton>
                     )}
                     {currency && (
                       <Typography variant="h2">{currency}</Typography>
                     )}
                   </Box>
-                  <Stack marginTop={2} spacing={2} direction="row" width="100%">
+                  <Stack marginTop={4} spacing={2} direction="row" width="100%">
                     <Button
                       fullWidth
                       sx={{ marginX: 1 }}
