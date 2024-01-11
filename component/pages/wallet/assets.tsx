@@ -67,11 +67,12 @@ export const Assets = ({
         <Grid item height="360px" xs={12} sm={6} md={6}>
           <Card style={{ height: '100%' }}>
             <CardHeader title="Sui Balance" />
-            <CardContent>
+            <CardContent sx={{ height: 'calc(100% - 58px - 61px)' }}>
               <Stack
                 direction="column"
                 justifyContent="center"
                 alignItems="flex-start"
+                height="100%"
               >
                 <Typography variant="h2">
                   {!currency ? <Skeleton width="128px" /> : currency}
