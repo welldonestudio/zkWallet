@@ -217,6 +217,7 @@ export const Stake = ({
                               label={stake.status}
                               color="success"
                               size="small"
+                              variant="outlined"
                             />
                           )}
                           {stake.status === 'pending' && (
@@ -224,6 +225,7 @@ export const Stake = ({
                               label={stake.status}
                               color="info"
                               size="small"
+                              variant="outlined"
                             />
                           )}
                           {stake.status === 'unstaked' && (
@@ -231,6 +233,7 @@ export const Stake = ({
                               label={stake.status}
                               color="warning"
                               size="small"
+                              variant="outlined"
                             />
                           )}
                         </>

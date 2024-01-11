@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react';
 
-import SavingsIcon from '@mui/icons-material/Savings';
 import SendIcon from '@mui/icons-material/Send';
 import {
+  Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
   Grid,
   IconButton,
+  Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 
@@ -35,6 +38,7 @@ export const Assets = ({
   const { wallet } = useContextApi();
 
   const [balances, setBalances] = useState<ResponseBalnce[]>([]);
+  const [currency, setCurrency] = useState<string>('');
 
   useEffect(() => {
     const update = async () => {
@@ -44,7 +48,12 @@ export const Assets = ({
           auth: authState,
           address: walletState.selected,
         }));
-      _balances && setBalances(_balances);
+      _balances &&
+        setBalances(_balances.filter((item) => item.type !== '0x2::sui::SUI'));
+      _balances &&
+        _balances.forEach(
+          (item) => item.type === '0x2::sui::SUI' && setCurrency(item.fValue),
+        );
       console.log('balance', _balances);
     };
     walletState.wallets[0] && update();
@@ -55,45 +64,37 @@ export const Assets = ({
       <Grid container item spacing={2} paddingX={0}>
         <Grid item height="360px" xs={12} sm={6} md={6}>
           <Card style={{ height: '100%' }}>
-            <CardHeader title="Balance" />
             <CardContent>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Token</TableCell>
-                      <TableCell align="right">Balance</TableCell>
-                      <TableCell align="right"></TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {balances.map((item, key) => (
-                      <TableRow key={key}>
-                        <TableCell>{item.name}</TableCell>
-                        <TableCell align="right">{item.fValue}</TableCell>
-                        <TableCell align="right">
-                          {item.type === '0x2::sui::SUI' && (
-                            <>
-                              <IconButton
-                                size="small"
-                                onClick={() => openStake(true)}
-                              >
-                                <SavingsIcon fontSize="small" />
-                              </IconButton>
-                              <IconButton
-                                size="small"
-                                onClick={() => openSend(true)}
-                              >
-                                <SendIcon fontSize="small" />
-                              </IconButton>
-                            </>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <Box>
+                  <Typography variant="body2">Sui Balance</Typography>
+                </Box>
+                <Box marginTop={2}>
+                  <Typography variant="h3">{currency}</Typography>
+                </Box>
+                <Stack spacing={1} direction="row">
+                  <Button
+                    sx={{ marginX: 1 }}
+                    variant="outlined"
+                    onClick={() => openSend(true)}
+                  >
+                    Send
+                  </Button>
+                  <Button
+                    sx={{ marginX: 1 }}
+                    variant="contained"
+                    onClick={() => openStake(true)}
+                  >
+                    Stake
+                  </Button>
+                </Stack>
+              </Box>
             </CardContent>
           </Card>
         </Grid>
@@ -114,22 +115,20 @@ export const Assets = ({
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {balances
-                      .filter((item) => item.type !== '0x2::sui::SUI')
-                      .map((item, key) => (
-                        <TableRow key={key}>
-                          <TableCell>{item.name}</TableCell>
-                          <TableCell align="right">{item.fValue}</TableCell>
-                          <TableCell align="right">
-                            <IconButton
-                              size="small"
-                              onClick={() => openSend(true)}
-                            >
-                              <SendIcon fontSize="small" />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                    {balances.map((item, key) => (
+                      <TableRow key={key}>
+                        <TableCell>{item.name}</TableCell>
+                        <TableCell align="right">{item.fValue}</TableCell>
+                        <TableCell align="right">
+                          <IconButton
+                            size="small"
+                            onClick={() => openSend(true)}
+                          >
+                            <SendIcon fontSize="small" />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </TableContainer>
