@@ -67,47 +67,37 @@ export const Assets = ({
           <Card style={{ height: '100%' }}>
             <CardHeader title="Sui Balance" />
             <CardContent style={{ height: '100%' }}>
-              <Box
-                height="100%"
-                sx={{ display: 'flex', justifyContent: 'center' }}
+              <Stack
+                direction="column"
+                justifyContent="center"
+                alignItems="flex-start"
+                width="100%"
+                spacing={4}
               >
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100%',
-                  }}
-                >
-                  <Box marginTop={6}>
-                    {!currency && (
-                      <Skeleton variant="text" animation="wave">
-                        <Typography variant="h2">{` `}</Typography>
-                      </Skeleton>
-                    )}
-                    {currency && (
-                      <Typography variant="h2">{currency}</Typography>
-                    )}
-                  </Box>
-                  <Stack marginTop={4} spacing={2} direction="row" width="100%">
-                    <Button
-                      fullWidth
-                      sx={{ marginX: 1 }}
-                      variant="outlined"
-                      onClick={() => openSend(true)}
-                    >
-                      Send
-                    </Button>
-                    <Button
-                      fullWidth
-                      sx={{ marginX: 1 }}
-                      variant="contained"
-                      onClick={() => openStake(true)}
-                    >
-                      Stake
-                    </Button>
-                  </Stack>
+                <Box>
+                  <Typography variant="h2">
+                    {!currency ? <Skeleton /> : currency}
+                  </Typography>
                 </Box>
-              </Box>
+                <Stack spacing={2} direction="row" width="100%">
+                  <Button
+                    fullWidth
+                    sx={{ marginX: 1 }}
+                    variant="outlined"
+                    onClick={() => openSend(true)}
+                  >
+                    Send
+                  </Button>
+                  <Button
+                    fullWidth
+                    sx={{ marginX: 1 }}
+                    variant="contained"
+                    onClick={() => openStake(true)}
+                  >
+                    Stake
+                  </Button>
+                </Stack>
+              </Stack>
             </CardContent>
           </Card>
         </Grid>
