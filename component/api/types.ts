@@ -73,3 +73,13 @@ export interface ResponseStake {
   };
   stakes: StakeData[];
 }
+
+export interface RequestValidator {
+  auth: Auth;
+}
+
+export interface ResponseValidator {
+  name: string;
+  address: string;
+  apy: string;
+}

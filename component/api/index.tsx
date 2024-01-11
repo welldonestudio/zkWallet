@@ -8,6 +8,7 @@ import { enqueueSnackbar } from 'notistack';
 import { getAddress } from './getAddress';
 import { getBalance } from './getBalance';
 import { getStakes } from './getStakes';
+import { getValidators } from './getValidators';
 import { sendToken } from './sendToken';
 import { stake } from './stake';
 import { getOAuthURL } from './sui/getOAuthURL';
@@ -27,8 +28,10 @@ import type {
   RequestSendToken,
   RequestSuiStake,
   RequestSuiUnStake,
+  RequestValidator,
   ResponseBalnce,
   ResponseStake,
+  ResponseValidator,
 } from './types';
 
 export const ApiContext = createContext({
@@ -52,6 +55,11 @@ export const ApiContext = createContext({
       request: RequestGetBalance,
     ): Promise<ResponseBalnce[]> => {
       throw new Error('wallet.getBalance is not supported');
+    },
+    getValidators: (
+      request: RequestValidator,
+    ): Promise<ResponseValidator[]> => {
+      throw new Error('wallet.getValidators is not supported');
     },
     getStakes: (request: RequestGetStake): Promise<ResponseStake[]> => {
       throw new Error('wallet.getStakes is not supported');
@@ -190,6 +198,7 @@ export default function ApiProvider({
         wallet: {
           getAddress: getAddress,
           getBalance: getBalance,
+          getValidators: getValidators,
           getStakes: getStakes,
           sendToken: HandleSendToken,
           stake: HandleStakeToken,

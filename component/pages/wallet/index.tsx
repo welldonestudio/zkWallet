@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Grid } from '@mui/material';
 import { useCurrentAccount } from '@mysten/dapp-kit';
@@ -13,6 +13,8 @@ import { selectWalletState } from '@/store/slice/zkWalletSlice';
 import { Assets } from './assets';
 import { Stake } from './stake';
 
+import type { ResponseValidator } from '@/component/api/types';
+
 export const WalletPage = () => {
   const account = useCurrentAccount();
   const authState = useSelector(selectAuthState);
@@ -21,6 +23,8 @@ export const WalletPage = () => {
 
   const [openSend, setOpenSend] = useState<boolean>(false);
   const [openStake, setOpenStake] = useState<boolean>(false);
+
+  const [validators, setVelidators] = useState<ResponseValidator[]>([])
 
   const handleSendConfirm = async (
     password: string,
@@ -56,6 +60,15 @@ export const WalletPage = () => {
         },
       }));
   };
+
+  useEffect(() => {
+    const init = async () => {
+      const vali = authState && (await wallet.getValidators({ auth: authState }));
+      setVelidators(vali || []);
+      console.log(vali);
+    };
+    init();
+  }, [authState]);
 
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
