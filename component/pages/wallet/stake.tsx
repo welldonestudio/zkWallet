@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import InfoIcon from '@mui/icons-material/Info';
 import {
   Accordion,
   AccordionDetails,
@@ -19,6 +20,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
@@ -50,7 +52,11 @@ const MyAccordionSummary = styled((props: AccordionSummaryProps) => (
   },
 }));
 
-export const Stake = () => {
+export const Stake = ({
+  openStake,
+}: {
+  openStake: (open: boolean) => void;
+}) => {
   const authState = useSelector(selectAuthState);
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
@@ -92,6 +98,25 @@ export const Stake = () => {
 
   return (
     <Grid item xs={12}>
+      {stakes.length === 0 && (
+        <Box
+          sx={{
+            display: 'flex',
+            backgroundColor: '#00000044',
+            width: '100%',
+            height: '200px',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '8px',
+            borderStyle: 'dashed',
+            borderColor: 'gray',
+          }}
+        >
+          <Box>
+            <Button onClick={() => openStake(true)}>Stake</Button>
+          </Box>
+        </Box>
+      )}
       {stakes.map(({ validator, stakes }, key) => (
         <Accordion key={key} disableGutters elevation={0}>
           <MyAccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -156,7 +181,11 @@ export const Stake = () => {
                 <Stack>
                   <Box>
                     <Typography variant="caption" style={{ opacity: 0.5 }}>
-                      APY
+                      {`APY ${(
+                        <Tooltip title={validator.apyEpoch}>
+                          <InfoIcon fontSize="small" />
+                        </Tooltip>
+                      )}`}
                     </Typography>
                   </Box>
                   <Box>{`${validator.apy} %`}</Box>

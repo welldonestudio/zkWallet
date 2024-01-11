@@ -1,19 +1,19 @@
-import HomeIcon from '@mui/icons-material/Home';
+// import HomeIcon from '@mui/icons-material/Home';
 import LoopIcon from '@mui/icons-material/Loop';
 import {
   Alert,
   AlertTitle,
   Box,
-  Breadcrumbs,
+  // Breadcrumbs,
   Container,
   Fade,
   Stack,
-  Typography,
+  // Typography,
 } from '@mui/material';
-import Link from 'next/link';
-import { useSelector } from 'react-redux';
+// import Link from 'next/link';
+// import { useSelector } from 'react-redux';
 
-import { selectAuthState } from '@/store/slice/authSlice';
+// import { selectAuthState } from '@/store/slice/authSlice';
 import { DEFAULT_NETWORK } from '@/store/slice/config';
 
 import Footer from './footer';
@@ -30,12 +30,12 @@ interface LayoutProps {
 }
 
 export default function Layout({
-  breadcrumbs,
+  // breadcrumbs,
   initialized,
-  actions,
+  // actions,
   children,
 }: LayoutProps) {
-  const authState = useSelector(selectAuthState);
+  // const authState = useSelector(selectAuthState);
 
   return (
     <>

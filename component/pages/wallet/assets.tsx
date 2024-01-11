@@ -18,56 +18,23 @@ import {
 import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
-import SendTokenModal from '@/component/dialog/sendToken';
 import { selectAuthState } from '@/store/slice/authSlice';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import type { ResponseBalnce } from '@/component/api/types';
 
-export const Assets = () => {
+export const Assets = ({
+  openSend,
+  openStake,
+}: {
+  openSend: (open: boolean) => void;
+  openStake: (open: boolean) => void;
+}) => {
   const authState = useSelector(selectAuthState);
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
 
   const [balances, setBalances] = useState<ResponseBalnce[]>([]);
-
-  const [openSend, setOpenSend] = useState<boolean>(false);
-  const [openStake, setOpenStake] = useState<boolean>(false);
-
-  const handleSendConfirm = async (
-    password: string,
-    to: string,
-    amount: string,
-  ) => {
-    authState &&
-      (await wallet.sendToken({
-        auth: authState,
-        wallet: walletState.wallets[0],
-        password,
-        token: {
-          to,
-          type: '0x2::sui::SUI',
-          amount,
-        },
-      }));
-  };
-
-  const handleStakeConfirm = async (
-    password: string,
-    to: string,
-    amount: string,
-  ) => {
-    authState &&
-      (await wallet.stake({
-        auth: authState,
-        wallet: walletState.wallets[0],
-        password,
-        stake: {
-          amount,
-          validator: to,
-        },
-      }));
-  };
 
   useEffect(() => {
     const update = async () => {
@@ -109,13 +76,13 @@ export const Assets = () => {
                             <>
                               <IconButton
                                 size="small"
-                                onClick={() => setOpenStake(true)}
+                                onClick={() => openStake(true)}
                               >
                                 <SavingsIcon fontSize="small" />
                               </IconButton>
                               <IconButton
                                 size="small"
-                                onClick={() => setOpenSend(true)}
+                                onClick={() => openSend(true)}
                               >
                                 <SendIcon fontSize="small" />
                               </IconButton>
@@ -156,7 +123,7 @@ export const Assets = () => {
                           <TableCell align="right">
                             <IconButton
                               size="small"
-                              onClick={() => setOpenSend(true)}
+                              onClick={() => openSend(true)}
                             >
                               <SendIcon fontSize="small" />
                             </IconButton>
@@ -170,18 +137,6 @@ export const Assets = () => {
           </Card>
         </Grid>
       </Grid>
-      <SendTokenModal
-        title="Transfer Token"
-        open={openSend}
-        onClose={() => setOpenSend(false)}
-        confirm={handleSendConfirm}
-      />
-      <SendTokenModal
-        title="Stake"
-        open={openStake}
-        onClose={() => setOpenStake(false)}
-        confirm={handleStakeConfirm}
-      />
     </>
   );
 };
