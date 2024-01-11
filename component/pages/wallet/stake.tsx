@@ -63,6 +63,7 @@ export const Stake = ({
 
   const [stakes, setStakes] = useState<ResponseStake[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [init, setInit] = useState<boolean>(false);
 
   const handleUnStake = async (stakeId: string) => {
     try {
@@ -92,19 +93,20 @@ export const Stake = ({
         }));
       _stakes && setStakes(_stakes);
       _stakes && console.log('stakes', _stakes);
+      setInit(true);
     };
     walletState.wallets[0] && update();
   }, [walletState.wallets]);
 
   return (
     <Grid item xs={12}>
-      {stakes.length === 0 && (
+      {init && stakes.length === 0 && (
         <Box
           sx={{
             display: 'flex',
-            backgroundColor: '#00000044',
+            backgroundColor: '#00000000',
             width: '100%',
-            height: '200px',
+            height: '180px',
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: '8px',
@@ -181,11 +183,10 @@ export const Stake = ({
                 <Stack>
                   <Box>
                     <Typography variant="caption" style={{ opacity: 0.5 }}>
-                      {`APY ${(
-                        <Tooltip title={validator.apyEpoch}>
-                          <InfoIcon fontSize="small" />
-                        </Tooltip>
-                      )}`}
+                      APY
+                      <Tooltip title={validator.apyEpoch}>
+                        <InfoIcon fontSize="small" sx={{ marginLeft: 1 }} />
+                      </Tooltip>
                     </Typography>
                   </Box>
                   <Box>{`${validator.apy} %`}</Box>
