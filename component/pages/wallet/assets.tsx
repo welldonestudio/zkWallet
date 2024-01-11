@@ -9,6 +9,7 @@ import {
   CardHeader,
   Grid,
   IconButton,
+  Skeleton,
   Stack,
   Table,
   TableBody,
@@ -64,39 +65,50 @@ export const Assets = ({
       <Grid container item spacing={2} paddingX={0}>
         <Grid item height="360px" xs={12} sm={6} md={6}>
           <Card style={{ height: '100%' }}>
-            <CardContent sx={{ height: '100%' }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  height: '100%',
-                }}
-              >
-                <Box>
-                  <Typography variant="h6">Sui Balance</Typography>
+            <CardContent style={{ height: '100%' }}>
+              <Box height="100%">
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                  }}
+                >
+                  <Box>
+                    <Typography variant="h6">Sui Balance</Typography>
+                    <Typography variant="h2">
+                      <Typography variant="body1">
+                        {walletState.selected}
+                      </Typography>
+                    </Typography>
+                  </Box>
+                  <Box marginTop={4}>
+                    {!currency && (
+                      <Skeleton variant="text" width={210} height={118} />
+                    )}
+                    {currency && (
+                      <Typography variant="h2">{currency}</Typography>
+                    )}
+                  </Box>
+                  <Stack marginTop={2} spacing={2} direction="row" width="100%">
+                    <Button
+                      fullWidth
+                      sx={{ marginX: 1 }}
+                      variant="outlined"
+                      onClick={() => openSend(true)}
+                    >
+                      Send
+                    </Button>
+                    <Button
+                      fullWidth
+                      sx={{ marginX: 1 }}
+                      variant="contained"
+                      onClick={() => openStake(true)}
+                    >
+                      Stake
+                    </Button>
+                  </Stack>
                 </Box>
-                <Box marginTop={4}>
-                  <Typography variant="h2">{currency}</Typography>
-                </Box>
-                <Stack spacing={2} direction="row" width="100%">
-                  <Button
-                    fullWidth
-                    sx={{ marginX: 1 }}
-                    variant="outlined"
-                    onClick={() => openSend(true)}
-                  >
-                    Send
-                  </Button>
-                  <Button
-                    fullWidth
-                    sx={{ marginX: 1 }}
-                    variant="contained"
-                    onClick={() => openStake(true)}
-                  >
-                    Stake
-                  </Button>
-                </Stack>
               </Box>
             </CardContent>
           </Card>
