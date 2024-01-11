@@ -184,12 +184,14 @@ export const Stake = ({
                   <Box>
                     <Typography variant="caption" style={{ opacity: 0.5 }}>
                       APY
-                      <Tooltip title={validator.apyEpoch}>
-                        <InfoIcon fontSize="small" sx={{ marginLeft: 1 }} />
-                      </Tooltip>
                     </Typography>
                   </Box>
-                  <Box>{`${validator.apy} %`}</Box>
+                  <Box>
+                    {`${validator.apy} %`}{' '}
+                    <Tooltip title={`Epoch ${validator.apyEpoch}`}>
+                      <InfoIcon fontSize="small" sx={{ marginLeft: 1 }} />
+                    </Tooltip>
+                  </Box>
                 </Stack>
               </Box>
             </Box>

@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Card,
+  CardActions,
   CardContent,
   CardHeader,
   Grid,
@@ -66,39 +67,37 @@ export const Assets = ({
         <Grid item height="360px" xs={12} sm={6} md={6}>
           <Card style={{ height: '100%' }}>
             <CardHeader title="Sui Balance" />
-            <CardContent style={{ width: '100%' }}>
+            <CardContent>
               <Stack
                 direction="column"
                 justifyContent="center"
                 alignItems="flex-start"
-                width="100%"
-                spacing={4}
               >
-                <Box>
-                  <Typography variant="h2">
-                    {!currency ? <Skeleton width="128px" /> : currency}
-                  </Typography>
-                </Box>
-                <Stack spacing={2} direction="row" width="100%">
-                  <Button
-                    fullWidth
-                    sx={{ marginX: 1 }}
-                    variant="outlined"
-                    onClick={() => openSend(true)}
-                  >
-                    Send
-                  </Button>
-                  <Button
-                    fullWidth
-                    sx={{ marginX: 1 }}
-                    variant="contained"
-                    onClick={() => openStake(true)}
-                  >
-                    Stake
-                  </Button>
-                </Stack>
+                <Typography variant="h2">
+                  {!currency ? <Skeleton width="128px" /> : currency}
+                </Typography>
               </Stack>
             </CardContent>
+            <CardActions>
+              <Stack spacing={2} direction="row" width="100%">
+                <Button
+                  fullWidth
+                  sx={{ marginX: 1 }}
+                  variant="outlined"
+                  onClick={() => openSend(true)}
+                >
+                  Send
+                </Button>
+                <Button
+                  fullWidth
+                  sx={{ marginX: 1 }}
+                  variant="contained"
+                  onClick={() => openStake(true)}
+                >
+                  Stake
+                </Button>
+              </Stack>
+            </CardActions>
           </Card>
         </Grid>
         <Grid item height="360px" xs={12} sm={6} md={6}>
