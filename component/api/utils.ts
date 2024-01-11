@@ -35,6 +35,10 @@ export const utils = {
     const num = value.split('.');
     if (num.length === 2) {
       return `${num[0]}${num[1].padEnd(decimal, '0').slice(0, decimal)}`;
+    } else if (num.length === 1) {
+      return value[0] !== '.'
+        ? `${num[0]}${''.padEnd(decimal, '0').slice(0, decimal)}`
+        : `${num[0].padEnd(decimal, '0').slice(0, decimal)}`;
     }
     return '';
   },
