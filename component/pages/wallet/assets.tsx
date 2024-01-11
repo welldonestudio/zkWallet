@@ -56,6 +56,7 @@ export const Assets = ({
         _balances.forEach(
           (item) => item.type === '0x2::sui::SUI' && setCurrency(item.fValue),
         );
+      _balances && _balances.length === 0 && setCurrency('0.0');
       console.log('balance', _balances);
     };
     walletState.wallets[0] && update();
