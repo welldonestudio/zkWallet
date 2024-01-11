@@ -24,7 +24,7 @@ export const WalletPage = () => {
   const [openSend, setOpenSend] = useState<boolean>(false);
   const [openStake, setOpenStake] = useState<boolean>(false);
 
-  const [validators, setVelidators] = useState<ResponseValidator[]>([])
+  const [validators, setVelidators] = useState<ResponseValidator[]>([]);
 
   const handleSendConfirm = async (
     password: string,
@@ -63,9 +63,9 @@ export const WalletPage = () => {
 
   useEffect(() => {
     const init = async () => {
-      const vali = authState && (await wallet.getValidators({ auth: authState }));
+      const vali =
+        authState && (await wallet.getValidators({ auth: authState }));
       setVelidators(vali || []);
-      console.log(vali);
     };
     init();
   }, [authState]);
@@ -93,6 +93,7 @@ export const WalletPage = () => {
         open={openStake}
         onClose={() => setOpenStake(false)}
         confirm={handleStakeConfirm}
+        validators={validators}
       />
     </Layout>
   );

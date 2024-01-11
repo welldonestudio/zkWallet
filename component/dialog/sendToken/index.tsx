@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import SendIcon from '@mui/icons-material/Send';
-import { Button, Stack, TextField } from '@mui/material';
+import { Button, MenuItem, Stack, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import {
@@ -12,16 +12,21 @@ import {
 } from '@/component/theme/component';
 import { selectAuthState } from '@/store/slice/authSlice';
 
+import type { ResponseValidator } from '@/component/api/types';
+import { utils } from '@/component/api/utils';
+
 export default function SendTokenModal({
   title,
   open,
   onClose,
   confirm,
+  validators,
 }: {
   title: string;
   open: boolean;
   onClose: () => void;
   confirm: (password: string, to: string, amount: string) => void;
+  validators?: ResponseValidator[];
 }) {
   const authState = useSelector(selectAuthState);
 
@@ -39,15 +44,35 @@ export default function SendTokenModal({
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <Stack spacing={2}>
-          <TextField
-            fullWidth
-            variant="standard"
-            autoComplete="off"
-            label="To"
-            onChange={(e) => {
-              setTo(e.target.value);
-            }}
-          />
+          {!validators && (
+            <TextField
+              fullWidth
+              variant="standard"
+              autoComplete="off"
+              label="To"
+              onChange={(e) => {
+                setTo(e.target.value);
+              }}
+            />
+          )}
+          {validators && (
+            <TextField
+              select
+              fullWidth
+              variant="standard"
+              autoComplete="off"
+              label="Validator"
+              onChange={(e) => {
+                setTo(e.target.value);
+              }}
+            >
+              {validators.map((item) => (
+                <MenuItem key={item.address} value={item.address}>
+                  {`${utils.shortenString(item.address)} (${item.apy})`}
+                </MenuItem>
+              ))}
+            </TextField>
+          )}
           <TextField
             fullWidth
             variant="standard"
