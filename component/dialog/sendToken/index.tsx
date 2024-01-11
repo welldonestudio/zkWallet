@@ -4,6 +4,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { Button, MenuItem, Stack, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 
+import { utils } from '@/component/api/utils';
 import {
   Dialog,
   DialogActions,
@@ -13,7 +14,6 @@ import {
 import { selectAuthState } from '@/store/slice/authSlice';
 
 import type { ResponseValidator } from '@/component/api/types';
-import { utils } from '@/component/api/utils';
 
 export default function SendTokenModal({
   title,
@@ -68,7 +68,7 @@ export default function SendTokenModal({
             >
               {validators.map((item) => (
                 <MenuItem key={item.address} value={item.address}>
-                  {`${utils.shortenString(item.address)} (${item.apy})`}
+                  {`${utils.shortenString(item.address, 8, 8)} (${item.apy} %)`}
                 </MenuItem>
               ))}
             </TextField>
@@ -104,7 +104,7 @@ export default function SendTokenModal({
           onClick={handleConfirm}
         >
           <SendIcon fontSize="small" sx={{ marginRight: 1 }} />
-          Send
+          Excute
         </Button>
       </DialogActions>
     </Dialog>

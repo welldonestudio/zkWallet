@@ -15,7 +15,11 @@ export const getValidators = async (
 
     return apys.map(
       (item) =>
-        ({ name: item.address, ...item }) as unknown as ResponseValidator,
+        ({
+          ...item,
+          name: item.address,
+          apy: (item.apy * 100).toFixed(2),
+        }) as unknown as ResponseValidator,
     );
   } catch (error) {
     throw new Error(`${error}`);
