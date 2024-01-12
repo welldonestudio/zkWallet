@@ -113,11 +113,7 @@ export default function SelectProviderModal({
                 fullWidth
                 disableRipple
                 onClick={() => handleClick(item.name)}
-                disabled={
-                  !clientIds[item.name] ||
-                  !!authState ||
-                  loading
-                }
+                disabled={!clientIds[item.name] || !!authState || loading}
                 startIcon={<SvgIcon>{item.icon}</SvgIcon>}
                 sx={{
                   color: 'black',

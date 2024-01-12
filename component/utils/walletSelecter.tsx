@@ -20,9 +20,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
 import {
   CLIENT_ID,
+  getZkPath,
   MAX_EPOCH_DURATION,
   REDIRECT_AUTH_URL,
-  ZKPATH_PREFIX,
 } from '@/store/slice/config';
 import { resetWallet, selectWalletState } from '@/store/slice/zkWalletSlice';
 
@@ -58,11 +58,11 @@ export const WalletSelecter = () => {
       if (authState && authState.jwt) {
         setLoading(true);
 
-        const PATH = `${ZKPATH_PREFIX}:${authState.network}:${index}`; // TODO
+        const path = getZkPath(authState.network, 0);
         const address = await wallet.getAddress({
           network: authState.network,
           jwt: authState.jwt,
-          path: PATH,
+          path,
         });
         const proof = await jwt.sui.getZkProof({
           network: authState.network,
@@ -70,7 +70,7 @@ export const WalletSelecter = () => {
           publicKey: authState.key.publicKey,
           maxEpoch: authState.maxEpoch,
           randomness: authState.randomness,
-          path: PATH,
+          path,
         });
         // TODO
       }

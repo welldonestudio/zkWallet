@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useContextApi } from '@/component/api';
 import Layout from '@/component/layout';
 import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
-import { ZKPATH_PREFIX } from '@/store/slice/config';
+import { getZkPath } from '@/store/slice/config';
 import {
   addWallet,
   resetWallet,
@@ -49,11 +49,11 @@ export const SignUpCallbackPage = () => {
     try {
       const createWallet = async (id_token: string) => {
         if (authState && walletState.wallets.length === 0) {
-          const PATH = `${ZKPATH_PREFIX}:${authState.network}:0`;
+          const path = getZkPath(authState.network, 0);
           const address = await wallet.getAddress({
             network: authState.network,
             jwt: id_token,
-            path: PATH,
+            path,
           });
           const proof = await jwt.sui.getZkProof({
             network: authState.network,
@@ -61,12 +61,12 @@ export const SignUpCallbackPage = () => {
             publicKey: authState.key.publicKey,
             maxEpoch: authState.maxEpoch,
             randomness: authState.randomness,
-            path: PATH,
+            path,
           });
           dispatch(resetWallet());
           dispatch(
             addWallet({
-              path: PATH,
+              path,
               address,
               proof,
             }),
