@@ -58,7 +58,6 @@ export const WalletPage = () => {
       setVelidators(vali || []);
     };
     init();
-    console.log(1, account);
   }, [authState]);
 
   return (

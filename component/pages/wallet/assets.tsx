@@ -76,9 +76,9 @@ export const Assets = ({
                 alignItems="flex-start"
                 height="100%"
               >
-                <Sui />
                 <Typography variant="h2">
-                  {!currency ? <Skeleton width="80%" /> : currency}
+                  <Sui />
+                  {!currency ? <Skeleton width="258px" /> : currency}
                 </Typography>
               </Stack>
             </CardContent>
