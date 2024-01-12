@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import SendIcon from '@mui/icons-material/Send';
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -76,10 +77,12 @@ export const Assets = ({
                 alignItems="flex-start"
                 height="100%"
               >
-                <Typography variant="h2">
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Sui />
-                  {!currency ? <Skeleton width="258px" /> : currency}
-                </Typography>
+                  <Typography variant="h3" marginLeft={2}>
+                    {!currency ? <Skeleton width="258px" /> : currency}
+                  </Typography>
+                </Box>
               </Stack>
             </CardContent>
             <CardActions>
