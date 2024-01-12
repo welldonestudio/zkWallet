@@ -28,6 +28,7 @@ import { useSelector } from 'react-redux';
 import { useContextApi } from '@/component/api';
 import { utils } from '@/component/api/utils';
 import { selectAuthState } from '@/store/slice/authSlice';
+import { CURRENCY_UNIT } from '@/store/slice/config';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import type { ResponseStake } from '@/component/api/types';
@@ -160,7 +161,9 @@ export const Stake = ({
                       Total Stacked Amount
                     </Typography>
                   </Box>
-                  <Box sx={{ textAlign: 'end' }}>{validator.totalAmount}</Box>
+                  <Box
+                    sx={{ textAlign: 'end' }}
+                  >{`${validator.totalAmount} ${CURRENCY_UNIT}`}</Box>
                 </Stack>
               </Box>
               <Box marginLeft={2}>
@@ -175,7 +178,7 @@ export const Stake = ({
                     </Typography>
                   </Box>
                   <Box sx={{ textAlign: 'end' }}>
-                    {validator.estimatedReward}
+                    {`${validator.estimatedReward} ${CURRENCY_UNIT}`}
                   </Box>
                 </Stack>
               </Box>
@@ -211,7 +214,7 @@ export const Stake = ({
                 <TableBody>
                   {stakes.map((stake, key2) => (
                     <TableRow key={key2}>
-                      <TableCell align="left">{stake.amount}</TableCell>
+                      <TableCell align="left">{`${stake.amount} ${CURRENCY_UNIT}`}</TableCell>
                       <TableCell align="left">
                         <>
                           {stake.status === 'active' && (
@@ -241,7 +244,7 @@ export const Stake = ({
                         </>
                       </TableCell>
                       <TableCell align="left">{`Epoch ${stake.activeEpoch}`}</TableCell>
-                      <TableCell align="right">{stake.reward}</TableCell>
+                      <TableCell align="right">{`${stake.reward} ${CURRENCY_UNIT}`}</TableCell>
                       <TableCell align="right">
                         <Button
                           disabled={loading}

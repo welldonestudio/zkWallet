@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
 import { selectAuthState } from '@/store/slice/authSlice';
+import { CURRENCY_UNIT } from '@/store/slice/config';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import { Sui } from './icons/sui';
@@ -80,7 +81,7 @@ export const Assets = ({
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Sui />
                   <Typography variant="h3" marginLeft={2}>
-                    {!currency ? <Skeleton width="258px" /> : currency}
+                    {!currency ? <Skeleton width="258px" /> : `${currency} ${CURRENCY_UNIT}`}
                   </Typography>
                 </Box>
               </Stack>

@@ -1,5 +1,7 @@
 import { SuiClient } from '@mysten/sui.js/client';
 
+import { CURRENCY_UNIT } from '@/store/slice/config';
+
 import { getProviderUrl } from './utils/getProviderUrl';
 import { utils } from '../utils';
 
@@ -18,7 +20,7 @@ export const getBalance = async (
     const balances: ResponseBalnce[] = [];
     res.forEach((item) =>
       balances.push({
-        name: item.coinType === '0x2::sui::SUI' ? 'SUI' : item.coinType,
+        name: item.coinType === '0x2::sui::SUI' ? CURRENCY_UNIT : item.coinType,
         type: item.coinType,
         value: item.totalBalance,
         fValue:

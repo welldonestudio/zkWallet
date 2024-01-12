@@ -13,7 +13,7 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-import { useCurrentAccount, useDisconnectWallet } from '@mysten/dapp-kit';
+import { useDisconnectWallet } from '@mysten/dapp-kit';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -34,7 +34,6 @@ export const WalletSelecter = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const account = useCurrentAccount();
   const { mutate: disconnect } = useDisconnectWallet();
   const authState = useSelector(selectAuthState);
   const { index, selected, wallets } = useSelector(selectWalletState);
@@ -58,7 +57,7 @@ export const WalletSelecter = () => {
       if (authState && authState.jwt) {
         setLoading(true);
 
-        const path = getZkPath(authState.network, 0);
+        const path = getZkPath(authState.network, index); // TODO
         const address = await wallet.getAddress({
           network: authState.network,
           jwt: authState.jwt,
