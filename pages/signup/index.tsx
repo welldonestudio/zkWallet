@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
+import { SignupPage } from '@/component/pages/signup';
 import { SignUpCallbackPage } from '@/component/pages/signup/callback';
-import { SelectProviderPage } from '@/component/pages/signup/selectProvider';
 import { selectAuthState } from '@/store/slice/authSlice';
 
 export default function SignUpPage() {
@@ -17,7 +17,7 @@ export default function SignUpPage() {
 
   return (
     <>
-      {!authState && <SelectProviderPage />}
+      {!authState && <SignupPage />}
       {authState && !authState.jwt && <SignUpCallbackPage />}
     </>
   );
