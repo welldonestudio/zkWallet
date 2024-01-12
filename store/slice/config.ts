@@ -19,6 +19,6 @@ export const MAX_EPOCH_DURATION = 50;
 export const DEFAULT_NETWORK: NETWORK = 'sui:devnet';
 export const REDIRECT_AUTH_URL = 'https://zkwallet.welldonestudio.io/signup';
 
-export const getZkPath = (network: string, index: number) => {
+export const getZkPath = (network: string, index: number): string => {
   return `${ZKPATH_PREFIX}:${network}:${index}`;
 };
