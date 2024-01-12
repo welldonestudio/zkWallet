@@ -58,11 +58,12 @@ export const WalletPage = () => {
       setVelidators(vali || []);
     };
     init();
+    console.log(1, account);
   }, [authState]);
 
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
-      {account && (
+      {!!account && (
         <Grid container spacing={2} paddingY={4}>
           <Grid container item xs={12}>
             <Assets openSend={setOpenSend} openStake={setOpenStake} />

@@ -25,6 +25,8 @@ import { useContextApi } from '@/component/api';
 import { selectAuthState } from '@/store/slice/authSlice';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
+import { Sui } from './icons/sui';
+
 import type { ResponseBalnce } from '@/component/api/types';
 
 export const Assets = ({
@@ -74,8 +76,9 @@ export const Assets = ({
                 alignItems="flex-start"
                 height="100%"
               >
+                <Sui />
                 <Typography variant="h2">
-                  {!currency ? <Skeleton width="128px" /> : currency}
+                  {!currency ? <Skeleton width="80%" /> : currency}
                 </Typography>
               </Stack>
             </CardContent>
