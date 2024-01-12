@@ -5,7 +5,12 @@ import { useSelector } from 'react-redux';
 
 import SelectProviderModal from '@/component/dialog/selectProvider';
 import Layout from '@/component/layout';
-import { CLIENT_ID, MAX_EPOCH, REDIRECT_AUTH_URL } from '@/store/slice/config';
+import {
+  CLIENT_ID,
+  DEFAULT_NETWORK,
+  MAX_EPOCH_DURATION,
+  REDIRECT_AUTH_URL,
+} from '@/store/slice/config';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
 export const SignupPage = () => {
@@ -30,9 +35,10 @@ export const SignupPage = () => {
       {show && (
         <SelectProviderModal
           open
-          maxEpoch={MAX_EPOCH}
+          duration={MAX_EPOCH_DURATION}
           redirectUrl={REDIRECT_AUTH_URL}
-          providerIds={CLIENT_ID}
+          clientIds={CLIENT_ID}
+          network={DEFAULT_NETWORK}
         />
       )}
     </Layout>

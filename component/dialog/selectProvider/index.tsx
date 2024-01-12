@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import {
   Button,
@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
 import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
-import { DEFAULT_NETWORK, REDIRECT_AUTH_URL } from '@/store/slice/config';
 
 import { Apple } from './icons/apple';
 import { Facebook } from './icons/facebook';
@@ -23,7 +22,7 @@ import { Kakao } from './icons/kakao';
 import { Slack } from './icons/slack';
 import { Twitch } from './icons/twitch';
 
-import type { PROVIDER } from '@/store/slice/config';
+import type { NETWORK, PROVIDER } from '@/store/slice/config';
 
 const BUTTONS: { name: PROVIDER; icon: React.ReactNode }[] = [
   {
@@ -54,14 +53,16 @@ const BUTTONS: { name: PROVIDER; icon: React.ReactNode }[] = [
 
 export default function SelectProviderModal({
   open,
-  maxEpoch,
+  network,
+  duration,
   redirectUrl,
-  providerIds,
+  clientIds,
 }: {
   open: boolean;
-  maxEpoch: number;
+  network: NETWORK;
+  duration: number;
   redirectUrl: string;
-  providerIds: { [key: string]: string };
+  clientIds: { [key: string]: string };
 }) {
   const authState = useSelector(selectAuthState);
 
@@ -78,14 +79,16 @@ export default function SelectProviderModal({
       const { url, randomness, maxEpoch, crypto, publicKey } =
         await jwt.sui.getOAuthURL({
           provider,
-          redirectUrl: REDIRECT_AUTH_URL,
-          network: DEFAULT_NETWORK,
+          redirectUrl,
+          network,
+          duration,
           publicKey: `0x${Buffer.from(account.publicKey).toString('hex')}`,
+          clientId: clientIds[provider],
         });
       dispatch(
         setAuthState({
           provider,
-          network: DEFAULT_NETWORK,
+          network,
           maxEpoch,
           randomness,
           key: {
@@ -111,15 +114,14 @@ export default function SelectProviderModal({
                 disableRipple
                 onClick={() => handleClick(item.name)}
                 disabled={
-                  !providerIds ||
-                  !providerIds[item.name] ||
+                  !clientIds[item.name] ||
                   !!authState ||
                   loading
                 }
                 startIcon={<SvgIcon>{item.icon}</SvgIcon>}
                 sx={{
                   color: 'black',
-                  opacity: !providerIds || !providerIds[item.name] ? 0.5 : 1,
+                  opacity: !clientIds[item.name] ? 0.5 : 1,
                   backgroundColor: 'white',
                   '&:hover': {
                     color: 'white',

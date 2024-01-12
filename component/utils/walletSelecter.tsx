@@ -18,7 +18,12 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
-import { REDIRECT_AUTH_URL, ZKPATH_PREFIX } from '@/store/slice/config';
+import {
+  CLIENT_ID,
+  MAX_EPOCH_DURATION,
+  REDIRECT_AUTH_URL,
+  ZKPATH_PREFIX,
+} from '@/store/slice/config';
 import { resetWallet, selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import { useContextApi } from '../api';
@@ -87,6 +92,8 @@ export const WalletSelecter = () => {
               network: authState.network,
               publicKey: authState.key.publicKey,
               randomness: authState.randomness,
+              clientId: CLIENT_ID[authState.provider],
+              duration: MAX_EPOCH_DURATION,
             });
 
             dispatch(
