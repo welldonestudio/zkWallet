@@ -25,6 +25,7 @@ export const WalletPage = () => {
   const [openStake, setOpenStake] = useState<boolean>(false);
 
   const [validators, setVelidators] = useState<ResponseValidator[]>([]);
+  const [count, setCount] = useState<number>(0);
 
   const handleSendConfirm = async (to: string, amount: string) => {
     authState &&
@@ -37,6 +38,7 @@ export const WalletPage = () => {
           amount,
         },
       }));
+    setCount(count + 1);
   };
 
   const handleStakeConfirm = async (to: string, amount: string) => {
@@ -49,6 +51,7 @@ export const WalletPage = () => {
           validator: to,
         },
       }));
+    setCount(count + 1);
   };
 
   useEffect(() => {
@@ -65,10 +68,14 @@ export const WalletPage = () => {
       {!!account && (
         <Grid container spacing={2} paddingY={4}>
           <Grid container item xs={12}>
-            <Assets openSend={setOpenSend} openStake={setOpenStake} />
+            <Assets
+              count={count}
+              openSend={setOpenSend}
+              openStake={setOpenStake}
+            />
           </Grid>
           <Grid item xs={12}>
-            <Stake openStake={setOpenStake} />
+            <Stake count={count} openStake={setOpenStake} />
           </Grid>
         </Grid>
       )}

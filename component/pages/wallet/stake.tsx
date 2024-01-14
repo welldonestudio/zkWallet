@@ -54,8 +54,10 @@ const MyAccordionSummary = styled((props: AccordionSummaryProps) => (
 }));
 
 export const Stake = ({
+  count,
   openStake,
 }: {
+  count: number;
   openStake: (open: boolean) => void;
 }) => {
   const authState = useSelector(selectAuthState);
@@ -84,20 +86,25 @@ export const Stake = ({
     }
   };
 
+  const update = async () => {
+    const _stakes =
+      authState &&
+      (await wallet.getStakes({
+        auth: authState,
+        address: walletState.selected,
+      }));
+    _stakes && setStakes(_stakes);
+    _stakes && console.log('stakes', _stakes);
+    setInit(true);
+  };
+
   useEffect(() => {
-    const update = async () => {
-      const _stakes =
-        authState &&
-        (await wallet.getStakes({
-          auth: authState,
-          address: walletState.selected,
-        }));
-      _stakes && setStakes(_stakes);
-      _stakes && console.log('stakes', _stakes);
-      setInit(true);
-    };
     walletState.wallets[0] && update();
   }, [walletState.wallets]);
+
+  useEffect(() => {
+    update();
+  }, [count]);
 
   return (
     <Grid item xs={12}>

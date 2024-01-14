@@ -32,9 +32,11 @@ import { Sui } from './icons/sui';
 import type { ResponseBalnce } from '@/component/api/types';
 
 export const Assets = ({
+  count,
   openSend,
   openStake,
 }: {
+  count: number;
   openSend: (open: boolean) => void;
   openStake: (open: boolean) => void;
 }) => {
@@ -45,25 +47,30 @@ export const Assets = ({
   const [balances, setBalances] = useState<ResponseBalnce[]>([]);
   const [currency, setCurrency] = useState<string>('');
 
+  const update = async () => {
+    const _balances =
+      authState &&
+      (await wallet.getBalance({
+        auth: authState,
+        address: walletState.selected,
+      }));
+    _balances &&
+      setBalances(_balances.filter((item) => item.type !== '0x2::sui::SUI'));
+    _balances &&
+      _balances.forEach(
+        (item) => item.type === '0x2::sui::SUI' && setCurrency(item.fValue),
+      );
+    _balances && _balances.length === 0 && setCurrency('0.0');
+    console.log('balance', _balances);
+  };
+
   useEffect(() => {
-    const update = async () => {
-      const _balances =
-        authState &&
-        (await wallet.getBalance({
-          auth: authState,
-          address: walletState.selected,
-        }));
-      _balances &&
-        setBalances(_balances.filter((item) => item.type !== '0x2::sui::SUI'));
-      _balances &&
-        _balances.forEach(
-          (item) => item.type === '0x2::sui::SUI' && setCurrency(item.fValue),
-        );
-      _balances && _balances.length === 0 && setCurrency('0.0');
-      console.log('balance', _balances);
-    };
     walletState.wallets[0] && update();
   }, [walletState.wallets]);
+
+  useEffect(() => {
+    update();
+  }, [count]);
 
   return (
     <>
@@ -81,7 +88,11 @@ export const Assets = ({
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Sui />
                   <Typography variant="h3" marginLeft={2}>
-                    {!currency ? <Skeleton width="258px" /> : `${currency} ${CURRENCY_UNIT}`}
+                    {!currency ? (
+                      <Skeleton width="258px" />
+                    ) : (
+                      `${currency} ${CURRENCY_UNIT}`
+                    )}
                   </Typography>
                 </Box>
               </Stack>
