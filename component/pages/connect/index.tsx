@@ -62,8 +62,8 @@ export const Connect = () => {
       console.log(1, parsed.method); // TODO
       console.log(2, parsed.params); // TODO
 
-      setId(params.id);
       setCallback(url as string);
+      setId(parsed.id);
       setMethod(parsed.method);
       setParams(parsed.params);
 
