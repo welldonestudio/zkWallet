@@ -45,7 +45,9 @@ export const Connect = () => {
       if (version !== '2.0') {
         setError(`JsonRPC version error (${version})`);
         setErrorOpen(true);
+        return;
       }
+
       console.log(1, method); // TODO
       console.log(2, params); // TODO
 
