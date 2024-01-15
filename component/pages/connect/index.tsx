@@ -30,7 +30,7 @@ export const Connect = () => {
     const RegExp =
       /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 
-    if (!callback || (callback as string).match(RegExp)) {
+    if (!callback || !(callback as string).match(RegExp)) {
       setError(`Callback url(${callback}) is not verified.`);
       setErrorOpen(true);
       return;
