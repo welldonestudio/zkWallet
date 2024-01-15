@@ -96,7 +96,6 @@ export const Stake = ({
     _stakes && setStakes(_stakes);
     _stakes && console.log('stakes', _stakes);
     setInit(true);
-    console.log(111, _stakes);
   };
 
   useEffect(() => {
@@ -105,6 +104,7 @@ export const Stake = ({
 
   useEffect(() => {
     update();
+    console.log(1, count)
   }, [count]);
 
   return (
