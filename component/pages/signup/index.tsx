@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { useCurrentAccount } from '@mysten/dapp-kit';
+
 import SelectProviderModal from '@/component/dialog/selectProvider';
 import {
   CLIENT_ID,
@@ -9,6 +11,7 @@ import {
 } from '@/store/slice/config';
 
 export const Signup = () => {
+  const account = useCurrentAccount();
   const [show, setShow] = useState<boolean>(false);
 
   useEffect(() => {
@@ -17,7 +20,7 @@ export const Signup = () => {
 
   return (
     <>
-      {show && (
+      {!account && show && (
         <SelectProviderModal
           open
           duration={MAX_EPOCH_DURATION}
