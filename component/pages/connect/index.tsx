@@ -21,7 +21,7 @@ export const Connect = () => {
 
   useEffect(() => {
     const { chain, jsonrpc, callback } = queryString.parse(location.search);
-    if (chain === DEFAULT_NETWORK) {
+    if (chain !== DEFAULT_NETWORK) {
       setError(`${chain} is not support.`);
       setErrorOpen(true);
       return;
@@ -33,7 +33,9 @@ export const Connect = () => {
     if (!callback || (callback as string).match(RegExp)) {
       setError(`Callback url(${callback}) is not verified.`);
       setErrorOpen(true);
+      return;
     }
+
     try {
       const {
         method,
