@@ -84,54 +84,58 @@ export default function ApiProvider({
   const { mutate: signTransactionBlock } = useSignTransactionBlock();
   const client = useSuiClient();
 
-  const SignTransactionBlock = (
+  const SignAndSendTransactionBlock = (
     req: RequestSendToken | RequestSuiStake | RequestSuiUnStake,
     txb: string,
-  ) => {
-    signTransactionBlock(
-      {
-        chain: req.auth.network,
-        transactionBlock: TransactionBlock.from(txb) as any, // TODO
-      },
-      {
-        onSuccess: (result) => {
-          // create zk signature
-          const zkLoginSignature =
-            req.auth.jwt &&
-            req.wallet.proof &&
-            getZkSignature(req.auth, req.wallet, result.signature);
+  ): Promise<boolean> => {
+    return new Promise((resolve) => {
+      signTransactionBlock(
+        {
+          chain: req.auth.network,
+          transactionBlock: TransactionBlock.from(txb) as any, // TODO
+        },
+        {
+          onSuccess: (result) => {
+            // create zk signature
+            const zkLoginSignature =
+              req.auth.jwt &&
+              req.wallet.proof &&
+              getZkSignature(req.auth, req.wallet, result.signature);
 
-          if (!zkLoginSignature) {
-            enqueueSnackbar('zkLoginSignature error', {
-              variant: 'error',
-            });
-            throw new Error(`zkLoginSignature error (${req.wallet.proof})`);
-          }
-
-          client
-            .executeTransactionBlock({
-              transactionBlock: result.transactionBlockBytes,
-              signature: zkLoginSignature,
-            })
-            .then((txreceipt) => {
-              enqueueSnackbar(`success: ${txreceipt.digest}`, {
-                variant: 'success',
-              });
-            })
-            .catch((error) => {
-              enqueueSnackbar(`${error}`, {
+            if (!zkLoginSignature) {
+              enqueueSnackbar('zkLoginSignature error', {
                 variant: 'error',
               });
+              throw new Error(`zkLoginSignature error (${req.wallet.proof})`);
+            }
+
+            client
+              .executeTransactionBlock({
+                transactionBlock: result.transactionBlockBytes,
+                signature: zkLoginSignature,
+              })
+              .then((txreceipt) => {
+                enqueueSnackbar(`success: ${txreceipt.digest}`, {
+                  variant: 'success',
+                });
+                resolve(true);
+              })
+              .catch((error) => {
+                enqueueSnackbar(`${error}`, {
+                  variant: 'error',
+                });
+                resolve(false);
+              });
+          },
+          onError: (result) => {
+            enqueueSnackbar(result.message, {
+              variant: 'error',
             });
+            throw new Error(result.message);
+          },
         },
-        onError: (result) => {
-          enqueueSnackbar(result.message, {
-            variant: 'error',
-          });
-          throw new Error(result.message);
-        },
-      },
-    );
+      );
+    });
   };
 
   const HandleSendToken = async (
@@ -139,7 +143,7 @@ export default function ApiProvider({
   ): Promise<string | void> => {
     try {
       const data = await sendToken(req);
-      SignTransactionBlock(req, data);
+      await SignAndSendTransactionBlock(req, data);
     } catch (error) {
       throw `${error}`;
     }
@@ -150,7 +154,7 @@ export default function ApiProvider({
   ): Promise<string | void> => {
     try {
       const data = await stake(req);
-      SignTransactionBlock(req, data);
+      await SignAndSendTransactionBlock(req, data);
     } catch (error) {
       throw `${error}`;
     }
@@ -161,7 +165,7 @@ export default function ApiProvider({
   ): Promise<string | void> => {
     try {
       const data = await unStake(req);
-      SignTransactionBlock(req, data);
+      await SignAndSendTransactionBlock(req, data);
     } catch (error) {
       throw `${error}`;
     }

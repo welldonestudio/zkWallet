@@ -28,30 +28,54 @@ export const WalletPage = () => {
   const [count, setCount] = useState<number>(0);
 
   const handleSendConfirm = async (to: string, amount: string) => {
-    authState &&
-      (await wallet.sendToken({
-        auth: authState,
-        wallet: walletState.wallets[0],
-        token: {
-          to,
-          type: '0x2::sui::SUI',
-          amount,
-        },
-      }));
-    setCount(count + 1);
+    try {
+      authState &&
+        (await wallet.sendToken({
+          auth: authState,
+          wallet: walletState.wallets[0],
+          token: {
+            to,
+            type: '0x2::sui::SUI',
+            amount,
+          },
+        }));
+      setCount(count + 1);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleStakeConfirm = async (to: string, amount: string) => {
-    authState &&
-      (await wallet.stake({
-        auth: authState,
-        wallet: walletState.wallets[0],
-        stake: {
-          amount,
-          validator: to,
-        },
-      }));
-    setCount(count + 1);
+    try {
+      authState &&
+        (await wallet.stake({
+          auth: authState,
+          wallet: walletState.wallets[0],
+          stake: {
+            amount,
+            validator: to,
+          },
+        }));
+      setCount(count + 1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUnStakeConfirm = async (stakeId: string) => {
+    try {
+      authState &&
+        (await wallet.unStake({
+          auth: authState,
+          wallet: walletState.wallets[0],
+          unStake: {
+            stakedSuiId: stakeId,
+          },
+        }));
+      setCount(count + 1);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -66,11 +90,7 @@ export const WalletPage = () => {
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
       {!account && (
-        <ConnectModal
-          open={!account}
-          trigger={<></>}
-          onOpenChange={() => {}}
-        />
+        <ConnectModal open={!account} trigger={<></>} onOpenChange={() => {}} />
       )}
       {!!account && (
         <Grid container spacing={2} paddingY={4}>
@@ -82,7 +102,11 @@ export const WalletPage = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Stake count={count} openStake={setOpenStake} />
+            <Stake
+              count={count}
+              openStake={setOpenStake}
+              unstake={handleUnStakeConfirm}
+            />
           </Grid>
         </Grid>
       )}
