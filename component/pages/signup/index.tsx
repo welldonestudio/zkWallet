@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useCurrentAccount } from '@mysten/dapp-kit';
 
-import SelectProviderModal from '@/component/dialog/selectProvider';
+import { SelectProviderModal } from '@/component/dialog/selectProvider';
 import {
   CLIENT_ID,
   DEFAULT_NETWORK,

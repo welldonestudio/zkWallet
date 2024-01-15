@@ -51,7 +51,7 @@ const BUTTONS: { name: PROVIDER; icon: React.ReactNode }[] = [
   },
 ];
 
-export default function SelectProviderModal({
+export const SelectProviderModal = ({
   open,
   network,
   duration,
@@ -63,7 +63,7 @@ export default function SelectProviderModal({
   duration: number;
   redirectUrl: string;
   clientIds: { [key: string]: string };
-}) {
+}) => {
   const authState = useSelector(selectAuthState);
 
   const dispatch = useDispatch();
@@ -141,4 +141,4 @@ export default function SelectProviderModal({
       </DialogContent>
     </Dialog>
   );
-}
+};

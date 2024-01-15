@@ -13,7 +13,7 @@ import {
 
 import type { ResponseValidator } from '@/component/api/types';
 
-export default function SendTokenModal({
+export const SendTokenModal = ({
   title,
   open,
   onClose,
@@ -25,7 +25,7 @@ export default function SendTokenModal({
   onClose: () => void;
   confirm: (to: string, amount: string) => void;
   validators?: ResponseValidator[];
-}) {
+}) => {
   const [to, setTo] = useState<string>('');
   const [amount, setAmount] = useState<string>('');
 
@@ -88,4 +88,4 @@ export default function SendTokenModal({
       </DialogActions>
     </Dialog>
   );
-}
+};

@@ -5,7 +5,7 @@ import { useCurrentAccount } from '@mysten/dapp-kit';
 import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
-import SendTokenModal from '@/component/dialog/sendToken';
+import { SendTokenModal } from '@/component/dialog/sendToken';
 import { selectAuthState } from '@/store/slice/authSlice';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
