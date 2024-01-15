@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import queryString from 'query-string';
 
+import { GetAccountsModal } from '@/component/dialog/getAccounts';
 import { DEFAULT_NETWORK } from '@/store/slice/config';
 
 export const Connect = () => {
@@ -18,9 +19,17 @@ export const Connect = () => {
   const [accountOpen, setAccountOpen] = useState<boolean>(false);
   const [signTransactionOpen, setSignTransactionOpen] =
     useState<boolean>(false);
+  const [id, setId] = useState<number>(0);
+  const [callback, setCallback] = useState<string>('');
+  const [method, setMethod] = useState<string>('');
+  const [params, setParams] = useState<any | undefined>(undefined);
 
   useEffect(() => {
-    const { chain, jsonrpc, callback } = queryString.parse(location.search);
+    const {
+      chain,
+      jsonrpc,
+      callback: url,
+    } = queryString.parse(location.search);
     if (chain !== DEFAULT_NETWORK) {
       setError(`${chain} is not support.`);
       setErrorOpen(true);
@@ -30,28 +39,35 @@ export const Connect = () => {
     const RegExp =
       /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 
-    if (!callback || !(callback as string).match(RegExp)) {
-      setError(`Callback url(${callback}) is not verified.`);
+    if (!url || !(url as string).match(RegExp)) {
+      setError(`Callback url(${url}) is not verified.`);
       setErrorOpen(true);
       return;
     }
 
     try {
-      const {
-        method,
-        params,
-        jsonrpc: version,
-      } = JSON.parse(jsonrpc as string);
-      if (version !== '2.0') {
-        setError(`JsonRPC version error (${version})`);
+      const parsed = JSON.parse(jsonrpc as string);
+      if (parsed.jsonrpc !== '2.0') {
+        setError(`JsonRPC version error (${jsonrpc})`);
         setErrorOpen(true);
         return;
       }
 
-      console.log(1, method); // TODO
-      console.log(2, params); // TODO
+      if (isNaN(parsed.id)) {
+        setError(`id (${parsed.id}) is not a number`);
+        setErrorOpen(true);
+        return;
+      }
 
-      switch (method) {
+      console.log(1, parsed.method); // TODO
+      console.log(2, parsed.params); // TODO
+
+      setId(params.id);
+      setCallback(url as string);
+      setMethod(parsed.method);
+      setParams(parsed.params);
+
+      switch (parsed.method) {
         case 'dapp:accounts':
           setAccountOpen(true);
           break;
@@ -59,7 +75,7 @@ export const Connect = () => {
           setSignTransactionOpen(true);
           break;
         default:
-          setError(`(${method}) is not support method`);
+          setError(`(${parsed.method}) is not support method`);
           setErrorOpen(true);
           break;
       }
@@ -83,6 +99,15 @@ export const Connect = () => {
           <Button onClick={() => setErrorOpen(false)}>Close</Button>
         </DialogActions>
       </Dialog>
+      <GetAccountsModal
+        open={accountOpen}
+        onClose={() => {
+          setAccountOpen(false);
+        }}
+        callback={callback}
+        method={method}
+        id={id}
+      />
     </>
   );
 };
