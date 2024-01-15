@@ -20,7 +20,7 @@ export const Signup = () => {
 
   return (
     <>
-      {!account && show && (
+      {account && show && (
         <SelectProviderModal
           open
           duration={MAX_EPOCH_DURATION}
