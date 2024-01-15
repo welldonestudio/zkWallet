@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
+import Layout from '@/component/layout';
 import { Connect } from '@/component/pages/connect';
 import { selectAuthState } from '@/store/slice/authSlice';
 
@@ -14,5 +15,9 @@ export default function ConnectPage() {
     (!authState || !authState.jwt) && router.push('/signup');
   }, []);
 
-  return <>{authState && authState.jwt && <Connect />}</>;
+  return (
+    <Layout breadcrumbs={[]} actions={<></>} initialized>
+      {authState && authState.jwt && <Connect />}
+    </Layout>
+  );
 }
