@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Grid } from '@mui/material';
-import { useCurrentAccount } from '@mysten/dapp-kit';
+import { ConnectModal, useCurrentAccount } from '@mysten/dapp-kit';
 import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
@@ -65,6 +65,13 @@ export const WalletPage = () => {
 
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
+      {!account && (
+        <ConnectModal
+          open={!account}
+          trigger={<></>}
+          onOpenChange={() => {}}
+        />
+      )}
       {!!account && (
         <Grid container spacing={2} paddingY={4}>
           <Grid container item xs={12}>
