@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -13,7 +13,7 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-import { useDisconnectWallet } from '@mysten/dapp-kit';
+import { ConnectModal, useCurrentAccount, useDisconnectWallet } from '@mysten/dapp-kit';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -34,12 +34,14 @@ export const WalletSelecter = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const account = useCurrentAccount();
   const { mutate: disconnect } = useDisconnectWallet();
   const authState = useSelector(selectAuthState);
   const { index, selected, wallets } = useSelector(selectWalletState);
 
   const { jwt, wallet } = useContextApi();
 
+  const [show, setShow] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<undefined | HTMLElement>(undefined);
   const open = Boolean(anchorEl);
@@ -111,8 +113,19 @@ export const WalletSelecter = () => {
     }
   };
 
+  useEffect(() => {
+    setTimeout(() => setShow(true), 200);
+  });
+
   return (
     <>
+      {show && (
+        <ConnectModal
+          open={!account || !selected}
+          trigger={<></>}
+          onOpenChange={() => {}}
+        />
+      )}
       {!!selected && (
         <>
           <TextField

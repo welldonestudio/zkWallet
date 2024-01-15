@@ -16,7 +16,6 @@ import queryString from 'query-string';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
-import Layout from '@/component/layout';
 import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
 import { getZkPath } from '@/store/slice/config';
 import {
@@ -27,7 +26,7 @@ import {
 
 import type { Wallet } from '@/store/slice/zkWalletSlice';
 
-export const SignUpCallbackPage = () => {
+export const SignUpCallback = () => {
   const authState = useSelector(selectAuthState);
   const walletState: { index: number; wallets: Wallet[] } =
     useSelector(selectWalletState);
@@ -112,7 +111,7 @@ export const SignUpCallbackPage = () => {
   }, [location]);
 
   return (
-    <Layout breadcrumbs={[]} actions={<></>} initialized>
+    <>
       <Box
         style={{
           display: 'flex',
@@ -150,6 +149,6 @@ export const SignUpCallbackPage = () => {
           </Box>
         </Fade>
       </Box>
-    </Layout>
+    </>
   );
 };

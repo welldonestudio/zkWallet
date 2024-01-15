@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import { Grid } from '@mui/material';
-import { ConnectModal, useCurrentAccount } from '@mysten/dapp-kit';
+import { useCurrentAccount } from '@mysten/dapp-kit';
 import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
 import SendTokenModal from '@/component/dialog/sendToken';
-import Layout from '@/component/layout';
 import { selectAuthState } from '@/store/slice/authSlice';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
@@ -15,7 +14,7 @@ import { Stake } from './stake';
 
 import type { ResponseValidator } from '@/component/api/types';
 
-export const WalletPage = () => {
+export const Wallet = () => {
   const account = useCurrentAccount();
   const authState = useSelector(selectAuthState);
   const walletState = useSelector(selectWalletState);
@@ -88,10 +87,7 @@ export const WalletPage = () => {
   }, [authState]);
 
   return (
-    <Layout breadcrumbs={[]} actions={<></>} initialized>
-      {!account && (
-        <ConnectModal open={!account} trigger={<></>} onOpenChange={() => {}} />
-      )}
+    <>
       {!!account && (
         <Grid container spacing={2} paddingY={4}>
           <Grid container item xs={12}>
@@ -123,6 +119,6 @@ export const WalletPage = () => {
         confirm={handleStakeConfirm}
         validators={validators}
       />
-    </Layout>
+    </>
   );
 };
