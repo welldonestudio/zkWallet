@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 
 import { Grid } from '@mui/material';
-import { useCurrentAccount } from '@mysten/dapp-kit';
+import {
+  useConnectWallet,
+  useCurrentAccount,
+  useCurrentWallet,
+  useWallets,
+} from '@mysten/dapp-kit';
 import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
@@ -19,7 +24,11 @@ export const WalletPage = () => {
   const account = useCurrentAccount();
   const authState = useSelector(selectAuthState);
   const walletState = useSelector(selectWalletState);
-  const { wallet } = useContextApi();
+  const { wallet: api } = useContextApi();
+
+  const wallets = useWallets();
+  const { currentWallet, connectionStatus } = useCurrentWallet();
+  const { mutate: connect } = useConnectWallet();
 
   const [openSend, setOpenSend] = useState<boolean>(false);
   const [openStake, setOpenStake] = useState<boolean>(false);
@@ -29,7 +38,7 @@ export const WalletPage = () => {
 
   const handleSendConfirm = async (to: string, amount: string) => {
     authState &&
-      (await wallet.sendToken({
+      (await api.sendToken({
         auth: authState,
         wallet: walletState.wallets[0],
         token: {
@@ -43,7 +52,7 @@ export const WalletPage = () => {
 
   const handleStakeConfirm = async (to: string, amount: string) => {
     authState &&
-      (await wallet.stake({
+      (await api.stake({
         auth: authState,
         wallet: walletState.wallets[0],
         stake: {
@@ -56,9 +65,21 @@ export const WalletPage = () => {
 
   useEffect(() => {
     const init = async () => {
-      const vali =
-        authState && (await wallet.getValidators({ auth: authState }));
-      setVelidators(vali || []);
+      if (authState) {
+        const vali = await api.getValidators({ auth: authState });
+        setVelidators(vali || []);
+        console.log(111, currentWallet);
+        console.log(222, connectionStatus);
+        console.log(333, wallets);
+        console.log(444, connect);
+        currentWallet &&
+          connect(
+            { wallet: currentWallet },
+            {
+              onSuccess: () => console.log('connected'),
+            },
+          );
+      }
     };
     init();
   }, [authState]);
