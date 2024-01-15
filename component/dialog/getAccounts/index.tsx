@@ -65,7 +65,9 @@ export const GetAccountsModal = ({
   return (
     <Dialog open={open} onClose={handleReject} fullWidth maxWidth="sm">
       <DialogTitle>{method}</DialogTitle>
-      <DialogContent></DialogContent>
+      <DialogContent>
+        {selected}
+      </DialogContent>
       <DialogActions>
         <Button onClick={handleConfirm}>Excute</Button>
       </DialogActions>
