@@ -13,7 +13,11 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-import { ConnectModal, useCurrentAccount, useDisconnectWallet } from '@mysten/dapp-kit';
+import {
+  ConnectModal,
+  useCurrentAccount,
+  useDisconnectWallet,
+} from '@mysten/dapp-kit';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -120,11 +124,7 @@ export const WalletSelecter = () => {
   return (
     <>
       {show && (
-        <ConnectModal
-          open={!account || !selected}
-          trigger={<></>}
-          onOpenChange={() => {}}
-        />
+        <ConnectModal open={!account} trigger={<></>} onOpenChange={() => {}} />
       )}
       {!!selected && (
         <>
