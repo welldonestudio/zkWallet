@@ -129,7 +129,7 @@ export const WalletSelecter = () => {
       {!!selected && (
         <>
           <TextField
-            select
+            // select
             size="small"
             label="Wallet"
             defaultValue={selected}

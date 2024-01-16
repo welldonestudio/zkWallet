@@ -28,7 +28,7 @@ export default function Footer() {
               <Stack direction="row" sx={{ paddingTop: '20px' }}>
                 <a
                   target="_blank"
-                  href="https://github.com/welldonestudio/CosmDiver/issues"
+                  href="https://support.welldonestudio.io/"
                   rel="noopener noreferrer"
                 >
                   <Box>
