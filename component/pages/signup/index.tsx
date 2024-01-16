@@ -35,7 +35,7 @@ export const Signup = () => {
 
   return (
     <>
-      {account && account.publicKey && show && (
+      {account && !!account.publicKey && show && (
         <SelectProviderModal
           open
           duration={MAX_EPOCH_DURATION}
@@ -52,7 +52,7 @@ export const Signup = () => {
           onClose={HandleWarningModal}
         />
       )}
-      {JSON.stringify(account)}
+      {!!account?.publicKey}
     </>
   );
 };
