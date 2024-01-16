@@ -54,25 +54,29 @@ export const SignTransactionModal = ({
         );
       } else {
         const res: ResponseSignTx | undefined =
-        authState &&
-        (await wallet.signTransaction({
-          auth: authState,
-          wallet: wallets[0],
-          unsignedTx: params[0].unsignedTx,
-        }));
+          authState &&
+          (await wallet.signTransaction({
+            auth: authState,
+            wallet: wallets[0],
+            unsignedTx: params[0].unsignedTx,
+          }));
 
-        url.searchParams.set(
-          'jsonrpc',
-          JSON.stringify({
-            jsonrpc: '2.0',
-            id,
-            result: [{
-              ...res
-            }],
-          }),
-        );
+          url.searchParams.set(
+            'jsonrpc',
+            JSON.stringify({
+              jsonrpc: '2.0',
+              id,
+              result: [{
+                ...res
+              }],
+            }),
+          );
+
+          console.log(888, res || '');
       }
-      window.location.href = url.toString();
+
+      console.log(999, url.toString());
+      // window.location.href = url.toString();
     } catch (error) {
       const url = new URL(callback);
       url.searchParams.set(
