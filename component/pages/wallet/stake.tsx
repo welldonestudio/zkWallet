@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InfoIcon from '@mui/icons-material/Info';
 import {
@@ -118,7 +119,7 @@ export const Stake = ({
               <Button onClick={() => openStake(true)}>Stake</Button>
             </Box>
           ) : (
-            <>Loading...</>
+            <AutorenewIcon style={{ animation: "spin 2s linear infinite" }}/>
           )}
         </Box>
       )}
