@@ -58,7 +58,7 @@ export const SignTransactionModal = ({
         (await wallet.signTransaction({
           auth: authState,
           wallet: wallets[0],
-          unsignedTx: params[0].unsignedTx as string,
+          unsignedTx: params[0].unsignedTx,
         }));
 
         url.searchParams.set(
