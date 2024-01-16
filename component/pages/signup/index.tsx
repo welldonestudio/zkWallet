@@ -31,7 +31,7 @@ export const Signup = () => {
 
   useEffect(() => {
     setTimeout(() => setShow(true), 300);
-  });
+  }, []);
 
   return (
     <>
@@ -52,6 +52,7 @@ export const Signup = () => {
           onClose={HandleWarningModal}
         />
       )}
+      {JSON.stringify(account)}
     </>
   );
 };
