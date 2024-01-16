@@ -171,7 +171,7 @@ export default function ApiProvider({
                 throw new Error(`zkLoginSignature error (${req.wallet.proof})`);
               }
               resolve({
-                unsignedTx: utils.base642Hex(req.unsignedTx),
+                unsignedTx: utils.base642Hex(result.transactionBlockBytes),
                 signature: utils.base642Hex(zkLoginSignature),
               });
             },
