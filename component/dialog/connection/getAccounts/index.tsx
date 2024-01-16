@@ -34,7 +34,7 @@ export const GetAccountsModal = ({
           ? {
               jsonrpc: '2.0',
               id,
-              result: [selected],
+              result: [{ address: selected }],
             }
           : {
               jsonrpc: '2.0',
