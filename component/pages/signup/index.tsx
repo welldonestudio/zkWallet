@@ -52,7 +52,6 @@ export const Signup = () => {
           onClose={HandleWarningModal}
         />
       )}
-      {!!account?.publicKey}
     </>
   );
 };
