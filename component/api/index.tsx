@@ -148,6 +148,7 @@ export default function ApiProvider({
     req: RequestSignTx,
   ): Promise<ResponseSignTx> => {
     try {
+      console.log(2, req.unsignedTx);
       return new Promise((resolve) => {
         signTransactionBlock(
           {
@@ -158,6 +159,7 @@ export default function ApiProvider({
           },
           {
             onSuccess: (result) => {
+              console.log(3, result);
               // create zk signature
               const zkLoginSignature =
                 req.auth.jwt &&

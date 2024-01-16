@@ -53,6 +53,7 @@ export const SignTransactionModal = ({
           }),
         );
       } else {
+        console.log(1, params[0]);
         const res: ResponseSignTx | undefined =
         authState &&
         (await wallet.signTransaction({
@@ -72,7 +73,8 @@ export const SignTransactionModal = ({
           }),
         );
       }
-      window.location.href = url.toString();
+      // window.location.href = url.toString();
+      console.log(99, url.toString());
       onClose();
     } catch (error) {
       const url = new URL(callback);
@@ -87,7 +89,8 @@ export const SignTransactionModal = ({
           },
         }),
       );
-      window.location.href = url.toString();
+      // window.location.href = url.toString();
+      console.log(88, url.toString());
       onClose();
     }
   };
