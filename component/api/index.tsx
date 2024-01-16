@@ -171,24 +171,6 @@ export default function ApiProvider({
                 throw new Error(`zkLoginSignature error (${req.wallet.proof})`);
               }
 
-              // test
-              client
-                .executeTransactionBlock({
-                  transactionBlock: result.transactionBlockBytes,
-                  signature: zkLoginSignature,
-                })
-                .then((txreceipt) => {
-                  enqueueSnackbar(`success: ${txreceipt.digest}`, {
-                    variant: 'success',
-                  });
-                })
-                .catch((error) => {
-                  enqueueSnackbar(`${error}`, {
-                    variant: 'error',
-                  });
-                });
-              // test
-
               resolve({
                 unsignedTx: utils.base642Hex(result.transactionBlockBytes),
                 signature: utils.base642Hex(zkLoginSignature),

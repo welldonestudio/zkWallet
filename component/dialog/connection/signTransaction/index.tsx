@@ -61,22 +61,20 @@ export const SignTransactionModal = ({
             unsignedTx: params[0].unsignedTx,
           }));
 
-          url.searchParams.set(
-            'jsonrpc',
-            JSON.stringify({
-              jsonrpc: '2.0',
-              id,
-              result: [{
-                ...res
-              }],
-            }),
-          );
-
-          console.log(888, res || '');
+        url.searchParams.set(
+          'jsonrpc',
+          JSON.stringify({
+            jsonrpc: '2.0',
+            id,
+            result: [
+              {
+                ...res,
+              },
+            ],
+          }),
+        );
       }
-
-      console.log(999, url.toString());
-      // window.location.href = url.toString();
+      window.location.href = url.toString();
     } catch (error) {
       const url = new URL(callback);
       url.searchParams.set(
