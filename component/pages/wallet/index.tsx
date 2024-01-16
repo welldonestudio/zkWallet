@@ -133,7 +133,7 @@ export const Wallet = () => {
                     justifyContent: 'center',
                     borderRadius: '8px',
                     borderStyle: 'dashed',
-                    borderColor: 'gray',
+                    borderColor: 'divider',
                   }}
                 >
                   <Box>Developing...</Box>

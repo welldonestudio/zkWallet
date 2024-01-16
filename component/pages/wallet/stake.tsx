@@ -110,7 +110,7 @@ export const Stake = ({
             justifyContent: 'center',
             borderRadius: '8px',
             borderStyle: 'dashed',
-            borderColor: 'gray',
+            borderColor: 'divider',
           }}
         >
           <Box>
