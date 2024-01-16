@@ -151,7 +151,6 @@ export const SelectProviderModal = ({
         <Button
           fullWidth
           onClick={handleDisconnect}
-          variant="outlined"
           color="error"
         >
           Disconnect Wallet
