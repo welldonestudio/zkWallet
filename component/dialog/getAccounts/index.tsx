@@ -26,7 +26,8 @@ export const GetAccountsModal = ({
   const { selected } = useSelector(selectWalletState);
 
   const handleConfirm = () => {
-    const url = `${callback}?jsonrpc=${JSON.stringify(
+    const url = new URL(callback);
+    url.searchParams.set('jsonrpc', JSON.stringify(
       selected
         ? {
             jsonrpc: '2.0',
@@ -41,24 +42,22 @@ export const GetAccountsModal = ({
               message: 'account is not exist.',
             },
           },
-    )}`;
-
-    window.location.href = url;
-
+    ));
+    window.location.href = url.toString();
     onClose();
   };
 
   const handleReject = () => {
-    const url = `${callback}?jsonrpc=${JSON.stringify({
+    const url = new URL(callback);
+    url.searchParams.set('jsonrpc', JSON.stringify({
       jsonrpc: '2.0',
       id,
       error: {
         code: -32603,
         message: 'rejected',
       },
-    })}`;
-
-    window.location.href = url;
+    }));
+    window.location.href = url.toString();
     onClose();
   };
 
