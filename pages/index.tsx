@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { useCurrentAccount } from '@mysten/dapp-kit';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
@@ -8,11 +9,14 @@ import { Wallet } from '@/component/pages/wallet';
 import { selectAuthState } from '@/store/slice/authSlice';
 
 export default function HomePage() {
-  const authState = useSelector(selectAuthState);
   const router = useRouter();
+  const authState = useSelector(selectAuthState);
+  const account = useCurrentAccount();
 
   useEffect(() => {
-    (!authState || !authState.jwt) && router.push('/signup');
+    if (!authState || !authState.jwt || !account) {
+      router.push('/signup');
+    }
   }, []);
 
   return (
