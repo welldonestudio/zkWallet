@@ -121,7 +121,7 @@ export const SignTransactionModal = ({
       </DialogContent>
       <DialogActions>
         <Button disabled={loading} onClick={handleConfirm}>
-          Excute
+          Sign Transaction
         </Button>
       </DialogActions>
     </Dialog>

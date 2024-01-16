@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
 import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
+import { resetWallet } from '@/store/slice/zkWalletSlice';
 
 import { Apple } from './icons/apple';
 import { Facebook } from './icons/facebook';
@@ -24,7 +25,6 @@ import { Slack } from './icons/slack';
 import { Twitch } from './icons/twitch';
 
 import type { NETWORK, PROVIDER } from '@/store/slice/config';
-import { resetWallet } from '@/store/slice/zkWalletSlice';
 
 const BUTTONS: { name: PROVIDER; icon: React.ReactNode }[] = [
   {
@@ -148,7 +148,12 @@ export const SelectProviderModal = ({
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button fullWidth onClick={handleDisconnect}>
+        <Button
+          fullWidth
+          onClick={handleDisconnect}
+          variant="outlined"
+          color="error"
+        >
           Disconnect Wallet
         </Button>
       </DialogActions>

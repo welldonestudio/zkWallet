@@ -75,7 +75,7 @@ export const GetAccountsModal = ({
         <Typography variant="caption">{selected}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleConfirm}>Excute</Button>
+        <Button onClick={handleConfirm}>Connect</Button>
       </DialogActions>
     </Dialog>
   );

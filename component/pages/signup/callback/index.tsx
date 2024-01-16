@@ -1,21 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Fade,
-  Tooltip,
-} from '@mui/material';
 import { decodeJwt } from 'jose';
 import { useRouter } from 'next/router';
 import queryString from 'query-string';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
+import { WarningModal } from '@/component/dialog/warning';
 import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
 import { getZkPath } from '@/store/slice/config';
 import {
@@ -111,44 +102,11 @@ export const SignUpCallback = () => {
   }, [location]);
 
   return (
-    <>
-      <Box
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          height: '100vh',
-        }}
-      >
-        <Fade in={error}>
-          <Box width="400px" marginTop={-20}>
-            {error && (
-              <Card sx={{ minWidth: 275 }}>
-                <CardHeader title="ERROR" />
-                <CardContent>Callback Token Error</CardContent>
-                <CardActions>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'flex-end',
-                      width: '100%',
-                    }}
-                  >
-                    <Tooltip title="Clear Wallet">
-                      <span>
-                        <Button onClick={handleClear} disabled={loading}>
-                          Reset
-                        </Button>
-                      </span>
-                    </Tooltip>
-                  </Box>
-                </CardActions>
-              </Card>
-            )}
-          </Box>
-        </Fade>
-      </Box>
-    </>
+    <WarningModal
+      title="Error"
+      desc="Callback Token Error"
+      open={error && !loading}
+      onClose={handleClear}
+    />
   );
 };
