@@ -1,25 +1,20 @@
 import { useEffect } from 'react';
 
-import { useDisconnectWallet } from '@mysten/dapp-kit';
-import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 
 import Layout from '@/component/layout';
 import { Signup } from '@/component/pages/signup';
 import { SignUpCallback } from '@/component/pages/signup/callback';
-import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
-import { resetWallet } from '@/store/slice/zkWalletSlice';
+import { selectAuthState } from '@/store/slice/authSlice';
 
 export default function SignUpPage() {
-  const dispatch = useDispatch();
   const authState = useSelector(selectAuthState);
-
-  const { mutate: disconnect } = useDisconnectWallet();
+  const router = useRouter();
 
   useEffect(() => {
-    disconnect();
-    dispatch(setAuthState(undefined));
-    dispatch(resetWallet());
-  }, []);
+    authState && authState.jwt && router.push('/');
+  }, [authState]);
 
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
