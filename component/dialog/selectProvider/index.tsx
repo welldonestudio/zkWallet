@@ -3,13 +3,14 @@ import { useState } from 'react';
 import {
   Button,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Grid,
   SvgIcon,
   Typography,
 } from '@mui/material';
-import { useCurrentAccount } from '@mysten/dapp-kit';
+import { useCurrentAccount, useDisconnectWallet } from '@mysten/dapp-kit';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
@@ -23,6 +24,7 @@ import { Slack } from './icons/slack';
 import { Twitch } from './icons/twitch';
 
 import type { NETWORK, PROVIDER } from '@/store/slice/config';
+import { resetWallet } from '@/store/slice/zkWalletSlice';
 
 const BUTTONS: { name: PROVIDER; icon: React.ReactNode }[] = [
   {
@@ -65,13 +67,19 @@ export const SelectProviderModal = ({
   clientIds: { [key: string]: string };
 }) => {
   const authState = useSelector(selectAuthState);
+  const { mutate: disconnect } = useDisconnectWallet();
+  const account = useCurrentAccount();
 
   const dispatch = useDispatch();
   const { jwt } = useContextApi();
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const account = useCurrentAccount();
+  const handleDisconnect = () => {
+    disconnect();
+    dispatch(setAuthState(undefined));
+    dispatch(resetWallet());
+  };
 
   const handleClick = async (provider: PROVIDER) => {
     setLoading(true);
@@ -139,6 +147,11 @@ export const SelectProviderModal = ({
           ))}
         </Grid>
       </DialogContent>
+      <DialogActions>
+        <Button fullWidth onClick={handleDisconnect}>
+          Disconnect Wallet
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };
