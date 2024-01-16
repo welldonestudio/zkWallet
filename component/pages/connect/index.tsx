@@ -1,18 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from '@mui/material';
 import queryString from 'query-string';
 
 import {
   GetAccountsModal,
   SignTransactionModal,
 } from '@/component/dialog/connection';
+import { WarningModal } from '@/component/dialog/warning';
 import { DEFAULT_NETWORK } from '@/store/slice/config';
 
 export const Connect = () => {
@@ -87,18 +81,14 @@ export const Connect = () => {
 
   return (
     <>
-      <Dialog
+      <WarningModal
+        title="Error"
+        desc={error}
         open={errorOpen}
         onClose={() => {
           setErrorOpen(false);
         }}
-      >
-        <DialogTitle>Error</DialogTitle>
-        <DialogContent>{error}</DialogContent>
-        <DialogActions>
-          <Button onClick={() => setErrorOpen(false)}>Close</Button>
-        </DialogActions>
-      </Dialog>
+      />
       <GetAccountsModal
         open={accountOpen}
         onClose={() => {

@@ -1,15 +1,18 @@
 import { useState } from 'react';
 
 import SendIcon from '@mui/icons-material/Send';
-import { Button, MenuItem, Stack, TextField } from '@mui/material';
-
-import { utils } from '@/component/api/utils';
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-} from '@/component/theme/component';
+  MenuItem,
+  Stack,
+  TextField,
+} from '@mui/material';
+
+import { utils } from '@/component/api/utils';
 
 import type { ResponseValidator } from '@/component/api/types';
 

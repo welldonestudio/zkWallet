@@ -1,12 +1,13 @@
-import { Button, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
-
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-} from '@/component/theme/component';
+  Typography,
+} from '@mui/material';
+import { useSelector } from 'react-redux';
+
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
 export const GetAccountsModal = ({

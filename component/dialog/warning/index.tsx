@@ -1,11 +1,10 @@
-import { Button } from '@mui/material';
-
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-} from '@/component/theme/component';
+} from '@mui/material';
 
 export const WarningModal = ({
   title,

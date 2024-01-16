@@ -1,15 +1,16 @@
 import { useState } from 'react';
 
-import { Button, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
-
-import { useContextApi } from '@/component/api';
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-} from '@/component/theme/component';
+  Typography,
+} from '@mui/material';
+import { useSelector } from 'react-redux';
+
+import { useContextApi } from '@/component/api';
 import { selectAuthState } from '@/store/slice/authSlice';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
