@@ -72,7 +72,7 @@ export const SignTransactionModal = ({
           }),
         );
       }
-      // window.location.href = url.toString();
+      window.location.href = url.toString();
     } catch (error) {
       const url = new URL(callback);
       url.searchParams.set(
@@ -86,7 +86,7 @@ export const SignTransactionModal = ({
           },
         }),
       );
-      // window.location.href = url.toString();
+      window.location.href = url.toString();
     } finally {
       onClose();
     }
