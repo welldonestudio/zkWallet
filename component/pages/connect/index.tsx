@@ -9,7 +9,10 @@ import {
 } from '@mui/material';
 import queryString from 'query-string';
 
-import { GetAccountsModal } from '@/component/dialog/getAccounts';
+import {
+  GetAccountsModal,
+  SignTransactionModal,
+} from '@/component/dialog/connection';
 import { DEFAULT_NETWORK } from '@/store/slice/config';
 
 export const Connect = () => {
@@ -106,6 +109,17 @@ export const Connect = () => {
         }}
         callback={callback}
         method={method}
+        params={params}
+        id={id}
+      />
+      <SignTransactionModal
+        open={signTransactionOpen}
+        onClose={() => {
+          setSignTransactionOpen(false);
+        }}
+        callback={callback}
+        method={method}
+        params={params}
         id={id}
       />
     </>

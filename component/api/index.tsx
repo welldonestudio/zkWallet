@@ -15,6 +15,7 @@ import { getOAuthURL } from './sui/getOAuthURL';
 import { getZkProof } from './sui/getZkProof';
 import { getZkSignature } from './sui/utils/getZkSignature';
 import { unStake } from './unStake';
+import { utils } from './utils';
 
 import type {
   RequestGetOAuthUrl,
@@ -26,10 +27,12 @@ import type {
   RequestGetBalance,
   RequestGetStake,
   RequestSendToken,
+  RequestSignTx,
   RequestSuiStake,
   RequestSuiUnStake,
   RequestValidator,
   ResponseBalnce,
+  ResponseSignTx,
   ResponseStake,
   ResponseValidator,
 } from './types';
@@ -63,6 +66,9 @@ export const ApiContext = createContext({
     },
     getStakes: (request: RequestGetStake): Promise<ResponseStake[]> => {
       throw new Error('wallet.getStakes is not supported');
+    },
+    signTransaction: (request: RequestSignTx): Promise<ResponseSignTx> => {
+      throw new Error('wallet.signTransaction is not supported');
     },
     sendToken: (request: RequestSendToken): Promise<string | void> => {
       throw new Error('wallet.sendToken is not supported');
@@ -138,6 +144,51 @@ export default function ApiProvider({
     });
   };
 
+  const HandleSignTransaction = async (
+    req: RequestSignTx,
+  ): Promise<ResponseSignTx> => {
+    try {
+      return new Promise((resolve) => {
+        signTransactionBlock(
+          {
+            chain: req.auth.network,
+            transactionBlock: TransactionBlock.from(
+              utils.hex2buffer(req.unsignedTx),
+            ) as any, // TODO
+          },
+          {
+            onSuccess: (result) => {
+              // create zk signature
+              const zkLoginSignature =
+                req.auth.jwt &&
+                req.wallet.proof &&
+                getZkSignature(req.auth, req.wallet, result.signature);
+
+              if (!zkLoginSignature) {
+                enqueueSnackbar('zkLoginSignature error', {
+                  variant: 'error',
+                });
+                throw new Error(`zkLoginSignature error (${req.wallet.proof})`);
+              }
+              resolve({
+                unsignedTx: req.unsignedTx,
+                signature: zkLoginSignature,
+              });
+            },
+            onError: (result) => {
+              enqueueSnackbar(result.message, {
+                variant: 'error',
+              });
+              throw new Error(result.message);
+            },
+          },
+        );
+      });
+    } catch (error) {
+      throw `${error}`;
+    }
+  };
+
   const HandleSendToken = async (
     req: RequestSendToken,
   ): Promise<string | void> => {
@@ -186,6 +237,7 @@ export default function ApiProvider({
           getValidators: getValidators,
           getStakes: getStakes,
           sendToken: HandleSendToken,
+          signTransaction: HandleSignTransaction,
           stake: HandleStakeToken,
           unStake: HandleUnStakeToken,
         },

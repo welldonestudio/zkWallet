@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import {
@@ -27,36 +27,42 @@ export const GetAccountsModal = ({
 
   const handleConfirm = () => {
     const url = new URL(callback);
-    url.searchParams.set('jsonrpc', JSON.stringify(
-      selected
-        ? {
-            jsonrpc: '2.0',
-            id,
-            result: [selected],
-          }
-        : {
-            jsonrpc: '2.0',
-            id,
-            error: {
-              code: -32603,
-              message: 'account is not exist.',
+    url.searchParams.set(
+      'jsonrpc',
+      JSON.stringify(
+        selected
+          ? {
+              jsonrpc: '2.0',
+              id,
+              result: [selected],
+            }
+          : {
+              jsonrpc: '2.0',
+              id,
+              error: {
+                code: -32603,
+                message: 'account is not exist.',
+              },
             },
-          },
-    ));
+      ),
+    );
     window.location.href = url.toString();
     onClose();
   };
 
   const handleReject = () => {
     const url = new URL(callback);
-    url.searchParams.set('jsonrpc', JSON.stringify({
-      jsonrpc: '2.0',
-      id,
-      error: {
-        code: -32603,
-        message: 'rejected',
-      },
-    }));
+    url.searchParams.set(
+      'jsonrpc',
+      JSON.stringify({
+        jsonrpc: '2.0',
+        id,
+        error: {
+          code: -32603,
+          message: 'rejected',
+        },
+      }),
+    );
     window.location.href = url.toString();
     onClose();
   };
@@ -65,7 +71,7 @@ export const GetAccountsModal = ({
     <Dialog open={open} onClose={handleReject} fullWidth maxWidth="sm">
       <DialogTitle>{method}</DialogTitle>
       <DialogContent>
-        {selected}
+        <Typography variant="caption">{selected}</Typography>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleConfirm}>Excute</Button>
