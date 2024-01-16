@@ -148,7 +148,6 @@ export default function ApiProvider({
     req: RequestSignTx,
   ): Promise<ResponseSignTx> => {
     try {
-      console.log(2, req.unsignedTx);
       return new Promise((resolve) => {
         signTransactionBlock(
           {
@@ -159,7 +158,6 @@ export default function ApiProvider({
           },
           {
             onSuccess: (result) => {
-              console.log(3, result);
               // create zk signature
               const zkLoginSignature =
                 req.auth.jwt &&
@@ -173,8 +171,8 @@ export default function ApiProvider({
                 throw new Error(`zkLoginSignature error (${req.wallet.proof})`);
               }
               resolve({
-                unsignedTx: req.unsignedTx,
-                signature: zkLoginSignature,
+                unsignedTx: utils.base642Hex(req.unsignedTx),
+                signature: utils.base642Hex(zkLoginSignature),
               });
             },
             onError: (result) => {
