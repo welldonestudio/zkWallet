@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 
-import { useCurrentAccount, useDisconnectWallet } from '@mysten/dapp-kit';
+import {
+  ConnectModal,
+  useCurrentAccount,
+  useDisconnectWallet,
+} from '@mysten/dapp-kit';
 import { useDispatch } from 'react-redux';
 
 import { SelectProviderModal } from '@/component/dialog/selectProvider';
@@ -20,13 +24,11 @@ export const Signup = () => {
 
   const account = useCurrentAccount();
   const [show, setShow] = useState<boolean>(false);
-  const [warningOpen, setWarningOpen] = useState<boolean>(false);
 
   const HandleWarningModal = () => {
     disconnect();
     dispatch(setAuthState(undefined));
     dispatch(resetWallet());
-    setWarningOpen(false);
   };
 
   useEffect(() => {
@@ -35,23 +37,24 @@ export const Signup = () => {
 
   return (
     <>
-      {account && !!account.publicKey && show && (
-        <SelectProviderModal
-          open
-          duration={MAX_EPOCH_DURATION}
-          redirectUrl={REDIRECT_AUTH_URL}
-          clientIds={CLIENT_ID}
-          network={DEFAULT_NETWORK}
-        />
-      )}
-      {account && !account.publicKey && show && (
-        <WarningModal
-          open={warningOpen}
-          title="Wallet error"
-          desc="Invalid Account (public key error)"
-          onClose={HandleWarningModal}
-        />
-      )}
+      <ConnectModal
+        open={show && !account}
+        trigger={<></>}
+        onOpenChange={() => {}}
+      />
+      <SelectProviderModal
+        open={show && !!account && !!account.publicKey}
+        duration={MAX_EPOCH_DURATION}
+        redirectUrl={REDIRECT_AUTH_URL}
+        clientIds={CLIENT_ID}
+        network={DEFAULT_NETWORK}
+      />
+      <WarningModal
+        open={show && !!account && !account.publicKey}
+        title="Wallet error"
+        desc="Invalid Account (public key error)"
+        onClose={HandleWarningModal}
+      />
     </>
   );
 };

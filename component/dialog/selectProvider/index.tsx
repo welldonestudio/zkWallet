@@ -148,11 +148,7 @@ export const SelectProviderModal = ({
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button
-          fullWidth
-          onClick={handleDisconnect}
-          color="error"
-        >
+        <Button fullWidth onClick={handleDisconnect} color="error">
           Disconnect Wallet
         </Button>
       </DialogActions>
