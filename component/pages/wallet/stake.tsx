@@ -99,7 +99,7 @@ export const Stake = ({
 
   return (
     <Grid item xs={12}>
-      {init && stakes.length === 0 && (
+      {stakes.length === 0 && (
         <Box
           sx={{
             display: 'flex',
@@ -113,9 +113,13 @@ export const Stake = ({
             borderColor: 'divider',
           }}
         >
-          <Box>
-            <Button onClick={() => openStake(true)}>Stake</Button>
-          </Box>
+          {init ? (
+            <Box>
+              <Button onClick={() => openStake(true)}>Stake</Button>
+            </Box>
+          ) : (
+            <>Loading...</>
+          )}
         </Box>
       )}
       {stakes.map(({ validator, stakes }, key) => (
