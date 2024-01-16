@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Grid } from '@mui/material';
+import { Box, Grid, Tab, Tabs } from '@mui/material';
 import { useCurrentAccount } from '@mysten/dapp-kit';
 import { useSelector } from 'react-redux';
 
@@ -23,6 +23,7 @@ export const Wallet = () => {
   const [openSend, setOpenSend] = useState<boolean>(false);
   const [openStake, setOpenStake] = useState<boolean>(false);
 
+  const [tabIndex, setTabIndex] = useState(0);
   const [validators, setVelidators] = useState<ResponseValidator[]>([]);
   const [count, setCount] = useState<number>(0);
 
@@ -98,11 +99,45 @@ export const Wallet = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Stake
-              count={count}
-              openStake={setOpenStake}
-              unstake={handleUnStakeConfirm}
-            />
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Tabs
+                value={tabIndex}
+                onChange={(_, value) => {
+                  setTabIndex(value);
+                }}
+              >
+                <Tab label="Stake" />
+                <Tab label="NFT" />
+              </Tabs>
+            </Box>
+            {tabIndex === 0 && (
+              <Box width="100%">
+                <Stake
+                  count={count}
+                  openStake={setOpenStake}
+                  unstake={handleUnStakeConfirm}
+                />
+              </Box>
+            )}
+            {tabIndex === 1 && (
+              <Box width="100%">
+                <Box
+                  sx={{
+                    display: 'flex',
+                    backgroundColor: '#00000000',
+                    width: '100%',
+                    height: '180px',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: '8px',
+                    borderStyle: 'dashed',
+                    borderColor: 'gray',
+                  }}
+                >
+                  <Box>Developing...</Box>
+                </Box>
+              </Box>
+            )}
           </Grid>
         </Grid>
       )}
