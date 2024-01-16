@@ -99,7 +99,9 @@ export const Wallet = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Box
+              sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 1 }}
+            >
               <Tabs
                 value={tabIndex}
                 onChange={(_, value) => {
