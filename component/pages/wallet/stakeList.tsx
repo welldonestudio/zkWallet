@@ -166,11 +166,13 @@ export const StakeList = ({
           {Array.from({ length: rowsPerPage - showList.length }).map(
             (_, key) => (
               <TableRow key={key}>
-                <TableCell> 1 </TableCell>
-                <TableCell> </TableCell>
-                <TableCell> </TableCell>
-                <TableCell> </TableCell>
-                <TableCell> </TableCell>
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell>
+                  <Button disabled style={{ display: 'none' }} />
+                </TableCell>
               </TableRow>
             ),
           )}
