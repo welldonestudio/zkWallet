@@ -56,7 +56,12 @@ export interface RequestSuiUnStake extends RequestBase {
   };
 }
 
-export interface RequestGetStake {
+export interface RequestNftList {
+  auth: Auth;
+  address: string;  
+}
+
+export interface RequestStakeList {
   auth: Auth;
   address: string;
 }

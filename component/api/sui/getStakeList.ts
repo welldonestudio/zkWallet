@@ -3,7 +3,7 @@ import { SuiClient } from '@mysten/sui.js/client';
 import { getProviderUrl } from './utils/getProviderUrl';
 import { utils } from '../utils';
 
-import type { RequestGetStake, ResponseStake } from '../types';
+import type { RequestStakeList, ResponseStake } from '../types';
 import type { ValidatorApy } from '@mysten/sui.js/client';
 
 const getApy = (apys: ValidatorApy[], address: string): string => {
@@ -11,8 +11,8 @@ const getApy = (apys: ValidatorApy[], address: string): string => {
   return item ? (item.apy * 100).toFixed(2) : 'n/a';
 };
 
-export const getStakes = async (
-  request: RequestGetStake,
+export const getStakeList = async (
+  request: RequestStakeList,
 ): Promise<ResponseStake[]> => {
   try {
     let url = getProviderUrl(request.auth.network);

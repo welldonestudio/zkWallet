@@ -10,6 +10,7 @@ import { selectAuthState } from '@/store/slice/authSlice';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import { Assets } from './assets';
+import { NftList } from './nftList';
 import { StakeList } from './stakeList';
 
 import type { ResponseValidator } from '@/component/api/types';
@@ -121,25 +122,7 @@ export const Wallet = () => {
                 />
               </Box>
             )}
-            {tabIndex === 1 && (
-              <Box width="100%">
-                <Box
-                  sx={{
-                    display: 'flex',
-                    backgroundColor: '#00000000',
-                    width: '100%',
-                    height: '180px',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: '8px',
-                    borderStyle: 'dashed',
-                    borderColor: 'divider',
-                  }}
-                >
-                  <Box>Developing...</Box>
-                </Box>
-              </Box>
-            )}
+            {tabIndex === 1 && <NftList count={count} />}
           </Grid>
         </Grid>
       )}

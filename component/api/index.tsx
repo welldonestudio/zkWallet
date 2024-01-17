@@ -7,7 +7,8 @@ import { enqueueSnackbar } from 'notistack';
 
 import { getAddress } from './getAddress';
 import { getBalance } from './getBalance';
-import { getStakes } from './getStakes';
+import { getNftList } from './getNftsList';
+import { getStakeList } from './getStakeList';
 import { getValidators } from './getValidators';
 import { sendToken } from './sendToken';
 import { stake } from './stake';
@@ -25,9 +26,10 @@ import type { RequestGetZkProof } from './sui/getZkProof';
 import type {
   RequestGetAddress,
   RequestGetBalance,
-  RequestGetStake,
+  RequestNftList,
   RequestSendToken,
   RequestSignTx,
+  RequestStakeList,
   RequestSuiStake,
   RequestSuiUnStake,
   RequestValidator,
@@ -59,13 +61,18 @@ export const ApiContext = createContext({
     ): Promise<ResponseBalnce[]> => {
       throw new Error('wallet.getBalance is not supported');
     },
+    getNftList: async (
+      request: RequestNftList,
+    ): Promise<void> => {
+      throw new Error('wallet.getBalance is not supported');
+    },
     getValidators: (
       request: RequestValidator,
     ): Promise<ResponseValidator[]> => {
       throw new Error('wallet.getValidators is not supported');
     },
-    getStakes: (request: RequestGetStake): Promise<ResponseStake[]> => {
-      throw new Error('wallet.getStakes is not supported');
+    getStakeList: (request: RequestStakeList): Promise<ResponseStake[]> => {
+      throw new Error('wallet.getStakeList is not supported');
     },
     signTransaction: (request: RequestSignTx): Promise<ResponseSignTx> => {
       throw new Error('wallet.signTransaction is not supported');
@@ -235,8 +242,9 @@ export default function ApiProvider({
         wallet: {
           getAddress: getAddress,
           getBalance: getBalance,
+          getNftList: getNftList,
           getValidators: getValidators,
-          getStakes: getStakes,
+          getStakeList: getStakeList,
           sendToken: HandleSendToken,
           signTransaction: HandleSignTransaction,
           stake: HandleStakeToken,
