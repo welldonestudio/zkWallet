@@ -72,7 +72,7 @@ export interface RequestNftList {
 
 export interface ResponseNftList {
   list: NftData[];
-  hasNextPage: boolean;
+  nextPage?: string;
 }
 
 export interface StakeData {

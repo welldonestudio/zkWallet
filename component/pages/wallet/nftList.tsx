@@ -25,6 +25,7 @@ export const NftList = ({ count }: { count: number }) => {
   const { wallet } = useContextApi();
 
   const [nfts, setNfts] = useState<NftData[]>([]);
+  const [hasNextPage, setHasNextPage] = useState<string | undefined>('');
   const [init, setInit] = useState<boolean>(false);
 
   const update = async () => {
@@ -34,6 +35,7 @@ export const NftList = ({ count }: { count: number }) => {
         address: walletState.selected,
       });
       setNfts(res.list);
+      setHasNextPage(res.nextPage);
     }
     setInit(true);
   };

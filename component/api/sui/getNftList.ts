@@ -22,7 +22,7 @@ export const getNftList = async (
     });
 
     return {
-      hasNextPage: objs.hasNextPage,
+      nextPage: objs.nextCursor || undefined,
       list: objs.data
         .filter((item) => item.data)
         .map(
