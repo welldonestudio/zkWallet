@@ -27,12 +27,13 @@ export default function HomePage() {
   };
 
   useEffect(() => {
+    console.log(account);
     if (!authState || !authState.jwt) {
       router.push('/signup');
     } else if (!account) {
       setOpen(true);
     }
-  }, []);
+  }, [account]);
 
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
@@ -40,6 +41,7 @@ export default function HomePage() {
       <WarningModal
         title="error"
         desc="Connection expired"
+        button="OK"
         open={open}
         onClose={reConnect}
       />
