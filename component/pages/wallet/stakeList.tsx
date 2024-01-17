@@ -123,7 +123,7 @@ export const StakeList = ({
           )}
         </Box>
       )}
-      {stakes.map(({ validator, stakes }, key) => (
+      {stakes.map(({ validator, list }, key) => (
         <Accordion key={key} disableGutters elevation={0}>
           <MyAccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Box
@@ -215,7 +215,7 @@ export const StakeList = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {stakes.map((stake, key2) => (
+                  {list.map((stake, key2) => (
                     <TableRow key={key2}>
                       <TableCell align="left">{`${stake.amount} ${CURRENCY_UNIT}`}</TableCell>
                       <TableCell align="left">

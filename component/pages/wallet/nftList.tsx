@@ -1,69 +1,49 @@
 import { useEffect, useState } from 'react';
 
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import InfoIcon from '@mui/icons-material/Info';
+import LinkIcon from '@mui/icons-material/Link';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
-  Button,
-  Chip,
   CircularProgress,
   Grid,
-  Hidden,
-  Stack,
-  styled,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
+  IconButton,
+  ImageList,
+  ImageListItem,
+  ImageListItemBar,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
-import { utils } from '@/component/api/utils';
 import { selectAuthState } from '@/store/slice/authSlice';
-import { CURRENCY_UNIT } from '@/store/slice/config';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
-import type { ResponseStake } from '@/component/api/types';
-import type { AccordionSummaryProps } from '@mui/material';
-
-const MyAccordionSummary = styled((props: AccordionSummaryProps) => (
-  <AccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'dark'
-      ? 'rgba(255, 255, 255, .05)'
-      : 'rgba(0, 0, 0, .03)',
-  flexDirection: 'row-reverse',
-  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-    transform: 'rotate(90deg)',
-  },
-  '& .MuiAccordionSummary-content': {
-    marginLeft: theme.spacing(1),
-  },
-}));
+import type { NftData } from '@/component/api/types';
 
 export const NftList = ({ count }: { count: number }) => {
   const authState = useSelector(selectAuthState);
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
 
+  const [nfts, setNfts] = useState<NftData[]>([]);
   const [init, setInit] = useState<boolean>(false);
+
+  const update = async () => {
+    console.log(authState);
+    const res = await wallet.getNftList({
+      auth: { network: 'sui:mainnet' } as any,
+      address:
+        '0x02a212de6a9dfa3a69e22387acfbafbb1a9e591bd9d636e7895dcfc8de05f331',
+    });
+    setNfts(res.list);
+    setInit(true);
+  };
+
+  useEffect(() => {
+    update();
+  }, [walletState.wallets, count]);
 
   return (
     <Grid item xs={12}>
-      <Box width="100%">
+      {nfts.length === 0 && (
         <Box
           sx={{
             display: 'flex',
@@ -77,13 +57,31 @@ export const NftList = ({ count }: { count: number }) => {
             borderColor: 'divider',
           }}
         >
-          {init ? (
-            <>NFT</>
-          ) : (
-            <CircularProgress />
-          )}
+          {init ? <>NFT</> : <CircularProgress />}
         </Box>
-      </Box>
+      )}
+      {nfts.length > 0 && (
+        <ImageList cols={4}>
+          {nfts.map((item, key) => (
+            <ImageListItem key={key}>
+              <img src={item.img} />
+              <ImageListItemBar
+                title={item.title}
+                subtitle={item.desc || item.desc}
+                actionIcon={
+                  <>
+                    {item.link && (
+                      <IconButton size="small" href={item.link}>
+                        <LinkIcon fontSize="small" />
+                      </IconButton>
+                    )}
+                  </>
+                }
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      )}
     </Grid>
   );
 };

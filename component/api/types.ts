@@ -56,14 +56,23 @@ export interface RequestSuiUnStake extends RequestBase {
   };
 }
 
-export interface RequestNftList {
-  auth: Auth;
-  address: string;  
+export interface NftData {
+  address: string;
+  author?: string;
+  img?: string;
+  title: string;
+  desc?: string;
+  link?: string;
 }
 
-export interface RequestStakeList {
+export interface RequestNftList {
   auth: Auth;
   address: string;
+}
+
+export interface ResponseNftList {
+  list: NftData[];
+  hasNextPage: boolean;
 }
 
 export interface StakeData {
@@ -75,6 +84,11 @@ export interface StakeData {
   requestEpoch: string;
 }
 
+export interface RequestStakeList {
+  auth: Auth;
+  address: string;
+}
+
 export interface ResponseStake {
   validator: {
     name: string;
@@ -84,7 +98,7 @@ export interface ResponseStake {
     apy: string;
     apyEpoch: string;
   };
-  stakes: StakeData[];
+  list: StakeData[];
 }
 
 export interface RequestValidator {

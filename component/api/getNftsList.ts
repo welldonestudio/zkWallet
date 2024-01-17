@@ -1,18 +1,17 @@
 import { getNftList as sui } from './sui/getNftList';
 
-import type { RequestNftList } from './types';
+import type { RequestNftList, ResponseNftList } from './types';
 
 export const getNftList = async (
   request: RequestNftList,
-): Promise<void> => {
+): Promise<ResponseNftList> => {
   switch (request.auth.network) {
     case 'sui:mainnet':
     case 'sui:devnet':
     case 'sui:testnet':
-      sui(request);
-      break;
+      return sui(request);
     default:
       break;
   }
-  // throw new Error('not support network');
+  throw new Error('not support network');
 };

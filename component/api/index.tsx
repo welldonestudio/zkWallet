@@ -34,6 +34,7 @@ import type {
   RequestSuiUnStake,
   RequestValidator,
   ResponseBalnce,
+  ResponseNftList,
   ResponseSignTx,
   ResponseStake,
   ResponseValidator,
@@ -61,9 +62,7 @@ export const ApiContext = createContext({
     ): Promise<ResponseBalnce[]> => {
       throw new Error('wallet.getBalance is not supported');
     },
-    getNftList: async (
-      request: RequestNftList,
-    ): Promise<void> => {
+    getNftList: async (request: RequestNftList): Promise<ResponseNftList> => {
       throw new Error('wallet.getBalance is not supported');
     },
     getValidators: (

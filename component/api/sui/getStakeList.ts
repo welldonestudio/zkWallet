@@ -44,7 +44,7 @@ export const getStakeList = async (
           apyEpoch,
           apy: getApy(apys, item.validatorAddress),
         },
-        stakes: item.stakes.map((stake) => ({
+        list: item.stakes.map((stake) => ({
           id: stake.stakedSuiId,
           status:
             stake.status === 'Active'
