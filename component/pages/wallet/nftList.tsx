@@ -76,6 +76,7 @@ export const NftList = ({ count }: { count: number }) => {
                 />
               ) : (
                 <Image
+                  style={{ width: '100% ' }}
                   src={`${location.origin}/images/no-image-avaliable.png`}
                   alt=""
                 />
