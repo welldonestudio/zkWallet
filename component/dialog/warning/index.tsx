@@ -20,7 +20,7 @@ export const WarningModal = ({
   onClose: () => void;
 }) => {
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>{desc}</DialogContent>
       <DialogActions>

@@ -17,6 +17,7 @@ export default function HomePage() {
   const { mutate: disconnect } = useDisconnectWallet();
   const dispatch = useDispatch();
 
+  const [init, setInit] = useState<number>(0);
   const [open, setOpen] = useState<boolean>(false);
 
   const reConnect = () => {
@@ -27,24 +28,25 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    console.log(account);
     if (!authState || !authState.jwt) {
       router.push('/signup');
-    } else if (!account) {
-      setOpen(true);
     }
+    setOpen(!account);
+    setInit(init + 1);
   }, [account]);
 
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
       {authState && authState.jwt && <Wallet />}
-      <WarningModal
-        title="error"
-        desc="Connection expired"
-        button="OK"
-        open={open}
-        onClose={reConnect}
-      />
+      {init > 0 && (
+        <WarningModal
+          title="error"
+          desc="Connection expired"
+          button="OK"
+          open={open}
+          onClose={reConnect}
+        />
+      )}
     </Layout>
   );
 }
