@@ -10,6 +10,7 @@ import {
   ImageListItem,
   ImageListItemBar,
 } from '@mui/material';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
@@ -27,13 +28,13 @@ export const NftList = ({ count }: { count: number }) => {
   const [init, setInit] = useState<boolean>(false);
 
   const update = async () => {
-    console.log(authState);
-    const res = await wallet.getNftList({
-      auth: { network: 'sui:mainnet' } as any,
-      address:
-        '0x02a212de6a9dfa3a69e22387acfbafbb1a9e591bd9d636e7895dcfc8de05f331',
-    });
-    setNfts(res.list);
+    if (authState) {
+      const res = await wallet.getNftList({
+        auth: authState,
+        address: walletState.selected,
+      });
+      setNfts(res.list);
+    }
     setInit(true);
   };
 
@@ -64,7 +65,13 @@ export const NftList = ({ count }: { count: number }) => {
         <ImageList cols={4}>
           {nfts.map((item, key) => (
             <ImageListItem key={key}>
-              <img src={item.img} />
+              <LazyLoadImage
+                src={item.img}
+                width="100%"
+                onError={({ currentTarget }) =>
+                  (currentTarget.src = '/images/no-image-avaliable.png')
+                }
+              />
               <ImageListItemBar
                 title={item.title}
                 subtitle={item.desc || item.desc}
