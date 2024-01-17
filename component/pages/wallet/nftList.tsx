@@ -34,6 +34,7 @@ export const NftList = ({ count }: { count: number }) => {
         address: walletState.selected,
       });
       setNfts(res.list);
+      console.log(res.list)
     }
     setInit(true);
   };
