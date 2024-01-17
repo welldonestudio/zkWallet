@@ -10,6 +10,7 @@ import {
   ImageListItem,
   ImageListItemBar,
 } from '@mui/material';
+import Image from 'next/image';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useSelector } from 'react-redux';
 
@@ -34,7 +35,6 @@ export const NftList = ({ count }: { count: number }) => {
         address: walletState.selected,
       });
       setNfts(res.list);
-      console.log(res.list)
     }
     setInit(true);
   };
@@ -66,13 +66,17 @@ export const NftList = ({ count }: { count: number }) => {
         <ImageList cols={4}>
           {nfts.map((item, key) => (
             <ImageListItem key={key}>
-              <LazyLoadImage
-                src={item.img}
-                width="100%"
-                onError={({ currentTarget }) =>
-                  (currentTarget.src = '/images/no-image-avaliable.png')
-                }
-              />
+              {item.img ? (
+                <LazyLoadImage
+                  src={item.img}
+                  width="100%"
+                  onError={({ currentTarget }) =>
+                    (currentTarget.src = '/images/no-image-avaliable.png')
+                  }
+                />
+              ) : (
+                <Image src="/images/no-image-avaliable.png" alt="unknown nft" />
+              )}
               <ImageListItemBar
                 title={item.title}
                 subtitle={item.desc || item.desc}
