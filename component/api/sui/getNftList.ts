@@ -18,13 +18,17 @@ export const getNftList = async (
       },
       options: {
         showDisplay: true,
+        showType: true,
       },
     });
 
     return {
       nextPage: objs.nextCursor || undefined,
       list: objs.data
-        .filter((item) => item.data && item.data.display)
+        .filter(
+          (item) =>
+            item.data && item.data.type !== '0x3::staking_pool::StakedSui',
+        )
         .map(
           (item) =>
             ({
