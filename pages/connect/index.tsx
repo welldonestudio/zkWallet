@@ -16,8 +16,6 @@ export default function ConnectPage() {
   }, []);
 
   return (
-    <Layout breadcrumbs={[]} actions={<></>} initialized>
-      {authState && authState.jwt && <Connect />}
-    </Layout>
+    <Layout initialized>{authState && authState.jwt && <Connect />}</Layout>
   );
 }

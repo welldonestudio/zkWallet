@@ -17,7 +17,7 @@ export default function SignUpPage() {
   }, [authState]);
 
   return (
-    <Layout breadcrumbs={[]} actions={<></>} initialized>
+    <Layout initialized>
       {!authState && <Signup />}
       {authState && !authState.jwt && <SignUpCallback />}
     </Layout>

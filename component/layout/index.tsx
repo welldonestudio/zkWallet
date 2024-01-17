@@ -1,42 +1,18 @@
-// import HomeIcon from '@mui/icons-material/Home';
 import LoopIcon from '@mui/icons-material/Loop';
-import {
-  Alert,
-  AlertTitle,
-  Box,
-  // Breadcrumbs,
-  Container,
-  Fade,
-  Stack,
-  // Typography,
-} from '@mui/material';
-// import Link from 'next/link';
-// import { useSelector } from 'react-redux';
+import { Alert, AlertTitle, Box, Container, Fade, Stack } from '@mui/material';
 
-// import { selectAuthState } from '@/store/slice/authSlice';
 import { DEFAULT_NETWORK } from '@/store/slice/config';
 
 import Footer from './footer';
 import NavBar from './navbar';
 
-interface LayoutProps {
-  breadcrumbs: {
-    name: string;
-    path?: string;
-  }[];
-  initialized?: boolean;
-  actions: JSX.Element;
-  children: React.ReactNode;
-}
-
 export default function Layout({
-  // breadcrumbs,
   initialized,
-  // actions,
   children,
-}: LayoutProps) {
-  // const authState = useSelector(selectAuthState);
-
+}: {
+  initialized?: boolean;
+  children: React.ReactNode;
+}) {
   return (
     <>
       <NavBar />
@@ -58,55 +34,6 @@ export default function Layout({
                 </Alert>
               )}
             </Box>
-            {/*<Box sx={{ display: 'flex', flexDirection: 'row' }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  flexGrow: 1,
-                }}
-              >
-                {initialized && authState && authState.jwt && (
-                  <Breadcrumbs>
-                    {breadcrumbs.length ? (
-                      <Link href="/" style={{ textDecoration: 'none' }}>
-                        <Typography variant="h4" color="white">
-                          <Box marginTop={0.5}>
-                            <HomeIcon />
-                          </Box>
-                        </Typography>
-                      </Link>
-                    ) : (
-                      <Typography variant="h4" color="white">
-                        <Box marginTop={0.5}>
-                          <HomeIcon />
-                        </Box>
-                      </Typography>
-                    )}
-                    {breadcrumbs.map((item, key) => {
-                      return item.path ? (
-                        <Link
-                          href={item.path}
-                          style={{ textDecoration: 'none' }}
-                          key={key}
-                        >
-                          <Typography variant="h4" color="white">
-                            {item.name}
-                          </Typography>
-                        </Link>
-                      ) : (
-                        <Typography
-                          variant="h4"
-                          key={key}
-                        >{`${item.name}`}</Typography>
-                      );
-                    })}
-                  </Breadcrumbs>
-                )}
-              </Box>
-              {initialized && actions}
-            </Box>*/}
             {initialized ? (
               <Box minHeight={'100vh'}>{children}</Box>
             ) : (

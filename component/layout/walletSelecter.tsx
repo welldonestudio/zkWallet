@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -13,7 +13,7 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-import { useDisconnectWallet } from '@mysten/dapp-kit';
+import { useCurrentWallet, useDisconnectWallet } from '@mysten/dapp-kit';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -27,6 +27,7 @@ import {
 import { resetWallet, selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import { useContextApi } from '../api';
+import { WarningModal } from '../dialog/warning';
 
 import type { Wallet } from '@/store/slice/zkWalletSlice';
 
@@ -34,23 +35,16 @@ export const WalletSelecter = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const wallet = useCurrentWallet();
   const { mutate: disconnect } = useDisconnectWallet();
   const authState = useSelector(selectAuthState);
   const { index, selected, wallets } = useSelector(selectWalletState);
 
-  const { jwt, wallet } = useContextApi();
+  const { jwt, wallet: api } = useContextApi();
 
   const [loading, setLoading] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<undefined | HTMLElement>(undefined);
   const open = Boolean(anchorEl);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(undefined);
-  };
 
   const handleAdd = async () => {
     try {
@@ -58,7 +52,7 @@ export const WalletSelecter = () => {
         setLoading(true);
 
         const path = getZkPath(authState.network, index); // TODO
-        const address = await wallet.getAddress({
+        const address = await api.getAddress({
           network: authState.network,
           jwt: authState.jwt,
           path,
@@ -111,6 +105,17 @@ export const WalletSelecter = () => {
     }
   };
 
+  const handleSignOut = () => {
+    disconnect();
+    dispatch(setAuthState(undefined));
+    dispatch(resetWallet());
+    router.push('/signup');
+  };
+
+  useEffect(() => {
+    console.log(wallet);
+  }, [wallet])
+
   return (
     <>
       {!!selected && (
@@ -157,21 +162,28 @@ export const WalletSelecter = () => {
               </Box>
             </MenuItem>
           </TextField>
-          <IconButton size="small" onClick={handleClick} sx={{ marginLeft: 1 }}>
+          <IconButton
+            size="small"
+            onClick={(event) => {
+              setAnchorEl(event.currentTarget);
+            }}
+            sx={{ marginLeft: 1 }}
+          >
             <SettingsIcon fontSize="small" />
           </IconButton>
-          <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={() => setAnchorEl(undefined)}
+          >
             <MenuItem onClick={handleRefresh}>
               <MoreTimeIcon fontSize="small" sx={{ marginRight: 1 }} />
               Refrash
             </MenuItem>
             <MenuItem
               onClick={() => {
-                handleClose();
-                disconnect();
-                dispatch(setAuthState(undefined));
-                dispatch(resetWallet());
-                router.push('/signup');
+                setAnchorEl(undefined);
+                handleSignOut();
               }}
             >
               <LogoutIcon fontSize="small" sx={{ marginRight: 1 }} />
@@ -180,6 +192,13 @@ export const WalletSelecter = () => {
           </Menu>
         </>
       )}
+      <WarningModal
+        title="error"
+        desc="Connection expired"
+        button="OK"
+        open={false}
+        onClose={handleSignOut}
+      />
     </>
   );
 };
