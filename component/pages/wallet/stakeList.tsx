@@ -112,18 +112,17 @@ export const StakeList = ({
 
     return (
       <>
-        <Box sx={{ width: '100%' }}>
-          <TablePagination
-            size="small"
-            rowsPerPageOptions={[5, 10, 25]}
-            count={list.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}
-          />
-        </Box>
+        <TablePagination
+          size="small"
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={list.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          sx={{ borderBottom: 1, borderColor: 'divider' }}
+        />
         <TableContainer>
           <Table size="small">
             <TableHead>
