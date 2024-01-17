@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import {
   useAutoConnectWallet,
+  useConnectWallet,
   useCurrentAccount,
   useCurrentWallet,
 } from '@mysten/dapp-kit';
@@ -16,8 +17,10 @@ export default function HomePage() {
   const router = useRouter();
   const authState = useSelector(selectAuthState);
   const account = useCurrentAccount();
+
   const wallet = useCurrentWallet();
   const wallet2 = useAutoConnectWallet();
+  const { mutate: connect } = useConnectWallet();
 
   useEffect(() => {
     if (!authState || !authState.jwt) {
