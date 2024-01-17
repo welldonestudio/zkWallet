@@ -15,8 +15,10 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!authState || !authState.jwt || !account) {
-      router.push('/signup');
+      // router.push('/signup');
     }
+    console.log(1, account);
+    console.log(2, authState);
   }, []);
 
   return (
