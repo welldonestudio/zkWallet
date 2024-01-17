@@ -3,8 +3,8 @@ import { useState } from 'react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
-import MenuIcon from '@mui/icons-material/Menu';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
+import SettingsIcon from '@mui/icons-material/Settings';
 import {
   Box,
   IconButton,
@@ -118,7 +118,6 @@ export const WalletSelecter = () => {
           <TextField
             // select
             size="small"
-            label="Wallet"
             defaultValue={selected}
             sx={{ maxWidth: '200px' }}
             disabled={
@@ -159,7 +158,7 @@ export const WalletSelecter = () => {
             </MenuItem>
           </TextField>
           <IconButton size="small" onClick={handleClick} sx={{ marginLeft: 1 }}>
-            <MenuIcon fontSize="small" />
+            <SettingsIcon fontSize="small" />
           </IconButton>
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
             <MenuItem onClick={handleRefresh}>

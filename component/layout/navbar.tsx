@@ -13,8 +13,8 @@ import { useSelector } from 'react-redux';
 
 import { selectAuthState } from '@/store/slice/authSlice';
 
+import { WalletSelecter } from './walletSelecter';
 import packageInfo from '../../package.json';
-import { WalletSelecter } from '../utils/walletSelecter';
 
 export default function NavBar() {
   const theme = useTheme();
