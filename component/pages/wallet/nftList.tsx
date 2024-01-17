@@ -71,25 +71,30 @@ export const NftList = ({ count }: { count: number }) => {
                   src={item.img}
                   width="100%"
                   onError={({ currentTarget }) =>
-                    (currentTarget.src = '/images/no-image-avaliable.png')
+                    (currentTarget.src = `${location.origin}/images/no-image-avaliable.png`)
                   }
                 />
               ) : (
-                <Image src="/images/no-image-avaliable.png" alt="unknown nft" />
+                <Image
+                  src={`${location.origin}/images/no-image-avaliable.png`}
+                  alt=""
+                />
               )}
-              <ImageListItemBar
-                title={item.title}
-                subtitle={item.desc || item.desc}
-                actionIcon={
-                  <>
-                    {item.link && (
-                      <IconButton size="small" href={item.link}>
-                        <LinkIcon fontSize="small" />
-                      </IconButton>
-                    )}
-                  </>
-                }
-              />
+              {(item.title || item.desc || item.desc) && (
+                <ImageListItemBar
+                  title={item.title}
+                  subtitle={item.desc || item.desc}
+                  actionIcon={
+                    <>
+                      {item.link && (
+                        <IconButton size="small" href={item.link}>
+                          <LinkIcon fontSize="small" />
+                        </IconButton>
+                      )}
+                    </>
+                  }
+                />
+              )}
             </ImageListItem>
           ))}
         </ImageList>
