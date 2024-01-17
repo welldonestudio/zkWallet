@@ -10,7 +10,7 @@ import { selectAuthState } from '@/store/slice/authSlice';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import { Assets } from './assets';
-import { Stake } from './stake';
+import { StakeList } from './stakeList';
 
 import type { ResponseValidator } from '@/component/api/types';
 
@@ -114,7 +114,7 @@ export const Wallet = () => {
             </Box>
             {tabIndex === 0 && (
               <Box width="100%">
-                <Stake
+                <StakeList
                   count={count}
                   openStake={setOpenStake}
                   unstake={handleUnStakeConfirm}

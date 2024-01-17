@@ -54,7 +54,7 @@ const MyAccordionSummary = styled((props: AccordionSummaryProps) => (
   },
 }));
 
-export const Stake = ({
+export const StakeList = ({
   count,
   openStake,
   unstake,
