@@ -112,10 +112,6 @@ export const WalletSelecter = () => {
     router.push('/signup');
   };
 
-  useEffect(() => {
-    console.log(wallet);
-  }, [wallet])
-
   return (
     <>
       {!!selected && (
@@ -196,7 +192,11 @@ export const WalletSelecter = () => {
         title="error"
         desc="Connection expired"
         button="OK"
-        open={false}
+        open={
+          wallet.connectionStatus === 'disconnected' &&
+          !!authState &&
+          !!authState.jwt
+        }
         onClose={handleSignOut}
       />
     </>
