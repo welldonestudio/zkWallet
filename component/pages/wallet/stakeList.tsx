@@ -20,6 +20,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
   Tooltip,
   Typography,
@@ -32,7 +33,7 @@ import { selectAuthState } from '@/store/slice/authSlice';
 import { CURRENCY_UNIT } from '@/store/slice/config';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
 
-import type { ResponseStake } from '@/component/api/types';
+import type { ResponseStake, StakeData } from '@/component/api/types';
 import type { AccordionSummaryProps } from '@mui/material';
 
 const MyAccordionSummary = styled((props: AccordionSummaryProps) => (
@@ -92,6 +93,93 @@ export const StakeList = ({
     _stakes && setStakes(_stakes);
     _stakes && console.log('stakes', _stakes);
     setInit(true);
+  };
+
+  const StakeTable = ({ list }: { list: StakeData[] }) => {
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    const handleChangePage = (_: unknown, newPage: number) => {
+      setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
+    
+    return (
+      <>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          count={list.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">Deligated Stake</TableCell>
+                <TableCell align="left">Status</TableCell>
+                <TableCell align="left">Active Epoch</TableCell>
+                <TableCell align="right">Reward</TableCell>
+                <TableCell align="right" />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {list.map((stake, key2) => (
+                <TableRow key={key2}>
+                  <TableCell align="left">{`${stake.amount} ${CURRENCY_UNIT}`}</TableCell>
+                  <TableCell align="left">
+                    <>
+                      {stake.status === 'active' && (
+                        <Chip
+                          label={stake.status}
+                          color="success"
+                          size="small"
+                          variant="outlined"
+                        />
+                      )}
+                      {stake.status === 'pending' && (
+                        <Chip
+                          label={stake.status}
+                          color="info"
+                          size="small"
+                          variant="outlined"
+                        />
+                      )}
+                      {stake.status === 'unstaked' && (
+                        <Chip
+                          label={stake.status}
+                          color="warning"
+                          size="small"
+                          variant="outlined"
+                        />
+                      )}
+                    </>
+                  </TableCell>
+                  <TableCell align="left">{`Epoch ${stake.activeEpoch}`}</TableCell>
+                  <TableCell align="right">{`${stake.reward} ${CURRENCY_UNIT}`}</TableCell>
+                  <TableCell align="right">
+                    <Button
+                      disabled={loading}
+                      onClick={() => {
+                        handleUnStake(stake.id);
+                      }}
+                    >
+                      Unstake
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </>
+    );
   };
 
   useEffect(() => {
@@ -203,66 +291,7 @@ export const StakeList = ({
             </Box>
           </MyAccordionSummary>
           <AccordionDetails>
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="left">Deligated Stake</TableCell>
-                    <TableCell align="left">Status</TableCell>
-                    <TableCell align="left">Active Epoch</TableCell>
-                    <TableCell align="right">Reward</TableCell>
-                    <TableCell align="right" />
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {list.map((stake, key2) => (
-                    <TableRow key={key2}>
-                      <TableCell align="left">{`${stake.amount} ${CURRENCY_UNIT}`}</TableCell>
-                      <TableCell align="left">
-                        <>
-                          {stake.status === 'active' && (
-                            <Chip
-                              label={stake.status}
-                              color="success"
-                              size="small"
-                              variant="outlined"
-                            />
-                          )}
-                          {stake.status === 'pending' && (
-                            <Chip
-                              label={stake.status}
-                              color="info"
-                              size="small"
-                              variant="outlined"
-                            />
-                          )}
-                          {stake.status === 'unstaked' && (
-                            <Chip
-                              label={stake.status}
-                              color="warning"
-                              size="small"
-                              variant="outlined"
-                            />
-                          )}
-                        </>
-                      </TableCell>
-                      <TableCell align="left">{`Epoch ${stake.activeEpoch}`}</TableCell>
-                      <TableCell align="right">{`${stake.reward} ${CURRENCY_UNIT}`}</TableCell>
-                      <TableCell align="right">
-                        <Button
-                          disabled={loading}
-                          onClick={() => {
-                            handleUnStake(stake.id);
-                          }}
-                        >
-                          Unstake
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <StakeTable list={list} />
           </AccordionDetails>
         </Accordion>
       ))}
