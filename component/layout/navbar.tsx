@@ -5,7 +5,6 @@ import {
   Stack,
   Toolbar,
   Typography,
-  useTheme,
 } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -17,7 +16,6 @@ import { WalletSelecter } from './walletSelecter';
 import packageInfo from '../../package.json';
 
 export default function NavBar() {
-  const theme = useTheme();
   const authState = useSelector(selectAuthState);
 
   return (
