@@ -9,6 +9,7 @@ import {
   ImageList,
   ImageListItem,
   ImageListItemBar,
+  Typography,
 } from '@mui/material';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useSelector } from 'react-redux';
@@ -60,7 +61,7 @@ export const NftList = ({ count }: { count: number }) => {
             borderColor: 'divider',
           }}
         >
-          {init ? <>NFT</> : <CircularProgress />}
+          {init ? <Typography>NFT</Typography> : <CircularProgress />}
         </Box>
       )}
       {nfts.length > 0 && (

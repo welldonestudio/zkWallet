@@ -21,12 +21,10 @@ export const getNftList = async (
       },
     });
 
-    console.log(11, objs);
-
     return {
       nextPage: objs.nextCursor || undefined,
       list: objs.data
-        .filter((item) => item.data && item.data?.display)
+        .filter((item) => item.data && item.data.display)
         .map(
           (item) =>
             ({
