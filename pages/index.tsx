@@ -18,7 +18,6 @@ export default function HomePage() {
   const dispatch = useDispatch();
 
   const [init, setInit] = useState<number>(0);
-  const [open, setOpen] = useState<boolean>(false);
 
   const reConnect = () => {
     disconnect();
@@ -31,19 +30,18 @@ export default function HomePage() {
     if (!authState || !authState.jwt) {
       router.push('/signup');
     }
-    setOpen(!account);
     setInit(init + 1);
   }, [account]);
 
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
       {authState && authState.jwt && <Wallet />}
-      {init > 0 && (
+      {init === 1 && (
         <WarningModal
           title="error"
           desc="Connection expired"
           button="OK"
-          open={open}
+          open={!account}
           onClose={reConnect}
         />
       )}
