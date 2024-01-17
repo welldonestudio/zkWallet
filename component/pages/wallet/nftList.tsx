@@ -66,21 +66,11 @@ export const NftList = ({ count }: { count: number }) => {
         <ImageList cols={4}>
           {nfts.map((item, key) => (
             <ImageListItem key={key}>
-              {item.img ? (
-                <LazyLoadImage
-                  src={item.img}
-                  width="100%"
-                  onError={({ currentTarget }) =>
-                    (currentTarget.src = `${location.origin}/images/no-image-avaliable.png`)
-                  }
-                />
-              ) : (
-                <Image
-                  style={{ width: '100% ' }}
-                  src={`${location.origin}/images/no-image-avaliable.png`}
-                  alt=""
-                />
-              )}
+              <Image
+                style={{ width: '100% ' }}
+                src={`${location.origin}/images/no-image-avaliable.png`}
+                alt=""
+              />
               {(item.title || item.desc || item.desc) && (
                 <ImageListItemBar
                   title={item.title}
