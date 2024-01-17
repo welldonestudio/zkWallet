@@ -9,11 +9,13 @@ import {
 export const WarningModal = ({
   title,
   desc,
+  button,
   open,
   onClose,
 }: {
   title: string;
   desc: string;
+  button?: string;
   open: boolean;
   onClose: () => void;
 }) => {
@@ -22,7 +24,7 @@ export const WarningModal = ({
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>{desc}</DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Close</Button>
+        <Button onClick={onClose}>{button || 'Close'}</Button>
       </DialogActions>
     </Dialog>
   );
