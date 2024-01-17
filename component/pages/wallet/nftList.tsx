@@ -10,7 +10,6 @@ import {
   ImageListItem,
   ImageListItemBar,
 } from '@mui/material';
-import Image from 'next/image';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useSelector } from 'react-redux';
 
@@ -66,11 +65,20 @@ export const NftList = ({ count }: { count: number }) => {
         <ImageList cols={4}>
           {nfts.map((item, key) => (
             <ImageListItem key={key}>
-              <Image
-                style={{ width: '100% ' }}
-                src={`${location.origin}/images/no-image-avaliable.png`}
-                alt=""
-              />
+              {!!item.img ? (
+                <LazyLoadImage
+                  src={item.img}
+                  width="100%"
+                  onError={({ currentTarget }) =>
+                    (currentTarget.src = `${location.origin}/images/no-image-avaliable.png`)
+                  }
+                />
+              ) : (
+                <img
+                  width="100%"
+                  src={`${location.origin}/images/no-image-avaliable.png`}
+                />
+              )}
               {(item.title || item.desc || item.desc) && (
                 <ImageListItemBar
                   title={item.title}
