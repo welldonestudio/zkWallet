@@ -14,7 +14,10 @@ export const getNftList = async (
     const objs = await client.getOwnedObjects({
       owner: request.address,
       filter: {
-        MatchNone: [{ StructType: '0x2::coin::Coin' }],
+        MatchNone: [
+          { StructType: '0x2::coin::Coin' },
+          { StructType: '0x3::staking_pool::StakedSui' },
+        ],
       },
       options: {
         showDisplay: true,
@@ -25,10 +28,7 @@ export const getNftList = async (
     return {
       nextPage: objs.nextCursor || undefined,
       list: objs.data
-        .filter(
-          (item) =>
-            item.data && item.data.type !== '0x3::staking_pool::StakedSui',
-        )
+        .filter((item) => item.data)
         .map(
           (item) =>
             ({
