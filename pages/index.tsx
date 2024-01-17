@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useCurrentAccount } from '@mysten/dapp-kit';
+import { useCurrentAccount, useCurrentWallet } from '@mysten/dapp-kit';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
@@ -12,13 +12,14 @@ export default function HomePage() {
   const router = useRouter();
   const authState = useSelector(selectAuthState);
   const account = useCurrentAccount();
+  const wallet = useCurrentWallet();
 
   useEffect(() => {
-    if (!authState || !authState.jwt || !account) {
-      // router.push('/signup');
+    if (!authState || !authState.jwt) {
+      router.push('/signup');
+    } else if (!account) {
+      console.log(wallet)
     }
-    console.log(1, account);
-    console.log(2, authState);
   }, []);
 
   return (
