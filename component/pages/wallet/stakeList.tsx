@@ -103,14 +103,17 @@ export const StakeList = ({
       setPage(newPage);
     };
 
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeRowsPerPage = (
+      event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
     };
-    
+
     return (
       <>
         <TablePagination
+          width="100%"
           rowsPerPageOptions={[5, 10, 25]}
           count={list.length}
           rowsPerPage={rowsPerPage}
@@ -130,51 +133,53 @@ export const StakeList = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {list.map((stake, key2) => (
-                <TableRow key={key2}>
-                  <TableCell align="left">{`${stake.amount} ${CURRENCY_UNIT}`}</TableCell>
-                  <TableCell align="left">
-                    <>
-                      {stake.status === 'active' && (
-                        <Chip
-                          label={stake.status}
-                          color="success"
-                          size="small"
-                          variant="outlined"
-                        />
-                      )}
-                      {stake.status === 'pending' && (
-                        <Chip
-                          label={stake.status}
-                          color="info"
-                          size="small"
-                          variant="outlined"
-                        />
-                      )}
-                      {stake.status === 'unstaked' && (
-                        <Chip
-                          label={stake.status}
-                          color="warning"
-                          size="small"
-                          variant="outlined"
-                        />
-                      )}
-                    </>
-                  </TableCell>
-                  <TableCell align="left">{`Epoch ${stake.activeEpoch}`}</TableCell>
-                  <TableCell align="right">{`${stake.reward} ${CURRENCY_UNIT}`}</TableCell>
-                  <TableCell align="right">
-                    <Button
-                      disabled={loading}
-                      onClick={() => {
-                        handleUnStake(stake.id);
-                      }}
-                    >
-                      Unstake
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {list
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((stake, key2) => (
+                  <TableRow key={key2}>
+                    <TableCell align="left">{`${stake.amount} ${CURRENCY_UNIT}`}</TableCell>
+                    <TableCell align="left">
+                      <>
+                        {stake.status === 'active' && (
+                          <Chip
+                            label={stake.status}
+                            color="success"
+                            size="small"
+                            variant="outlined"
+                          />
+                        )}
+                        {stake.status === 'pending' && (
+                          <Chip
+                            label={stake.status}
+                            color="info"
+                            size="small"
+                            variant="outlined"
+                          />
+                        )}
+                        {stake.status === 'unstaked' && (
+                          <Chip
+                            label={stake.status}
+                            color="warning"
+                            size="small"
+                            variant="outlined"
+                          />
+                        )}
+                      </>
+                    </TableCell>
+                    <TableCell align="left">{`Epoch ${stake.activeEpoch}`}</TableCell>
+                    <TableCell align="right">{`${stake.reward} ${CURRENCY_UNIT}`}</TableCell>
+                    <TableCell align="right">
+                      <Button
+                        disabled={loading}
+                        onClick={() => {
+                          handleUnStake(stake.id);
+                        }}
+                      >
+                        Unstake
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
