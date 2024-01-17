@@ -1,39 +1,48 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import {
-  useAutoConnectWallet,
-  useConnectWallet,
-  useCurrentAccount,
-  useCurrentWallet,
-} from '@mysten/dapp-kit';
+import { useCurrentAccount, useDisconnectWallet } from '@mysten/dapp-kit';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { WarningModal } from '@/component/dialog/warning';
 import Layout from '@/component/layout';
 import { Wallet } from '@/component/pages/wallet';
-import { selectAuthState } from '@/store/slice/authSlice';
+import { selectAuthState, setAuthState } from '@/store/slice/authSlice';
+import { resetWallet } from '@/store/slice/zkWalletSlice';
 
 export default function HomePage() {
   const router = useRouter();
   const authState = useSelector(selectAuthState);
   const account = useCurrentAccount();
+  const { mutate: disconnect } = useDisconnectWallet();
+  const dispatch = useDispatch();
 
-  const wallet = useCurrentWallet();
-  const wallet2 = useAutoConnectWallet();
-  const { mutate: connect } = useConnectWallet();
+  const [open, setOpen] = useState<boolean>(false);
+
+  const reConnect = () => {
+    disconnect();
+    dispatch(setAuthState(undefined));
+    dispatch(resetWallet());
+    router.push('/signup');
+  };
 
   useEffect(() => {
     if (!authState || !authState.jwt) {
       router.push('/signup');
     } else if (!account) {
-      console.log(wallet);
-      console.log(wallet2);
+      setOpen(true);
     }
   }, []);
 
   return (
     <Layout breadcrumbs={[]} actions={<></>} initialized>
       {authState && authState.jwt && <Wallet />}
+      <WarningModal
+        title="error"
+        desc="Connection expired"
+        open={open}
+        onClose={reConnect}
+      />
     </Layout>
   );
 }
