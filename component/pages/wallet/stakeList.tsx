@@ -165,12 +165,14 @@ export const StakeList = ({
           ))}
           {Array.from({ length: rowsPerPage - showList.length }).map(
             (_, key) => (
-              <TableRow key={key} style={{ height: '48.8px' }}>
+              <TableRow key={key}>
                 <TableCell />
                 <TableCell />
                 <TableCell />
                 <TableCell />
-                <TableCell />
+                <TableCell>
+                  <Button disabled style={{ display: 'hidden' }}>Unstake</Button>
+                </TableCell>
               </TableRow>
             ),
           )}
