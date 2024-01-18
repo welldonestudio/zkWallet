@@ -78,6 +78,7 @@ export const NftList = ({ count }: { count: number }) => {
                 />
               ) : (
                 <img
+                  loading="lazy"
                   width="100%"
                   src={`${location.origin}/images/no-image-avaliable.png`}
                 />
