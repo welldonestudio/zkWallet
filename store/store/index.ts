@@ -26,7 +26,7 @@ export const makeStore = () => {
     return makeConfiguredStore();
   } else {
     const persistConfig = {
-      key: 'nextjs',
+      key: 'zkWallet',
       whitelist: ['auth', 'wallet'],
       storage,
     };
