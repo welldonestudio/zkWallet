@@ -86,6 +86,11 @@ export const SignUpCallback = () => {
 
       if (authState) {
         const { id_token } = queryString.parse(location.hash);
+        // temp
+        console.log(1, location.hash);
+        console.log(2, id_token)
+        console.log(3, decodeJwt(id_token as string))
+        // temp
         decodeJwt(id_token as string);
         dispatch(
           setAuthState({
