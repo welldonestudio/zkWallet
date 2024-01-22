@@ -164,7 +164,7 @@ export const WalletSelecter = () => {
               direction="column"
               alignItems="center"
               justifyContent="center"
-              sx={{ marginY: 2, marginX: 1 }}
+              sx={{ marginBottom: 2, marginX: 1 }}
             >
               <Box
                 sx={{ display: 'flex', alignItems: 'center' }}
@@ -179,7 +179,6 @@ export const WalletSelecter = () => {
                 </Typography>
                 <IconButton
                   size="small"
-                  sx={{ marginRight: 1 }}
                   onClick={() => {
                     authState?.email &&
                       navigator.clipboard.writeText(authState?.email);
