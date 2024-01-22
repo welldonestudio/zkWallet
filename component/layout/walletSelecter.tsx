@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import { IconButton, Menu, MenuItem } from '@mui/material';
 import { useCurrentWallet, useDisconnectWallet } from '@mysten/dapp-kit';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,9 +18,14 @@ import {
 import { resetWallet, selectWalletState } from '@/store/slice/zkWalletSlice';
 
 import { useContextApi } from '../api';
+import { utils } from '../api/utils';
+import { Apple } from '../dialog/selectProvider/icons/apple';
+import { Facebook } from '../dialog/selectProvider/icons/facebook';
+import { Google } from '../dialog/selectProvider/icons/google';
+import { Kakao } from '../dialog/selectProvider/icons/kakao';
+import { Slack } from '../dialog/selectProvider/icons/slack';
+import { Twitch } from '../dialog/selectProvider/icons/twitch';
 import { WarningModal } from '../dialog/warning';
-
-import type { Wallet } from '@/store/slice/zkWalletSlice';
 
 export const WalletSelecter = () => {
   const dispatch = useDispatch();
@@ -29,7 +34,7 @@ export const WalletSelecter = () => {
   const wallet = useCurrentWallet();
   const { mutate: disconnect } = useDisconnectWallet();
   const authState = useSelector(selectAuthState);
-  const { index, selected, wallets } = useSelector(selectWalletState);
+  const { index, selected } = useSelector(selectWalletState);
 
   const { jwt, wallet: api } = useContextApi();
 
@@ -107,7 +112,6 @@ export const WalletSelecter = () => {
     <>
       {!!selected && (
         <>
-          <Typography>{authState?.email}</Typography>
           <IconButton
             size="small"
             onClick={(event) => {
@@ -115,13 +119,26 @@ export const WalletSelecter = () => {
             }}
             sx={{ marginLeft: 1 }}
           >
-            <SettingsIcon fontSize="small" />
+            {authState?.provider === 'apple' && <Apple />}
+            {authState?.provider === 'facebook' && <Facebook />}
+            {authState?.provider === 'google' && <Google />}
+            {authState?.provider === 'kakao' && <Kakao />}
+            {authState?.provider === 'slack' && <Slack />}
+            {authState?.provider === 'twitch' && <Twitch />}
           </IconButton>
           <Menu
             anchorEl={anchorEl}
             open={open}
             onClose={() => setAnchorEl(undefined)}
           >
+            <MenuItem
+              onClick={() => {
+                navigator.clipboard.writeText(selected);
+              }}
+            >
+              <ContentCopyIcon fontSize="small" sx={{ marginRight: 1 }} />
+              {utils.shortenString(authState?.email || '', 4, 4)}
+            </MenuItem>
             <MenuItem onClick={handleRefresh}>
               <MoreTimeIcon fontSize="small" sx={{ marginRight: 1 }} />
               Refrash
