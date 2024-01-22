@@ -4,7 +4,16 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import QueueIcon from '@mui/icons-material/Queue';
-import { Divider, IconButton, Menu, MenuItem } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Divider,
+  IconButton,
+  Menu,
+  MenuItem,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { useCurrentWallet, useDisconnectWallet } from '@mysten/dapp-kit';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -150,18 +159,32 @@ export const WalletSelecter = () => {
             open={open}
             onClose={() => setAnchorEl(undefined)}
           >
-            <MenuItem
-              disabled={loading}
-              onClick={() => {
-                authState &&
-                  authState.email &&
-                  navigator.clipboard.writeText(authState.email);
-                setAnchorEl(undefined);
-              }}
+            <Stack
+              spacing={1}
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
             >
-              <ContentCopyIcon fontSize="small" sx={{ marginRight: 1 }} />
-              {utils.shortenString(authState?.email || '', 8, 5)}
-            </MenuItem>
+              <Box
+                onClick={() => {
+                  authState &&
+                    authState.email &&
+                    navigator.clipboard.writeText(authState.email);
+                }}
+              >
+                <ContentCopyIcon fontSize="small" sx={{ marginRight: 1 }} />
+                <Typography variant="caption">
+                  {utils.shortenString(authState?.email || '', 8, 5)}
+                </Typography>
+              </Box>
+
+              {authState?.picture && (
+                <Avatar
+                  src={authState.picture}
+                  sx={{ width: 56, height: 56 }}
+                />
+              )}
+            </Stack>
             <Divider />
             <MenuItem disabled={true} onClick={handleAdd}>
               <QueueIcon fontSize="small" sx={{ marginRight: 1 }} />
