@@ -172,16 +172,16 @@ export const WalletSelecter = () => {
                     navigator.clipboard.writeText(authState.email);
                 }}
               >
-                <ContentCopyIcon fontSize="small" sx={{ marginRight: 1 }} />
-                <Typography variant="caption">
-                  {utils.shortenString(authState?.email || '', 8, 5)}
+                <Typography variant="body2">
+                  {authState?.email}
                 </Typography>
+                <ContentCopyIcon fontSize="small" sx={{ marginLeft: 0.5 }} />
               </Box>
 
               {authState?.picture && (
                 <Avatar
                   src={authState.picture}
-                  sx={{ width: 56, height: 56 }}
+                  sx={{ width: 56, height: 56, marginY: 2 }}
                 />
               )}
             </Stack>
