@@ -121,7 +121,8 @@ export const WalletSelecter = () => {
               marginLeft: 1,
               backgroundColor: 'white',
               '&:hover': {
-                color: 'white',
+                borderColor: 'divider',
+                backgroundColor: 'white',
               },
             }}
           >
