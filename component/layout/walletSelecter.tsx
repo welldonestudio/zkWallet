@@ -164,8 +164,10 @@ export const WalletSelecter = () => {
               direction="column"
               alignItems="center"
               justifyContent="center"
+              sx={{ marginY: 2, marginX: 1 }}
             >
               <Box
+                sx={{ display: 'flex', alignItems: 'center' }}
                 onClick={() => {
                   authState &&
                     authState.email &&
@@ -173,15 +175,23 @@ export const WalletSelecter = () => {
                 }}
               >
                 <Typography variant="body2">
-                  {authState?.email}
+                  {utils.shortenString(authState?.email || '', 8, 5)}
                 </Typography>
-                <ContentCopyIcon fontSize="small" sx={{ marginLeft: 0.5 }} />
+                <IconButton
+                  size="small"
+                  sx={{ marginRight: 1 }}
+                  onClick={() => {
+                    authState?.email &&
+                      navigator.clipboard.writeText(authState?.email);
+                  }}
+                >
+                  <ContentCopyIcon fontSize="small" />
+                </IconButton>
               </Box>
-
               {authState?.picture && (
                 <Avatar
                   src={authState.picture}
-                  sx={{ width: 56, height: 56, marginY: 2 }}
+                  sx={{ width: 56, height: 56 }}
                 />
               )}
             </Stack>
