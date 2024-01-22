@@ -35,19 +35,6 @@ export const SignUpCallback = () => {
     router.push('/');
   };
 
-  // test
-  const getEmailAddress = async (id_token: string) => {
-    console.log(111)
-    const res = await fetch('https://www.googleapis.com/auth/userinfo.email', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${id_token}`,
-      }
-    });
-    console.log(await res.json());
-  }
-  // test
-
   useEffect(() => {
     try {
       const createWallet = async (id_token: string) => {
@@ -107,7 +94,6 @@ export const SignUpCallback = () => {
           }),
         );
         createWallet(id_token as string);
-        getEmailAddress(id_token as string);
       }
     } catch (err) {
       console.log(err);
