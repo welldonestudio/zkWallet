@@ -86,13 +86,13 @@ export const SignUpCallback = () => {
 
       if (authState) {
         const { id_token } = queryString.parse(location.hash);
-        const { email } = decodeJwt(id_token as string);
-        console.log(111, decodeJwt(id_token as string)); // test
+        const { email, picture } = decodeJwt(id_token as string);
         dispatch(
           setAuthState({
             ...authState,
             jwt: id_token as string,
             email: email as string,
+            picture: picture as string,
           }),
         );
         createWallet(id_token as string);
