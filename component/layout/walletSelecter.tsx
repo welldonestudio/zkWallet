@@ -158,6 +158,8 @@ export const WalletSelecter = () => {
             anchorEl={anchorEl}
             open={open}
             onClose={() => setAnchorEl(undefined)}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'center' }}
           >
             <Stack
               spacing={1}
