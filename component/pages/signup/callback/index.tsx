@@ -45,6 +45,7 @@ export const SignUpCallback = () => {
             jwt: id_token,
             path,
           });
+          console.log(decodeJwt(id_token)); // TEST
           const proof = await jwt.sui.getZkProof({
             network: authState.network,
             jwt: id_token,
