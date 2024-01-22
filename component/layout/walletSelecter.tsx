@@ -133,11 +133,13 @@ export const WalletSelecter = () => {
           >
             <MenuItem
               onClick={() => {
-                navigator.clipboard.writeText(selected);
+                authState &&
+                  authState.email &&
+                  navigator.clipboard.writeText(authState.email);
               }}
             >
               <ContentCopyIcon fontSize="small" sx={{ marginRight: 1 }} />
-              {utils.shortenString(authState?.email || '', 4, 4)}
+              {utils.shortenString(authState?.email || '', 8, 5)}
             </MenuItem>
             <MenuItem onClick={handleRefresh}>
               <MoreTimeIcon fontSize="small" sx={{ marginRight: 1 }} />
