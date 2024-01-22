@@ -66,7 +66,7 @@ export const getOAuthURL = async (
   switch (request.provider) {
     case 'google':
       return {
-        url: `https://accounts.google.com/o/oauth2/v2/auth?client_id=${request.clientId}&response_type=id_token&redirect_uri=${request.redirectUrl}&scope=openid&nonce=${nonce}`,
+        url: `https://accounts.google.com/o/oauth2/v2/auth?client_id=${request.clientId}&response_type=id_token email&redirect_uri=${request.redirectUrl}&scope=openid&nonce=${nonce}`,
         randomness,
         maxEpoch,
         crypto: 'ed25519',
