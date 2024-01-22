@@ -62,7 +62,7 @@ export const SignUpCallback = () => {
             }),
           );
         } else if (authState) {
-          // TODO: update wallet array
+          // TODO: update wallet array - proof
           const temp = walletState.wallets[0];
           const proof = await jwt.sui.getZkProof({
             network: authState.network,

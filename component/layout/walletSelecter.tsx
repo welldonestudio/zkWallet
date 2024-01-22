@@ -3,6 +3,7 @@ import { useState } from 'react';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
+import QueueIcon from '@mui/icons-material/Queue';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import { useCurrentWallet, useDisconnectWallet } from '@mysten/dapp-kit';
 import { useRouter } from 'next/router';
@@ -15,7 +16,11 @@ import {
   MAX_EPOCH_DURATION,
   REDIRECT_AUTH_URL,
 } from '@/store/slice/config';
-import { resetWallet, selectWalletState } from '@/store/slice/zkWalletSlice';
+import {
+  addWallet,
+  resetWallet,
+  selectWalletState,
+} from '@/store/slice/zkWalletSlice';
 
 import { useContextApi } from '../api';
 import { utils } from '../api/utils';
@@ -47,7 +52,7 @@ export const WalletSelecter = () => {
       if (authState && authState.jwt) {
         setLoading(true);
 
-        const path = getZkPath(authState.network, index); // TODO
+        const path = getZkPath(authState.network, index);
         const address = await api.getAddress({
           network: authState.network,
           jwt: authState.jwt,
@@ -61,12 +66,19 @@ export const WalletSelecter = () => {
           randomness: authState.randomness,
           path,
         });
-        // TODO
+        dispatch(
+          addWallet({
+            path,
+            address,
+            proof,
+          }),
+        );
       }
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
+      setAnchorEl(undefined);
     }
   };
 
@@ -99,6 +111,7 @@ export const WalletSelecter = () => {
           break;
       }
     }
+    setAnchorEl(undefined);
   };
 
   const handleSignOut = () => {
@@ -138,20 +151,27 @@ export const WalletSelecter = () => {
             onClose={() => setAnchorEl(undefined)}
           >
             <MenuItem
+              disabled={loading}
               onClick={() => {
                 authState &&
                   authState.email &&
                   navigator.clipboard.writeText(authState.email);
+                setAnchorEl(undefined);
               }}
             >
               <ContentCopyIcon fontSize="small" sx={{ marginRight: 1 }} />
               {utils.shortenString(authState?.email || '', 8, 5)}
             </MenuItem>
-            <MenuItem onClick={handleRefresh}>
+            <MenuItem disabled={loading} onClick={handleAdd}>
+              <QueueIcon fontSize="small" sx={{ marginRight: 1 }} />
+              Add
+            </MenuItem>
+            <MenuItem disabled={loading} onClick={handleRefresh}>
               <MoreTimeIcon fontSize="small" sx={{ marginRight: 1 }} />
               Refrash
             </MenuItem>
             <MenuItem
+              disabled={loading}
               onClick={() => {
                 setAnchorEl(undefined);
                 handleSignOut();
