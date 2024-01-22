@@ -186,7 +186,7 @@ export const WalletSelecter = () => {
                       navigator.clipboard.writeText(authState?.email);
                   }}
                 >
-                  <ContentCopyIcon fontSize="small" />
+                  <ContentCopyIcon style={{ width: 1, height: 1}} />
                 </IconButton>
               </Box>
               {authState?.picture && (
