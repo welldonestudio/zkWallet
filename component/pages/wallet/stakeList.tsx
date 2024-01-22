@@ -171,7 +171,9 @@ export const StakeList = ({
                 <TableCell />
                 <TableCell />
                 <TableCell>
-                  <Button disabled style={{ visibility: 'hidden' }}>Unstake</Button>
+                  <Button disabled style={{ visibility: 'hidden' }}>
+                    Unstake
+                  </Button>
                 </TableCell>
               </TableRow>
             ),
