@@ -158,8 +158,9 @@ export const WalletSelecter = () => {
             anchorEl={anchorEl}
             open={open}
             onClose={() => setAnchorEl(undefined)}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-            transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            style={{ marginTop: 1 }}
           >
             <Stack
               spacing={1}
@@ -186,7 +187,7 @@ export const WalletSelecter = () => {
                       navigator.clipboard.writeText(authState?.email);
                   }}
                 >
-                  <ContentCopyIcon style={{ width: 1, height: 1}} />
+                  <ContentCopyIcon style={{ width: '12px', height: '12px' }} />
                 </IconButton>
               </Box>
               {authState?.picture && (
