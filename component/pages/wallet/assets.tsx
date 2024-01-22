@@ -23,6 +23,7 @@ import {
 import { useSelector } from 'react-redux';
 
 import { useContextApi } from '@/component/api';
+import { utils } from '@/component/api/utils';
 import { selectAuthState } from '@/store/slice/authSlice';
 import { CURRENCY_UNIT } from '@/store/slice/config';
 import { selectWalletState } from '@/store/slice/zkWalletSlice';
@@ -81,6 +82,17 @@ export const Assets = ({
                 alignItems="flex-start"
                 height="100%"
               >
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant="h5">Address</Typography>
+                  <Box
+                    onClick={() => {
+                      navigator.clipboard.writeText(walletState.selected);
+                    }}
+                  ></Box>
+                  <Typography>
+                    {utils.shortenString(walletState.selected, 8, 8)}
+                  </Typography>
+                </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Sui />
                   <Typography variant="h3" marginLeft={2}>
