@@ -74,34 +74,44 @@ export const Assets = ({
       <Grid container item spacing={2} paddingX={0}>
         <Grid item height="360px" xs={12} sm={6} md={6}>
           <Card style={{ height: '100%' }}>
-            <CardHeader title="Sui Balance" />
             <CardContent sx={{ height: 'calc(100% - 58px - 61px)' }}>
               <Stack
                 direction="column"
                 justifyContent="center"
                 alignItems="flex-start"
                 height="100%"
+                spacing={4}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Typography variant="h5">Address</Typography>
-                  <Box
-                    onClick={() => {
-                      navigator.clipboard.writeText(walletState.selected);
-                    }}
-                  ></Box>
-                  <Typography>
-                    {utils.shortenString(walletState.selected, 8, 8)}
-                  </Typography>
+                  <Stack spacing={1}>
+                    <Typography variant="h5">Address</Typography>
+                    <Box
+                      onClick={() => {
+                        navigator.clipboard.writeText(walletState.selected);
+                      }}
+                    >
+                      <Typography>
+                        {utils.shortenString(walletState.selected, 8, 8)}
+                      </Typography>
+                    </Box>
+                  </Stack>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Sui />
-                  <Typography variant="h3" marginLeft={2}>
-                    {!currency ? (
-                      <Skeleton width="258px" />
-                    ) : (
-                      `${currency} ${CURRENCY_UNIT}`
-                    )}
-                  </Typography>
+                  <Stack spacing={1}>
+                    <Box>
+                      <Typography variant="h5">Balance</Typography>
+                    </Box>
+                    <Box>
+                      <Sui />
+                      <Typography variant="h3" marginLeft={2}>
+                        {!currency ? (
+                          <Skeleton width="258px" />
+                        ) : (
+                          `${currency} ${CURRENCY_UNIT}`
+                        )}
+                      </Typography>
+                    </Box>
+                  </Stack>
                 </Box>
               </Stack>
             </CardContent>
