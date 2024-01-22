@@ -87,7 +87,7 @@ export const Assets = ({
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Stack spacing={1}>
                     <Typography variant="h5">Address</Typography>
-                    <Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <Typography>
                         {utils.shortenString(walletState.selected, 8, 8)}
                       </Typography>
