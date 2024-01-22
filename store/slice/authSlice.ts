@@ -8,6 +8,7 @@ export interface Auth {
   network: NETWORK;
   jwt?: string;
   email?: string;
+  picture?: string;
   maxEpoch: number;
   randomness: string;
   key: {
