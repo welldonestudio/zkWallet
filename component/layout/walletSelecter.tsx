@@ -4,7 +4,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import QueueIcon from '@mui/icons-material/Queue';
-import { IconButton, Menu, MenuItem } from '@mui/material';
+import { Divider, IconButton, Menu, MenuItem } from '@mui/material';
 import { useCurrentWallet, useDisconnectWallet } from '@mysten/dapp-kit';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -162,13 +162,14 @@ export const WalletSelecter = () => {
               <ContentCopyIcon fontSize="small" sx={{ marginRight: 1 }} />
               {utils.shortenString(authState?.email || '', 8, 5)}
             </MenuItem>
-            <MenuItem disabled={loading} onClick={handleAdd}>
+            <Divider />
+            <MenuItem disabled={true} onClick={handleAdd}>
               <QueueIcon fontSize="small" sx={{ marginRight: 1 }} />
-              Add
+              Add Wallet
             </MenuItem>
             <MenuItem disabled={loading} onClick={handleRefresh}>
               <MoreTimeIcon fontSize="small" sx={{ marginRight: 1 }} />
-              Refrash
+              Extend Epoch
             </MenuItem>
             <MenuItem
               disabled={loading}
