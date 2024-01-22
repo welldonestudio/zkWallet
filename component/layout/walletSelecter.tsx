@@ -1,18 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import SettingsIcon from '@mui/icons-material/Settings';
-import {
-  Box,
-  IconButton,
-  Menu,
-  MenuItem,
-  TextField,
-  Tooltip,
-} from '@mui/material';
+import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { useCurrentWallet, useDisconnectWallet } from '@mysten/dapp-kit';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -116,48 +107,7 @@ export const WalletSelecter = () => {
     <>
       {!!selected && (
         <>
-          <TextField
-            // select
-            size="small"
-            defaultValue={selected}
-            sx={{ maxWidth: '200px' }}
-            disabled={
-              !authState || authState.network === 'sui:devnet' || loading
-            }
-            InputProps={{
-              startAdornment: (
-                <Tooltip title="Copy Address">
-                  <IconButton
-                    size="small"
-                    sx={{ marginRight: 1 }}
-                    onClick={() => {
-                      navigator.clipboard.writeText(selected);
-                    }}
-                  >
-                    <ContentCopyIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              ),
-            }}
-          >
-            {wallets.map((item: Wallet, key) => (
-              <MenuItem key={key} value={item.address}>
-                {item.address}
-              </MenuItem>
-            ))}
-            <MenuItem onClick={handleAdd}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  width: '100%',
-                }}
-              >
-                <AddCircleOutlineIcon sx={{ marginRight: 1 }} />
-                Add
-              </Box>
-            </MenuItem>
-          </TextField>
+          <Typography>{authState?.email}</Typography>
           <IconButton
             size="small"
             onClick={(event) => {

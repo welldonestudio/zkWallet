@@ -45,7 +45,6 @@ export const SignUpCallback = () => {
             jwt: id_token,
             path,
           });
-          console.log(decodeJwt(id_token)); // TEST
           const proof = await jwt.sui.getZkProof({
             network: authState.network,
             jwt: id_token,
@@ -87,11 +86,12 @@ export const SignUpCallback = () => {
 
       if (authState) {
         const { id_token } = queryString.parse(location.hash);
-        decodeJwt(id_token as string);
+        const { email } = decodeJwt(id_token as string);
         dispatch(
           setAuthState({
             ...authState,
             jwt: id_token as string,
+            email: email as string,
           }),
         );
         createWallet(id_token as string);

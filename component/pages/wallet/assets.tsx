@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import SendIcon from '@mui/icons-material/Send';
 import {
   Box,
@@ -18,6 +19,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
@@ -85,14 +87,21 @@ export const Assets = ({
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Stack spacing={1}>
                     <Typography variant="h5">Address</Typography>
-                    <Box
-                      onClick={() => {
-                        navigator.clipboard.writeText(walletState.selected);
-                      }}
-                    >
+                    <Box>
                       <Typography>
                         {utils.shortenString(walletState.selected, 8, 8)}
                       </Typography>
+                      <Tooltip title="Copy Address">
+                        <IconButton
+                          size="small"
+                          sx={{ marginRight: 1 }}
+                          onClick={() => {
+                            navigator.clipboard.writeText(walletState.selected);
+                          }}
+                        >
+                          <ContentCopyIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
                     </Box>
                   </Stack>
                 </Box>
@@ -102,7 +111,9 @@ export const Assets = ({
                       <Typography variant="h5">Balance</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Sui />
+                      {(authState?.network === 'sui:mainnet' ||
+                        authState?.network === 'sui:devnet' ||
+                        authState?.network === 'sui:testnet') && <Sui />}
                       <Typography variant="h3" marginLeft={2}>
                         {!currency ? (
                           <Skeleton width="258px" />

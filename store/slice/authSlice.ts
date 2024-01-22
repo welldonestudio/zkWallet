@@ -7,6 +7,7 @@ export interface Auth {
   provider: PROVIDER;
   network: NETWORK;
   jwt?: string;
+  email?: string;
   maxEpoch: number;
   randomness: string;
   key: {
