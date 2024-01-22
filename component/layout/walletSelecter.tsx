@@ -117,7 +117,13 @@ export const WalletSelecter = () => {
             onClick={(event) => {
               setAnchorEl(event.currentTarget);
             }}
-            sx={{ marginLeft: 1 }}
+            sx={{
+              marginLeft: 1,
+              backgroundColor: 'white',
+              '&:hover': {
+                color: 'white',
+              },
+            }}
           >
             {authState?.provider === 'apple' && <Apple />}
             {authState?.provider === 'facebook' && <Facebook />}
