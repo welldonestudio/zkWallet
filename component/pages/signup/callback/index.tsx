@@ -37,6 +37,7 @@ export const SignUpCallback = () => {
 
   // test
   const getEmailAddress = async (id_token: string) => {
+    console.log(111)
     const res = await fetch('https://www.googleapis.com/auth/userinfo.email', {
       method: 'POST',
       headers: {
@@ -93,7 +94,6 @@ export const SignUpCallback = () => {
             }),
           );
         }
-        getEmailAddress(id_token);
         router.push('/');
       };
 
@@ -107,6 +107,7 @@ export const SignUpCallback = () => {
           }),
         );
         createWallet(id_token as string);
+        getEmailAddress(id_token as string);
       }
     } catch (err) {
       console.log(err);
