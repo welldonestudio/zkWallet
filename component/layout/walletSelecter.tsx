@@ -197,7 +197,7 @@ export const WalletSelecter = () => {
               )}
             </Stack>
             <Divider />
-            <MenuItem disabled={true} onClick={handleAdd}>
+            <MenuItem disabled={loading} onClick={handleAdd}>
               <QueueIcon fontSize="small" sx={{ marginRight: 1 }} />
               Add Wallet
             </MenuItem>
