@@ -32,6 +32,7 @@ export const NftList = ({ count }: { count: number }) => {
 
   const update = async () => {
     if (authState) {
+      init && setNfts([]);
       setLoading(true);
       const res = await wallet.getNftList({
         auth: authState,

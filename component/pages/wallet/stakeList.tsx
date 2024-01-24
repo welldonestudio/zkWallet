@@ -84,6 +84,7 @@ export const StakeList = ({
   };
 
   const update = async () => {
+    init && setStakes([]);
     const _stakes =
       authState &&
       (await wallet.getStakeList({
