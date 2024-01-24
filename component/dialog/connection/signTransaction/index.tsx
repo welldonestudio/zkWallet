@@ -31,7 +31,7 @@ export const SignTransactionModal = ({
   open: boolean;
   onClose: () => void;
 }) => {
-  const { wallet } = useContextApi();
+  const { wallet: api } = useContextApi();
   const authState = useSelector(selectAuthState);
   const { selected, wallets } = useSelector(selectWalletState);
 
@@ -54,11 +54,14 @@ export const SignTransactionModal = ({
           }),
         );
       } else {
+        const wallet =
+          authState && wallets.find((item) => item.address === selected);
         const res: ResponseSignTx | undefined =
           authState &&
-          (await wallet.signTransaction({
+          wallet &&
+          (await api.signTransaction({
             auth: authState,
-            wallet: wallets[0],
+            wallet,
             unsignedTx: params[0].unsignedTx,
           }));
 

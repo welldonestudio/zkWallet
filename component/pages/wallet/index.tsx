@@ -19,7 +19,7 @@ export const Wallet = () => {
   const account = useCurrentAccount();
   const authState = useSelector(selectAuthState);
   const walletState = useSelector(selectWalletState);
-  const { wallet } = useContextApi();
+  const { wallet: api } = useContextApi();
 
   const [openSend, setOpenSend] = useState<boolean>(false);
   const [openStake, setOpenStake] = useState<boolean>(false);
@@ -28,12 +28,21 @@ export const Wallet = () => {
   const [validators, setVelidators] = useState<ResponseValidator[]>([]);
   const [count, setCount] = useState<number>(0);
 
+  const getWallet = () => {
+    const wallet =
+      authState &&
+      walletState.wallets.find((item) => item.address === walletState.selected);
+    return wallet;
+  };
+
   const handleSendConfirm = async (to: string, amount: string) => {
     try {
+      const wallet = getWallet();
       authState &&
-        (await wallet.sendToken({
+        wallet &&
+        (await api.sendToken({
           auth: authState,
-          wallet: walletState.wallets[0],
+          wallet,
           token: {
             to,
             type: '0x2::sui::SUI',
@@ -48,10 +57,12 @@ export const Wallet = () => {
 
   const handleStakeConfirm = async (to: string, amount: string) => {
     try {
+      const wallet = getWallet();
       authState &&
-        (await wallet.stake({
+        wallet &&
+        (await api.stake({
           auth: authState,
-          wallet: walletState.wallets[0],
+          wallet,
           stake: {
             amount,
             validator: to,
@@ -65,10 +76,12 @@ export const Wallet = () => {
 
   const handleUnStakeConfirm = async (stakeId: string) => {
     try {
+      const wallet = getWallet();
       authState &&
-        (await wallet.unStake({
+        wallet &&
+        (await api.unStake({
           auth: authState,
-          wallet: walletState.wallets[0],
+          wallet,
           unStake: {
             stakedSuiId: stakeId,
           },
@@ -81,8 +94,7 @@ export const Wallet = () => {
 
   useEffect(() => {
     const init = async () => {
-      const vali =
-        authState && (await wallet.getValidators({ auth: authState }));
+      const vali = authState && (await api.getValidators({ auth: authState }));
       setVelidators(vali || []);
     };
     init();

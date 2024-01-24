@@ -68,7 +68,7 @@ export const Assets = ({
   };
 
   useEffect(() => {
-    walletState.wallets[0] && update();
+    walletState.selected && update();
   }, [walletState.wallets, count]);
 
   return (

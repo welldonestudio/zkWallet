@@ -216,7 +216,7 @@ export const StakeList = ({
   };
 
   useEffect(() => {
-    walletState.wallets[0] && update();
+    walletState.selected && update();
   }, [walletState.wallets, count]);
 
   return (
