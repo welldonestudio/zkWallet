@@ -39,13 +39,13 @@ export const zkWalletSlice = createSlice({
         state.zkWalletState.selected = action.payload.address;
       }
     },
-    selectWallet(state, action: { type: string; payload: Wallet }) {
+    selectWallet(state, action: { type: string; payload: string }) {
       if (
         !!state.zkWalletState.wallets.find(
-          (item) => item.address === action.payload.address,
+          (item) => item.address === action.payload,
         )
       ) {
-        state.zkWalletState.selected = action.payload.address;
+        state.zkWalletState.selected = action.payload;
       }
     },
     removeWallet(state, action: { type: string; payload: Wallet }) {
@@ -61,7 +61,8 @@ export const zkWalletSlice = createSlice({
   },
 });
 
-export const { addWallet, removeWallet, resetWallet } = zkWalletSlice.actions;
+export const { addWallet, removeWallet, resetWallet, selectWallet } =
+  zkWalletSlice.actions;
 export const selectWalletState = (state: AppState) =>
   state.wallet.zkWalletState as {
     index: number;

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
@@ -28,6 +29,7 @@ import {
 import {
   addWallet,
   resetWallet,
+  selectWallet,
   selectWalletState,
 } from '@/store/slice/zkWalletSlice';
 
@@ -48,7 +50,7 @@ export const WalletSelecter = () => {
   const wallet = useCurrentWallet();
   const { mutate: disconnect } = useDisconnectWallet();
   const authState = useSelector(selectAuthState);
-  const { index, selected } = useSelector(selectWalletState);
+  const { index, selected, wallets } = useSelector(selectWalletState);
 
   const { jwt, wallet: api } = useContextApi();
 
@@ -196,6 +198,20 @@ export const WalletSelecter = () => {
                 />
               )}
             </Stack>
+            <Divider />
+            {wallets.map((item, key) => (
+              <MenuItem
+                key={key}
+                disabled={loading || item.address === selected}
+                onClick={() => dispatch(selectWallet(item.address))}
+              >
+                <AccountBalanceWalletIcon
+                  fontSize="small"
+                  sx={{ marginRight: 1 }}
+                />
+                {utils.shortenString(item.address, 4, 4)}
+              </MenuItem>
+            ))}
             <Divider />
             <MenuItem disabled={loading} onClick={handleAdd}>
               <QueueIcon fontSize="small" sx={{ marginRight: 1 }} />
