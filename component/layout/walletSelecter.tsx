@@ -197,13 +197,19 @@ export const WalletSelecter = () => {
                   sx={{ width: 56, height: 56 }}
                 />
               )}
+              <Typography variant="body2">
+                {utils.shortenString(selected || '', 8, 5)}
+              </Typography>
             </Stack>
             <Divider />
             {wallets.map((item, key) => (
               <MenuItem
                 key={key}
                 disabled={loading || item.address === selected}
-                onClick={() => dispatch(selectWallet(item.address))}
+                onClick={() => {
+                  dispatch(selectWallet(item.address));
+                  setAnchorEl(undefined);
+                }}
               >
                 <AccountBalanceWalletIcon
                   fontSize="small"

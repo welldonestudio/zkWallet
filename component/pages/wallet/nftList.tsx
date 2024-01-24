@@ -25,12 +25,14 @@ export const NftList = ({ count }: { count: number }) => {
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
 
+  const [init, setInit] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [nfts, setNfts] = useState<NftData[]>([]);
   const [hasNextPage, setHasNextPage] = useState<string | undefined>('');
-  const [init, setInit] = useState<boolean>(false);
 
   const update = async () => {
     if (authState) {
+      setLoading(true);
       const res = await wallet.getNftList({
         auth: authState,
         address: walletState.selected,
@@ -39,15 +41,16 @@ export const NftList = ({ count }: { count: number }) => {
       setHasNextPage(res.nextPage);
     }
     setInit(true);
+    setLoading(false);
   };
 
   useEffect(() => {
     update();
-  }, [walletState.wallets, count]);
+  }, [walletState.wallets, walletState.selected, count]);
 
   return (
     <Grid item xs={12}>
-      {nfts.length === 0 && (
+      {(nfts.length === 0 || loading) && (
         <Box
           sx={{
             display: 'flex',
@@ -61,10 +64,14 @@ export const NftList = ({ count }: { count: number }) => {
             borderColor: 'divider',
           }}
         >
-          {init ? <Typography>NFT</Typography> : <CircularProgress />}
+          {init && !loading ? (
+            <Typography>NFT</Typography>
+          ) : (
+            <CircularProgress />
+          )}
         </Box>
       )}
-      {nfts.length > 0 && (
+      {nfts.length > 0 && !loading && (
         <ImageList cols={4}>
           {nfts.map((item, key) => (
             <ImageListItem key={key}>
