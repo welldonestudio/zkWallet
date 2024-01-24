@@ -68,8 +68,8 @@ export const StakeList = ({
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
 
-  const [stakes, setStakes] = useState<ResponseStake[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [stakes, setStakes] = useState<ResponseStake[]>([]);
   const [init, setInit] = useState<boolean>(false);
 
   const handleUnStake = async (stakeId: string) => {

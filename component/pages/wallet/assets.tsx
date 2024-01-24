@@ -47,10 +47,12 @@ export const Assets = ({
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
 
+  const [loading, isLoading] = useState<boolean>(false);
   const [balances, setBalances] = useState<ResponseBalnce[]>([]);
   const [currency, setCurrency] = useState<string>('');
 
   const update = async () => {
+    isLoading(true);
     const _balances =
       authState &&
       (await wallet.getBalance({
@@ -65,6 +67,7 @@ export const Assets = ({
       );
     _balances && _balances.length === 0 && setCurrency('0.0');
     console.log('balance', _balances);
+    isLoading(false);
   };
 
   useEffect(() => {
@@ -115,7 +118,7 @@ export const Assets = ({
                         authState?.network === 'sui:devnet' ||
                         authState?.network === 'sui:testnet') && <Sui />}
                       <Typography variant="h3" marginLeft={2}>
-                        {!currency ? (
+                        {!currency || loading ? (
                           <Skeleton width="258px" />
                         ) : (
                           `${currency} ${CURRENCY_UNIT}`
