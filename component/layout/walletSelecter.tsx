@@ -163,44 +163,48 @@ export const WalletSelecter = () => {
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             transformOrigin={{ vertical: 'top', horizontal: 'right' }}
           >
-            <Stack
-              spacing={1}
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              sx={{ marginBottom: 2, marginX: 1 }}
-            >
-              <Box
-                sx={{ display: 'flex', alignItems: 'center' }}
-                onClick={() => {
-                  authState &&
-                    authState.email &&
-                    navigator.clipboard.writeText(authState.email);
-                }}
+            <MenuItem>
+              <Stack
+                spacing={1}
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                sx={{ marginBottom: 2, marginX: 1 }}
               >
-                <Typography variant="body2">
-                  {utils.shortenString(authState?.email || '', 8, 5)}
-                </Typography>
-                <IconButton
-                  size="small"
+                <Box
+                  sx={{ display: 'flex', alignItems: 'center' }}
                   onClick={() => {
-                    authState?.email &&
-                      navigator.clipboard.writeText(authState?.email);
+                    authState &&
+                      authState.email &&
+                      navigator.clipboard.writeText(authState.email);
                   }}
                 >
-                  <ContentCopyIcon style={{ width: '12px', height: '12px' }} />
-                </IconButton>
-              </Box>
-              {authState?.picture && (
-                <Avatar
-                  src={authState.picture}
-                  sx={{ width: 56, height: 56 }}
-                />
-              )}
-              <Typography variant="body2">
-                {utils.shortenString(selected || '', 8, 5)}
-              </Typography>
-            </Stack>
+                  <Typography variant="body2">
+                    {utils.shortenString(authState?.email || '', 8, 5)}
+                  </Typography>
+                  <IconButton
+                    size="small"
+                    onClick={() => {
+                      authState?.email &&
+                        navigator.clipboard.writeText(authState?.email);
+                    }}
+                  >
+                    <ContentCopyIcon
+                      style={{ width: '12px', height: '12px' }}
+                    />
+                  </IconButton>
+                </Box>
+                {authState?.picture && (
+                  <Avatar
+                    src={authState.picture}
+                    sx={{ width: 56, height: 56 }}
+                  />
+                )}
+                <Typography variant="body2">
+                  {utils.shortenString(selected || '', 8, 5)}
+                </Typography>
+              </Stack>
+            </MenuItem>
             <Divider />
             {wallets.map((item, key) => (
               <MenuItem
