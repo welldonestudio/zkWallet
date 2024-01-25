@@ -1,5 +1,6 @@
 import { Ed25519PublicKey } from '@mysten/sui.js/keypairs/ed25519';
 import { getExtendedEphemeralPublicKey } from '@mysten/zklogin';
+import { enqueueSnackbar } from 'notistack';
 
 import { utils } from '../utils';
 
@@ -59,8 +60,14 @@ export const getZkProof = async (
       }
       return JSON.stringify(json);
     }
+    enqueueSnackbar('not support network', {
+      variant: 'error',
+    });
     throw new Error('not support network');
   } catch (error) {
+    enqueueSnackbar(`${error}`, {
+      variant: 'error',
+    });
     throw new Error(`${error}`);
   }
 };
