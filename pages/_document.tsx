@@ -3,7 +3,7 @@ import { Children } from 'react';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import createEmotionServer from '@emotion/server/create-instance';
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics } from '@next/third-parties/google';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 
 import type { EmotionCache } from '@emotion/react';
@@ -19,7 +19,9 @@ const getCache = (): EmotionCache => {
 const TITLE = 'WELLDONE zkWallet';
 const DESC =
   'Revolutionizing Web3 access for billions with unmatched ease and security, making blockchain more accessible and user-friendly.';
-const IMAGE = 'https://zkwallet.welldonestudio.io/seo/zkwallet-fb.png';
+const IMAGE_FB = 'https://zkwallet.welldonestudio.io/seo/zkwallet-fb.png';
+const IMAGE_X =
+  'https://zkwallet.welldonestudio.io/seo/zkwallet-twitter-max.png';
 const URL = 'https://zkwallet.welldonestudio.io/';
 
 export default class MyDocument extends Document {
@@ -37,8 +39,14 @@ export default class MyDocument extends Document {
           <meta property="og:title" content={TITLE} />
           <meta property="og:description" content={DESC} />
           <meta property="og:url" content={URL} />
-          <meta property="og:image" content={IMAGE} />
-          <meta name="twitter:card" content="summary" />
+          <meta property="og:type" content="website" />
+          <meta property="og:image" content={IMAGE_FB} />
+          <meta property="og:image:type" content="image/png" />
+
+          <meta property="twitter:card" content="summary_large_image" />
+          <meta property="twitter:site" content="@WelldoneStudio_" />
+          <meta property="twitter:title" content={TITLE} />
+          <meta property="twitter:image" content={IMAGE_X} />
         </Head>
         <body>
           <Main />
