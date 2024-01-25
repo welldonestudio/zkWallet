@@ -17,7 +17,7 @@ const getCache = (): EmotionCache => {
 
 const TITLE = 'WELLDONE zkWallet';
 const DESC =
-  'zkWallet: Transforming Web3 Access for Billions with Unmatched Security and Ease';
+  'Revolutionizing Web3 access for billions with unmatched ease and security, making blockchain more accessible and user-friendly.';
 const IMAGE = 'https://docs.welldonestudio.io/img/seo/discord_fb.png';
 const URL = 'https://zkwallet.welldonestudio.io/';
 
