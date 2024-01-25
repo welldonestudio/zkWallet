@@ -68,7 +68,6 @@ export const StakeList = ({
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
 
-  const [init, setInit] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [stakes, setStakes] = useState<ResponseStake[]>([]);
 
@@ -84,7 +83,8 @@ export const StakeList = ({
   };
 
   const update = async () => {
-    init && setStakes([]);
+    setLoading(true);
+    setStakes([]);
     const _stakes =
       authState &&
       (await wallet.getStakeList({
@@ -93,7 +93,7 @@ export const StakeList = ({
       }));
     _stakes && setStakes(_stakes);
     _stakes && console.log('stakes', _stakes);
-    setInit(true);
+    setLoading(false);
   };
 
   const StakeTable = ({ list }: { list: StakeData[] }) => {
@@ -222,7 +222,7 @@ export const StakeList = ({
 
   return (
     <Grid item xs={12}>
-      {(stakes.length === 0 || loading) && (
+      {stakes.length === 0 && (
         <Box
           sx={{
             display: 'flex',
@@ -236,17 +236,14 @@ export const StakeList = ({
             borderColor: 'divider',
           }}
         >
-          {init && !loading ? (
-            <Box>
-              <Button onClick={() => openStake(true)}>Stake</Button>
-            </Box>
+          {!loading ? (
+            <Button onClick={() => openStake(true)}>Stake</Button>
           ) : (
             <CircularProgress />
           )}
         </Box>
       )}
       {stakes.length > 0 &&
-        !loading &&
         stakes.map(({ validator, list }, key) => (
           <Accordion key={key} disableGutters elevation={0}>
             <MyAccordionSummary expandIcon={<ExpandMoreIcon />}>
