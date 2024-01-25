@@ -169,7 +169,6 @@ export const WalletSelecter = () => {
                 direction="column"
                 alignItems="center"
                 justifyContent="center"
-                sx={{ marginBottom: 2, marginX: 1 }}
               >
                 <Box
                   sx={{ display: 'flex', alignItems: 'center' }}
