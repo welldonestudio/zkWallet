@@ -1,5 +1,6 @@
 import LoopIcon from '@mui/icons-material/Loop';
 import { Alert, AlertTitle, Box, Container, Fade, Stack } from '@mui/material';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 import { DEFAULT_NETWORK } from '@/store/slice/config';
 
@@ -15,6 +16,7 @@ export default function Layout({
 }) {
   return (
     <>
+      <GoogleAnalytics gaId="G-5QCR5JCBS4" />
       <NavBar />
 
       <main>
