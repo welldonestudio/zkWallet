@@ -28,7 +28,7 @@ export default function Footer() {
               <Stack direction="row" sx={{ paddingTop: '20px' }}>
                 <a
                   target="_blank"
-                  href="https://support.welldonestudio.io/"
+                  href="https://docs.welldonestudio.io/tutorials/sui-zklogin/"
                   rel="noopener noreferrer"
                 >
                   <Box>

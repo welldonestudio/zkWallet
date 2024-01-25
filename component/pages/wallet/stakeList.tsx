@@ -68,9 +68,9 @@ export const StakeList = ({
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
 
+  const [init, setInit] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [stakes, setStakes] = useState<ResponseStake[]>([]);
-  const [init, setInit] = useState<boolean>(false);
 
   const handleUnStake = async (stakeId: string) => {
     try {
@@ -84,6 +84,7 @@ export const StakeList = ({
   };
 
   const update = async () => {
+    init && setStakes([]);
     const _stakes =
       authState &&
       (await wallet.getStakeList({
@@ -217,11 +218,11 @@ export const StakeList = ({
 
   useEffect(() => {
     walletState.selected && update();
-  }, [walletState.wallets, count]);
+  }, [walletState.wallets, walletState.selected, count]);
 
   return (
     <Grid item xs={12}>
-      {stakes.length === 0 && (
+      {(stakes.length === 0 || loading) && (
         <Box
           sx={{
             display: 'flex',
@@ -235,7 +236,7 @@ export const StakeList = ({
             borderColor: 'divider',
           }}
         >
-          {init ? (
+          {init && !loading ? (
             <Box>
               <Button onClick={() => openStake(true)}>Stake</Button>
             </Box>
@@ -244,90 +245,93 @@ export const StakeList = ({
           )}
         </Box>
       )}
-      {stakes.map(({ validator, list }, key) => (
-        <Accordion key={key} disableGutters elevation={0}>
-          <MyAccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                alignContent: 'center',
-                width: '100%',
-              }}
-            >
-              <Box sx={{ flexGrow: 1 }}>
-                <Stack marginLeft={2}>
-                  <Box>
-                    <Typography variant="caption" style={{ opacity: 0.5 }}>
-                      Validator
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Hidden smDown>
-                      {validator.name ||
-                        utils.shortenString(validator.address, 8, 8)}
-                    </Hidden>
-                    <Hidden smUp>
-                      {validator.name || utils.shortenString(validator.address)}
-                    </Hidden>
-                  </Box>
-                </Stack>
+      {stakes.length > 0 &&
+        !loading &&
+        stakes.map(({ validator, list }, key) => (
+          <Accordion key={key} disableGutters elevation={0}>
+            <MyAccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  alignContent: 'center',
+                  width: '100%',
+                }}
+              >
+                <Box sx={{ flexGrow: 1 }}>
+                  <Stack marginLeft={2}>
+                    <Box>
+                      <Typography variant="caption" style={{ opacity: 0.5 }}>
+                        Validator
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Hidden smDown>
+                        {validator.name ||
+                          utils.shortenString(validator.address, 8, 8)}
+                      </Hidden>
+                      <Hidden smUp>
+                        {validator.name ||
+                          utils.shortenString(validator.address)}
+                      </Hidden>
+                    </Box>
+                  </Stack>
+                </Box>
+                <Box marginLeft={2}>
+                  <Stack>
+                    <Box>
+                      <Typography
+                        variant="caption"
+                        style={{ opacity: 0.5 }}
+                        textAlign="end"
+                      >
+                        Total Stacked Amount
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{ textAlign: 'end' }}
+                    >{`${validator.totalAmount} ${CURRENCY_UNIT}`}</Box>
+                  </Stack>
+                </Box>
+                <Box marginLeft={2}>
+                  <Stack>
+                    <Box>
+                      <Typography
+                        variant="caption"
+                        style={{ opacity: 0.5 }}
+                        textAlign="end"
+                      >
+                        Estimate Reward
+                      </Typography>
+                    </Box>
+                    <Box sx={{ textAlign: 'end' }}>
+                      {`${validator.estimatedReward} ${CURRENCY_UNIT}`}
+                    </Box>
+                  </Stack>
+                </Box>
+                <Box marginLeft={2}>
+                  <Stack>
+                    <Box>
+                      <Typography variant="caption" style={{ opacity: 0.5 }}>
+                        APY
+                      </Typography>
+                    </Box>
+                    <Box>
+                      {`${validator.apy} %`}{' '}
+                      <Tooltip title={`Epoch ${validator.apyEpoch}`}>
+                        <InfoIcon fontSize="small" sx={{ marginLeft: 1 }} />
+                      </Tooltip>
+                    </Box>
+                  </Stack>
+                </Box>
               </Box>
-              <Box marginLeft={2}>
-                <Stack>
-                  <Box>
-                    <Typography
-                      variant="caption"
-                      style={{ opacity: 0.5 }}
-                      textAlign="end"
-                    >
-                      Total Stacked Amount
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{ textAlign: 'end' }}
-                  >{`${validator.totalAmount} ${CURRENCY_UNIT}`}</Box>
-                </Stack>
-              </Box>
-              <Box marginLeft={2}>
-                <Stack>
-                  <Box>
-                    <Typography
-                      variant="caption"
-                      style={{ opacity: 0.5 }}
-                      textAlign="end"
-                    >
-                      Estimate Reward
-                    </Typography>
-                  </Box>
-                  <Box sx={{ textAlign: 'end' }}>
-                    {`${validator.estimatedReward} ${CURRENCY_UNIT}`}
-                  </Box>
-                </Stack>
-              </Box>
-              <Box marginLeft={2}>
-                <Stack>
-                  <Box>
-                    <Typography variant="caption" style={{ opacity: 0.5 }}>
-                      APY
-                    </Typography>
-                  </Box>
-                  <Box>
-                    {`${validator.apy} %`}{' '}
-                    <Tooltip title={`Epoch ${validator.apyEpoch}`}>
-                      <InfoIcon fontSize="small" sx={{ marginLeft: 1 }} />
-                    </Tooltip>
-                  </Box>
-                </Stack>
-              </Box>
-            </Box>
-          </MyAccordionSummary>
-          <AccordionDetails>
-            <StakeTable list={list} />
-          </AccordionDetails>
-        </Accordion>
-      ))}
+            </MyAccordionSummary>
+            <AccordionDetails>
+              <StakeTable list={list} />
+            </AccordionDetails>
+          </Accordion>
+        ))}
     </Grid>
   );
 };

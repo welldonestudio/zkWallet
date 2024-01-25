@@ -47,12 +47,12 @@ export const Assets = ({
   const walletState = useSelector(selectWalletState);
   const { wallet } = useContextApi();
 
-  const [loading, isLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [balances, setBalances] = useState<ResponseBalnce[]>([]);
   const [currency, setCurrency] = useState<string>('');
 
   const update = async () => {
-    isLoading(true);
+    setLoading(true);
     const _balances =
       authState &&
       (await wallet.getBalance({
@@ -67,12 +67,12 @@ export const Assets = ({
       );
     _balances && _balances.length === 0 && setCurrency('0.0');
     console.log('balance', _balances);
-    isLoading(false);
+    setLoading(false);
   };
 
   useEffect(() => {
     walletState.selected && update();
-  }, [walletState.wallets, count]);
+  }, [walletState.wallets, walletState.selected, count]);
 
   return (
     <>

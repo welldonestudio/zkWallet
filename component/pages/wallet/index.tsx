@@ -100,12 +100,6 @@ export const Wallet = () => {
     init();
   }, [authState]);
 
-  useEffect(() => {
-    if (walletState.selected) {
-      setCount(count + 1);
-    }
-  }, [walletState.selected]);
-
   return (
     <>
       {!!account && (
