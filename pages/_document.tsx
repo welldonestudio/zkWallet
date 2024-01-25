@@ -3,7 +3,7 @@ import { Children } from 'react';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import createEmotionServer from '@emotion/server/create-instance';
-import { GoogleAnalytics } from '@next/third-parties/google';
+import { GoogleTagManager } from '@next/third-parties/google';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 
 import type { EmotionCache } from '@emotion/react';
@@ -54,7 +54,7 @@ export default class MyDocument extends Document {
           <Main />
           <NextScript />
         </body>
-        <GoogleAnalytics gaId="G-5QCR5JCBS4" />
+        <GoogleTagManager gtmId="G-5QCR5JCBS4" />
       </Html>
     );
   }
