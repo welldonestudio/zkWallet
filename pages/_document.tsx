@@ -15,6 +15,12 @@ const getCache = (): EmotionCache => {
   return cache;
 };
 
+const TITLE = 'WELLDONE zkWallet';
+const DESC =
+  'Innovative web wallet based on zkLogin. Enjoy easy access using Web2 credentials, enhanced privacy protection with zero-knowledge proofs, and manage and transfer your cryptocurrency safely through an intuitive user interface. Setting a new standard for blockchain wallets.';
+const IMAGE = 'https://docs.welldonestudio.io/img/seo/discord_fb.png';
+const URL = 'https://zkwallet.welldonestudio.io/';
+
 export default class MyDocument extends Document {
   render(): JSX.Element {
     return (
@@ -22,6 +28,16 @@ export default class MyDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
           <meta name="theme-color" content="#131417" />
+
+          <meta name="title" content={TITLE} />
+          <meta name="description" content={DESC} />
+
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content={TITLE} />
+          <meta property="og:description" content={DESC} />
+          <meta property="og:url" content={URL} />
+          <meta property="og:image" content={IMAGE} />
+          <meta name="twitter:card" content="summary" />
         </Head>
         <body>
           <Main />
