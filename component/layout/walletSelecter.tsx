@@ -163,7 +163,7 @@ export const WalletSelecter = () => {
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             transformOrigin={{ vertical: 'top', horizontal: 'right' }}
           >
-            <MenuItem>
+            <MenuItem disabled>
               <Stack
                 spacing={1}
                 direction="column"
