@@ -39,6 +39,7 @@ export default class MyDocument extends Document {
           <meta property="og:title" content={TITLE} />
           <meta property="og:description" content={DESC} />
           <meta property="og:url" content={URL} />
+          <meta property="og:site_name" content={'WELLDONE Studio zkWallet'} />
           <meta property="og:type" content="website" />
           <meta property="og:image" content={IMAGE_FB} />
           <meta property="og:image:type" content="image/png" />
@@ -46,6 +47,7 @@ export default class MyDocument extends Document {
           <meta property="twitter:card" content="summary_large_image" />
           <meta property="twitter:site" content="@WelldoneStudio_" />
           <meta property="twitter:title" content={TITLE} />
+          <meta property="twitter:description" content={DESC} />
           <meta property="twitter:image" content={IMAGE_X} />
         </Head>
         <body>
