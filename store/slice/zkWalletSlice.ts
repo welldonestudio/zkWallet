@@ -8,7 +8,7 @@ export interface Wallet {
   proof?: string;
 }
 
-export interface zkWalletState {
+interface State {
   zkWalletState: {
     index: number;
     selected: string;
@@ -16,7 +16,7 @@ export interface zkWalletState {
   };
 }
 
-const initialState: zkWalletState = {
+const initialState: State = {
   zkWalletState: {
     index: 0,
     selected: '',

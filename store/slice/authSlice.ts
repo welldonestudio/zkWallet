@@ -19,11 +19,11 @@ export interface Auth {
   };
 }
 
-interface AuthState {
+interface State {
   authState: Auth | undefined;
 }
 
-const initialState: AuthState = {
+const initialState: State = {
   authState: undefined,
 };
 
