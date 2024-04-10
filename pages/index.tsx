@@ -7,6 +7,7 @@ import Layout from '@/component/layout';
 import { Wallet } from '@/component/pages/wallet';
 import { selectAuthState } from '@/store/slice/authSlice';
 
+// test
 export default function HomePage() {
   const router = useRouter();
   const authState = useSelector(selectAuthState);
